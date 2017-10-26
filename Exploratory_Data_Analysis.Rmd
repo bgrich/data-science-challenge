@@ -6,6 +6,11 @@ output:
     toc_float: true
 ---
 
+```{r setup, message = FALSE}
+library(tidyverse)
+library(jsonlite)
+```
+
 The two questions that I have been asked to answer to the Room Key Data 
 Science Challenge are: 
 
@@ -21,4 +26,7 @@ The first step is to import the data to R. The data is stored as a tab-separated
 value format with three columns. The elements of each column contain an entry 
 for referrals, leads, and booking in JSON format.
 
+```{r, echo = TRUE, include = FALSE}
+room_key_data <- read_tsv("data.tsv")
+```
 
