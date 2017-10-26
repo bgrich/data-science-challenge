@@ -6,3 +6,19 @@ output:
     toc_float: true
 ---
 
+The two questions that I have been asked to answer to the Room Key Data 
+Science Challenge are: 
+
+* What factors correlate with users booking? 
+* What can Room Key do to increase booking conversion rate?
+
+To begin, I want to do some exploratory data analysis to get a sense for the 
+data.
+
+# Data Import
+
+The first step is to import the data to R. The data is stored as a tab-separated 
+value format with three columns. The elements of each column contain an entry 
+for referrals, leads, and booking in JSON format.
+
+
