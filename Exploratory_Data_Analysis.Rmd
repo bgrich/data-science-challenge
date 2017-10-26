@@ -41,3 +41,16 @@ of the `room_key_data` object (referral, lead, and booking) and split them into
 individual data sets. These individual data sets can then be parsed by their 
 JSON format and turned into a data frame. 
 
+# Data Cleaning
+
+The first step of the data cleaning will be to split each data set apart. For 
+each of the data sets, I will filter out the null entries as these are ones 
+that did not lead to any leads or booking. The filtering step will also occur 
+for the referral set, but it should not lead to the removal of any entries. 
+The `fromJSON` function will then be applied to every element of the column 
+and a new data frame will be formed with all of the information spread out 
+for each data set.
+
+## Referral
+
+The first set to look at is the referral set. 
