@@ -26,7 +26,18 @@ The first step is to import the data to R. The data is stored as a tab-separated
 value format with three columns. The elements of each column contain an entry 
 for referrals, leads, and booking in JSON format.
 
-```{r, echo = TRUE, include = FALSE}
-room_key_data <- read_tsv("data.tsv")
+```{r, message = FALSE}
+room_key_data <- read_tsv("data.tsv", progress = FALSE)
 ```
+
+With the data imported, I want to take a peak at what it looks like. 
+
+```{r}
+room_key_data
+```
+
+In this form the data is pretty difficult to parse. I want to take each column 
+of the `room_key_data` object (referral, lead, and booking) and split them into 
+individual data sets. These individual data sets can then be parsed by their 
+JSON format and turned into a data frame. 
 
