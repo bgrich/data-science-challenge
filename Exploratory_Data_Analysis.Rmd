@@ -54,3 +54,52 @@ for each data set.
 ## Referral
 
 The first set to look at is the referral set. 
+
+```{r}
+referral <- room_key_data %>% 
+  filter(referral != "null") %>%
+  .$referral %>% 
+  map_df(fromJSON)
+```
+
+Note that converting this into a data frame is time intensive. Here is a peak 
+at the completed data frame. 
+
+```{r}
+referral
+```
+
+## Lead
+
+Next I want to convert the lead column into a data frame.
+
+```{r}
+lead <- room_key_data %>% 
+  filter(lead != "null") %>%
+  .$lead %>% 
+  map_df(fromJSON)
+```
+
+Here is the lead data set. 
+
+```{r}
+lead
+```
+
+## Booking
+
+Lastly, I want to convert the booking data set into a data frame. 
+
+```{r}
+booking <- room_key_data %>% 
+  filter(booking != "null") %>%
+  .$booking %>% 
+  map_df(fromJSON)
+```
+
+And here is the booking data set.
+
+```{r}
+booking
+```
+
