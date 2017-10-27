@@ -103,3 +103,25 @@ And here is the booking data set.
 booking
 ```
 
+# Data Details
+
+Now I want to explore the details of each data set. What kind of variables 
+am I working with in each one? 
+
+## Referral 
+
+In the referral data set there are 9 columns. 
+
+* visitor-id 
+* event-id
+* ts 
+* type 
+* location-tid 
+* partner-code 
+* check-in 
+* check-out 
+* udicode
+
+
+
+
