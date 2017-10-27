@@ -257,6 +257,17 @@ referral %>%
 
 Next, I want to examine the `check-in` and `check-out` columns. These are 
 fairly self-explantory in that they are the dates the visitor wants to check in 
-and check out for their trip. 
+and check out for their trip. These variable may be of interest as either a way 
+of looking at correlations between booking and check in date, correlations 
+between book and length of trip, or correlations between booking and time 
+between referral date and check-in date.
+
+```{r}
+referral %>% 
+  select(`check-in`, `check-out`) %>% 
+  mutate(check_in = lubridate::ymd(`check-in`), 
+         check_out = lubridate::ymd(`check-out`))
+```
+
 
 
