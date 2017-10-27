@@ -158,4 +158,25 @@ equal, indicating that the `event-id` column does truly represent each unique
 referral event. 
 
 Next, I want to understand what the `ts` column is. It appears to be a large 
-number and may be a timestamp written in 
+number and may be a timestamp written in Unix time. 
+
+```{r}
+referral %>% 
+  select(ts) %>% 
+  mutate(timestamp = lubridate::as_datetime(ts))
+```
+
+The timestamps produced assuming that `ts` is in Unix time of seconds produces 
+timestamps in the year 49757 which is obviously incorrect. If I assume that the 
+`ts` column is actually in units of milliseconds then I get the following 
+timestamps.
+
+```{r}
+referral %>% 
+  select(ts) %>% 
+  mutate(timestamp = lubridate::as_datetime(ts / 1000)) %>% 
+  summarize(min_date = min(timestamp), max_date = max(timestamp))
+```
+
+These timestamps match the date range given in the challenge prompt.
+
