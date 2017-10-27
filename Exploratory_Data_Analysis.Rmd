@@ -236,3 +236,27 @@ NA elements.
 
 ### Partner Code
 
+Now, I want to look at the `partner-code` and see how many unique partners 
+there are. 
+
+```{r}
+referral %>% 
+  distinct(`partner-code`)
+```
+
+There are 7 unique partners that appear with the following frequency. 
+
+```{r}
+referral %>% 
+  group_by(`partner-code`) %>% 
+  count() %>% 
+  arrange(desc(n))
+```
+
+### check-in and check-out 
+
+Next, I want to examine the `check-in` and `check-out` columns. These are 
+fairly self-explantory in that they are the dates the visitor wants to check in 
+and check out for their trip. 
+
+
