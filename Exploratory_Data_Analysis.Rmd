@@ -283,3 +283,54 @@ referral %>%
 This is another variable that has a number of repeated values. This could be 
 another variable to examine for correlations, though the vast majority of 
 this variable is encoded as NA. 
+
+## Lead 
+
+In the `lead` data set there are 5 columns: 
+
+* visitor-id
+* event-id 
+* ts 
+* type 
+* rate-partner
+
+First, I want to verify that all of the columns similar to the same named 
+columns in referral are truly similar. 
+
+```{r}
+lead %>% 
+  count()
+```
+
+```{r}
+lead %>% 
+  distinct(`event-id`) %>% 
+  count()
+```
+
+As before, `event-id` is the number of unique lead events. 
+
+```{r}
+lead %>% 
+  distinct(`visitor-id`) %>% 
+  count()
+```
+
+Also as before, the `visitor-id` variable is unique for each visitor, but there 
+are likely a few repeat visitors.
+
+```{r}
+lead %>% 
+  select(ts) %>% 
+  mutate(timestamp = lubridate::as_datetime(ts / 1000)) %>% 
+  summarize(min_date = min(timestamp), max_date = max(timestamp))
+```
+
+Here, `ts` appears to be the timestamp for when the lead event occured. 
+
+```{r}
+lead %>% 
+  distinct(type)
+```
+
+As with the referral set, the type for lead only refers to the api used.
