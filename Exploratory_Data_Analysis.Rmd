@@ -269,5 +269,17 @@ referral %>%
          check_out = lubridate::ymd(`check-out`))
 ```
 
+### udicode
 
+Next, I look at the `udicode`. 
 
+```{r}
+referral %>% 
+  group_by(udicode) %>% 
+  count() %>% 
+  arrange(desc(n))
+```
+
+This is another variable that has a number of repeated values. This could be 
+another variable to examine for correlations, though the vast majority of 
+this variable is encoded as NA. 
