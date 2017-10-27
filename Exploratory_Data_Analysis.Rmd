@@ -122,6 +122,21 @@ In the referral data set there are 9 columns.
 * check-out 
 * udicode
 
+```{r}
+room_key_data %>% 
+  filter(booking != "null") %>% 
+  rownames_to_column() %>% 
+  filter(rowname == 1) %>% 
+  select(-rowname)
+```
+
+Doing a visual inspection of an observation that contains a referral, lead, 
+and booking, it appears that the `visitor-id` variable is a unique identifier 
+for a user/visitor. The `event-id` variable however is not a unique identifier 
+of an observation within, but rather an identifier for an individual referral, 
+lead, or booking event. That is to say, for a single row there are different 
+event-id's for each referral, lead, and booking event.
+
 
 
 
