@@ -145,6 +145,8 @@ referral %>%
   count()
 ```
 
+### event-id
+
 Next, the number of distinct event-id's.
 
 ```{r}
@@ -156,6 +158,8 @@ referral %>%
 The number of distinct event-id's and the total number of observations are 
 equal, indicating that the `event-id` column does truly represent each unique 
 referral event. 
+
+### ts
 
 Next, I want to understand what the `ts` column is. It appears to be a large 
 number and may be a timestamp written in Unix time. 
@@ -180,6 +184,8 @@ referral %>%
 
 These timestamps match the date range given in the challenge prompt.
 
+### type
+
 Next I want to determine how many `type` show up in the set. 
 
 ```{r}
@@ -189,6 +195,8 @@ referral %>%
 
 There is only one type that appears in this data set, so it is likely that 
 the type can be discarded unless I plan to combine the three data sets together. 
+
+### location-tid
 
 Next is the `location-tid` column.
 
@@ -212,3 +220,6 @@ It looks like the largest appearance is made by NA. Additional, there appear
 to be many repeat appearances of these elements. This indicates that this may 
 be a variable I can examine deeper. Assuming I can determine the origin of the 
 NA elements.
+
+### Partner Code
+
