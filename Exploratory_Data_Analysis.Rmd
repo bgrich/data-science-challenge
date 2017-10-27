@@ -137,6 +137,25 @@ of an observation within, but rather an identifier for an individual referral,
 lead, or booking event. That is to say, for a single row there are different 
 event-id's for each referral, lead, and booking event.
 
+To get a sense of what each column contains I am going to do a few simple 
+explorations. First, the total number of observations.
 
+```{r}
+referral %>% 
+  count()
+```
 
+Next, the number of distinct event-id's.
 
+```{r}
+referral %>% 
+  distinct(`event-id`) %>% 
+  count()
+```
+
+The number of distinct event-id's and the total number of observations are 
+equal, indicating that the `event-id` column does truly represent each unique 
+referral event. 
+
+Next, I want to understand what the `ts` column is. It appears to be a large 
+number and may be a timestamp written in 
