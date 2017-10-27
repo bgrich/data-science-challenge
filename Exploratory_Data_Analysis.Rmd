@@ -159,6 +159,19 @@ The number of distinct event-id's and the total number of observations are
 equal, indicating that the `event-id` column does truly represent each unique 
 referral event. 
 
+### visitor-id
+
+Next, I want to look at the `visitor-id` column.
+
+```{r}
+referral %>% 
+  distinct(`visitor-id`) %>% 
+  count()
+```
+
+Here, the number of unique visitor id's is less than the total number of 
+observations. This indicates that there are a few return visitors to the site.
+
 ### ts
 
 Next, I want to understand what the `ts` column is. It appears to be a large 
