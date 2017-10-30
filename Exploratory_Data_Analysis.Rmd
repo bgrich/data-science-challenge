@@ -493,4 +493,56 @@ booking %>%
 The `total-amount` column is simply the total amount of money paid for the 
 booking. Note that there are a few NA entries.
 
+# Data Import and Cleaning Procedure
 
+The following is a procedure to be used in the rest of the project for the 
+import, organizing, and cleaning of the data. This will include creating a 
+key for each data set for appropriate joining and the creation of a few new 
+variables.
+
+```{r, message = FALSE}
+room_key_data <- read_tsv("data.tsv", progress = FALSE) %>% 
+  rownames_to_column() %>% 
+  rename(key = rowname) %>% 
+  mutate(lead_event = !(lead == "null"), 
+         booking_event = !(booking == "null"))
+```
+
+```{r}
+referral_key <- room_key_data %>% 
+  filter(referral != "null") %>% 
+  select(key, lead_event, booking_event)
+
+referral <- room_key_data %>% 
+  filter(referral != "null") %>%
+  .$referral %>% 
+  map_df(fromJSON) %>% 
+  bind_cols(referral_key) %>% 
+  select(key, everything())
+```
+
+```{r}
+lead_key <- room_key_data %>% 
+  filter(lead != "null") %>% 
+  select(key)
+
+lead <- room_key_data %>% 
+  filter(lead != "null") %>%
+  .$lead %>% 
+  map_df(fromJSON) %>% 
+  bind_cols(lead_key) %>% 
+  select(key, everything())
+```
+
+```{r}
+booking_key <- room_key_data %>% 
+  filter(booking != "null") %>% 
+  select(key)
+
+booking <- room_key_data %>% 
+  filter(booking != "null") %>%
+  .$booking %>%  
+  map_df(fromJSON) %>% 
+  bind_cols(booking_key) %>% 
+  select(key, everything())
+```
