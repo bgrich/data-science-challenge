@@ -278,9 +278,74 @@ library(jsonlite)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>In this notebook I will be doing an exploratory data analysis looking to answer the question:</p>
+<blockquote>
+<p>What factors correlate with users booking?</p>
+</blockquote>
+<div id="data-import-and-preparation" class="section level1">
+<h1>Data Import and Preparation</h1>
+<p>First, I need to import and prepare the data for analysis.</p>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm9vbV9rZXlfZGF0YSA8LSByZWFkX3RzdihcImRhdGEudHN2XCIsIHByb2dyZXNzID0gRkFMU0UpICU+JSBcbiAgcm93bmFtZXNfdG9fY29sdW1uKCkgJT4lIFxuICByZW5hbWUoa2V5ID0gcm93bmFtZSkgJT4lIFxuICBtdXRhdGUobGVhZF9ldmVudCA9ICEobGVhZCA9PSBcIm51bGxcIiksIFxuICAgICAgICAgYm9va2luZ19ldmVudCA9ICEoYm9va2luZyA9PSBcIm51bGxcIikpXG5gYGAifQ== -->
+<pre class="r"><code>room_key_data &lt;- read_tsv(&quot;data.tsv&quot;, progress = FALSE) %&gt;% 
+  rownames_to_column() %&gt;% 
+  rename(key = rowname) %&gt;% 
+  mutate(lead_event = !(lead == &quot;null&quot;), 
+         booking_event = !(booking == &quot;null&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVmZXJyYWxfa2V5IDwtIHJvb21fa2V5X2RhdGEgJT4lIFxuICBmaWx0ZXIocmVmZXJyYWwgIT0gXCJudWxsXCIpICU+JSBcbiAgc2VsZWN0KGtleSwgbGVhZF9ldmVudCwgYm9va2luZ19ldmVudClcblxucmVmZXJyYWwgPC0gcm9vbV9rZXlfZGF0YSAlPiUgXG4gIGZpbHRlcihyZWZlcnJhbCAhPSBcIm51bGxcIikgJT4lXG4gIC4kcmVmZXJyYWwgJT4lIFxuICBtYXBfZGYoZnJvbUpTT04pICU+JSBcbiAgYmluZF9jb2xzKHJlZmVycmFsX2tleSkgJT4lIFxuICBzZWxlY3Qoa2V5LCBldmVyeXRoaW5nKCkpXG5gYGAifQ== -->
+<pre class="r"><code>referral_key &lt;- room_key_data %&gt;% 
+  filter(referral != &quot;null&quot;) %&gt;% 
+  select(key, lead_event, booking_event)
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkV4cGxvcmF0b3J5IERhdGEgQW5hbHlzaXMiDQpvdXRwdXQ6IA0KICBodG1sX25vdGVib29rOg0KICAgIHRvYzogdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KLS0tDQoNCmBgYHtyIHNldHVwLCBtZXNzYWdlID0gRkFMU0V9DQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkoanNvbmxpdGUpDQpgYGANCg0K</div>
+referral &lt;- room_key_data %&gt;% 
+  filter(referral != &quot;null&quot;) %&gt;%
+  .$referral %&gt;% 
+  map_df(fromJSON) %&gt;% 
+  bind_cols(referral_key) %&gt;% 
+  select(key, everything())</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGVhZF9rZXkgPC0gcm9vbV9rZXlfZGF0YSAlPiUgXG4gIGZpbHRlcihsZWFkICE9IFwibnVsbFwiKSAlPiUgXG4gIHNlbGVjdChrZXkpXG5cbmxlYWQgPC0gcm9vbV9rZXlfZGF0YSAlPiUgXG4gIGZpbHRlcihsZWFkICE9IFwibnVsbFwiKSAlPiVcbiAgLiRsZWFkICU+JSBcbiAgbWFwX2RmKGZyb21KU09OKSAlPiUgXG4gIGJpbmRfY29scyhsZWFkX2tleSkgJT4lIFxuICBzZWxlY3Qoa2V5LCBldmVyeXRoaW5nKCkpXG5gYGAifQ== -->
+<pre class="r"><code>lead_key &lt;- room_key_data %&gt;% 
+  filter(lead != &quot;null&quot;) %&gt;% 
+  select(key)
+
+lead &lt;- room_key_data %&gt;% 
+  filter(lead != &quot;null&quot;) %&gt;%
+  .$lead %&gt;% 
+  map_df(fromJSON) %&gt;% 
+  bind_cols(lead_key) %&gt;% 
+  select(key, everything())</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYm9va2luZ19rZXkgPC0gcm9vbV9rZXlfZGF0YSAlPiUgXG4gIGZpbHRlcihib29raW5nICE9IFwibnVsbFwiKSAlPiUgXG4gIHNlbGVjdChrZXkpXG5cbmJvb2tpbmcgPC0gcm9vbV9rZXlfZGF0YSAlPiUgXG4gIGZpbHRlcihib29raW5nICE9IFwibnVsbFwiKSAlPiVcbiAgLiRib29raW5nICU+JSAgXG4gIG1hcF9kZihmcm9tSlNPTikgJT4lIFxuICBiaW5kX2NvbHMoYm9va2luZ19rZXkpICU+JSBcbiAgc2VsZWN0KGtleSwgZXZlcnl0aGluZygpKVxuYGBgIn0= -->
+<pre class="r"><code>booking_key &lt;- room_key_data %&gt;% 
+  filter(booking != &quot;null&quot;) %&gt;% 
+  select(key)
+
+booking &lt;- room_key_data %&gt;% 
+  filter(booking != &quot;null&quot;) %&gt;%
+  .$booking %&gt;%  
+  map_df(fromJSON) %&gt;% 
+  bind_cols(booking_key) %&gt;% 
+  select(key, everything())</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkV4cGxvcmF0b3J5IERhdGEgQW5hbHlzaXMiDQpvdXRwdXQ6IA0KICBodG1sX25vdGVib29rOg0KICAgIHRvYzogdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KLS0tDQoNCmBgYHtyIHNldHVwLCBtZXNzYWdlID0gRkFMU0V9DQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkoanNvbmxpdGUpDQpgYGANCg0KSW4gdGhpcyBub3RlYm9vayBJIHdpbGwgYmUgZG9pbmcgYW4gZXhwbG9yYXRvcnkgZGF0YSBhbmFseXNpcyBsb29raW5nIHRvIGFuc3dlciANCnRoZSBxdWVzdGlvbjogDQoNCj4gV2hhdCBmYWN0b3JzIGNvcnJlbGF0ZSB3aXRoIHVzZXJzIGJvb2tpbmc/DQoNCiMgRGF0YSBJbXBvcnQgYW5kIFByZXBhcmF0aW9uDQoNCkZpcnN0LCBJIG5lZWQgdG8gaW1wb3J0IGFuZCBwcmVwYXJlIHRoZSBkYXRhIGZvciBhbmFseXNpcy4NCg0KYGBge3IsIG1lc3NhZ2UgPSBGQUxTRX0NCnJvb21fa2V5X2RhdGEgPC0gcmVhZF90c3YoImRhdGEudHN2IiwgcHJvZ3Jlc3MgPSBGQUxTRSkgJT4lIA0KICByb3duYW1lc190b19jb2x1bW4oKSAlPiUgDQogIHJlbmFtZShrZXkgPSByb3duYW1lKSAlPiUgDQogIG11dGF0ZShsZWFkX2V2ZW50ID0gIShsZWFkID09ICJudWxsIiksIA0KICAgICAgICAgYm9va2luZ19ldmVudCA9ICEoYm9va2luZyA9PSAibnVsbCIpKQ0KYGBgDQoNCmBgYHtyfQ0KcmVmZXJyYWxfa2V5IDwtIHJvb21fa2V5X2RhdGEgJT4lIA0KICBmaWx0ZXIocmVmZXJyYWwgIT0gIm51bGwiKSAlPiUgDQogIHNlbGVjdChrZXksIGxlYWRfZXZlbnQsIGJvb2tpbmdfZXZlbnQpDQoNCnJlZmVycmFsIDwtIHJvb21fa2V5X2RhdGEgJT4lIA0KICBmaWx0ZXIocmVmZXJyYWwgIT0gIm51bGwiKSAlPiUNCiAgLiRyZWZlcnJhbCAlPiUgDQogIG1hcF9kZihmcm9tSlNPTikgJT4lIA0KICBiaW5kX2NvbHMocmVmZXJyYWxfa2V5KSAlPiUgDQogIHNlbGVjdChrZXksIGV2ZXJ5dGhpbmcoKSkNCmBgYA0KDQpgYGB7cn0NCmxlYWRfa2V5IDwtIHJvb21fa2V5X2RhdGEgJT4lIA0KICBmaWx0ZXIobGVhZCAhPSAibnVsbCIpICU+JSANCiAgc2VsZWN0KGtleSkNCg0KbGVhZCA8LSByb29tX2tleV9kYXRhICU+JSANCiAgZmlsdGVyKGxlYWQgIT0gIm51bGwiKSAlPiUNCiAgLiRsZWFkICU+JSANCiAgbWFwX2RmKGZyb21KU09OKSAlPiUgDQogIGJpbmRfY29scyhsZWFkX2tleSkgJT4lIA0KICBzZWxlY3Qoa2V5LCBldmVyeXRoaW5nKCkpDQpgYGANCg0KYGBge3J9DQpib29raW5nX2tleSA8LSByb29tX2tleV9kYXRhICU+JSANCiAgZmlsdGVyKGJvb2tpbmcgIT0gIm51bGwiKSAlPiUgDQogIHNlbGVjdChrZXkpDQoNCmJvb2tpbmcgPC0gcm9vbV9rZXlfZGF0YSAlPiUgDQogIGZpbHRlcihib29raW5nICE9ICJudWxsIikgJT4lDQogIC4kYm9va2luZyAlPiUgIA0KICBtYXBfZGYoZnJvbUpTT04pICU+JSANCiAgYmluZF9jb2xzKGJvb2tpbmdfa2V5KSAlPiUgDQogIHNlbGVjdChrZXksIGV2ZXJ5dGhpbmcoKSkNCmBgYA0K</div>
 
 
 </div>

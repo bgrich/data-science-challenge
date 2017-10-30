@@ -11,3 +11,58 @@ library(tidyverse)
 library(jsonlite)
 ```
 
+In this notebook I will be doing an exploratory data analysis looking to answer 
+the question: 
+
+> What factors correlate with users booking?
+
+# Data Import and Preparation
+
+First, I need to import and prepare the data for analysis.
+
+```{r, message = FALSE}
+room_key_data <- read_tsv("data.tsv", progress = FALSE) %>% 
+  rownames_to_column() %>% 
+  rename(key = rowname) %>% 
+  mutate(lead_event = !(lead == "null"), 
+         booking_event = !(booking == "null"))
+```
+
+```{r}
+referral_key <- room_key_data %>% 
+  filter(referral != "null") %>% 
+  select(key, lead_event, booking_event)
+
+referral <- room_key_data %>% 
+  filter(referral != "null") %>%
+  .$referral %>% 
+  map_df(fromJSON) %>% 
+  bind_cols(referral_key) %>% 
+  select(key, everything())
+```
+
+```{r}
+lead_key <- room_key_data %>% 
+  filter(lead != "null") %>% 
+  select(key)
+
+lead <- room_key_data %>% 
+  filter(lead != "null") %>%
+  .$lead %>% 
+  map_df(fromJSON) %>% 
+  bind_cols(lead_key) %>% 
+  select(key, everything())
+```
+
+```{r}
+booking_key <- room_key_data %>% 
+  filter(booking != "null") %>% 
+  select(key)
+
+booking <- room_key_data %>% 
+  filter(booking != "null") %>%
+  .$booking %>%  
+  map_df(fromJSON) %>% 
+  bind_cols(booking_key) %>% 
+  select(key, everything())
+```
