@@ -349,3 +349,65 @@ lead %>%
 Like the `partner-code` variable from the referral data set, the `rate-partner` 
 refers to the hotel group that the lead linked to.
 
+## Booking
+
+In the booking data set there are 11 columns: 
+
+* currency
+* nights 
+* visitor-id 
+* check-in
+* type 
+* check-out 
+* rate-partner 
+* ts 
+* rooms 
+* event-id 
+* total-amount
+
+Some of these variables overlap with the variables from the previous sets. I 
+first want to look at those variables and verify they respond similarly.
+
+First, I want to verify that all of the columns similar to the same named 
+columns in referral are truly similar. 
+
+```{r}
+booking %>% 
+  count()
+```
+
+```{r}
+booking %>% 
+  distinct(`event-id`) %>% 
+  count()
+```
+
+As before, `event-id` is the number of unique booking events. 
+
+```{r}
+booking %>% 
+  distinct(`visitor-id`) %>% 
+  count()
+```
+
+Also as before, the `visitor-id` variable is unique for each visitor, but there 
+are likely a few repeat visitors. For the booking data set, there are almost an 
+equal number of visitors as unique events indicating that there are few repeat 
+bookings from the same visitor in the time span recorded.
+
+```{r}
+booking %>% 
+  select(ts) %>% 
+  mutate(timestamp = lubridate::as_datetime(ts / 1000)) %>% 
+  summarize(min_date = min(timestamp), max_date = max(timestamp))
+```
+
+Here, `ts` appears to be the timestamp for when the booking event occured. 
+
+```{r}
+booking %>% 
+  distinct(type)
+```
+
+As with the referral set, the type for booking only refers to the api used.
+
