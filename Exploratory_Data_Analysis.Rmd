@@ -6,3 +6,8 @@ output:
     toc_float: true
 ---
 
+```{r setup, message = FALSE}
+library(tidyverse)
+library(jsonlite)
+```
+
