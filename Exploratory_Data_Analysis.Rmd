@@ -334,3 +334,18 @@ lead %>%
 ```
 
 As with the referral set, the type for lead only refers to the api used.
+
+### rate-partner
+
+The only new variable in this set is `rate-partner`. 
+
+```{r}
+lead %>% 
+  group_by(`rate-partner`) %>% 
+  count() %>% 
+  arrange(desc(n))
+```
+
+Like the `partner-code` variable from the referral data set, the `rate-partner` 
+refers to the hotel group that the lead linked to.
+
