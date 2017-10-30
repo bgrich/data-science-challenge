@@ -411,3 +411,34 @@ booking %>%
 
 As with the referral set, the type for booking only refers to the api used.
 
+```{r}
+booking %>% 
+  select(`check-in`, `check-out`) %>%
+  mutate(check_in = lubridate::ymd(`check-in`), 
+         check_out = lubridate::ymd(`check-out`))
+```
+
+While looking at the check-in and check-out dates for the booking, there are 
+four dates that apparently failed to parse. A further investigation of these 
+dates showed that there are 10 check-out dates filled in with NA. Additionally, 
+there are several dates, the four not parsed, that are in non-standard date 
+formats.
+
+```{r}
+booking %>% 
+  filter(is.na(`check-out`)) %>% 
+  mutate(check_in = lubridate::ymd(`check-in`), 
+         check_out = lubridate::ymd(`check-out`))
+```
+
+The four check-in dates that can't be parsed also have non-standard entries in 
+some of the other elements. All of these come from the rate-partner CHC. 
+
+```{r}
+booking %>% 
+  filter(`rate-partner` == "CHC")
+```
+
+Note that not all of the CHC bookings have the non-standard entry for nights or 
+check-ins.
+
