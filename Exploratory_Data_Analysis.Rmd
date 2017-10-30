@@ -17,8 +17,8 @@ Science Challenge are:
 * What factors correlate with users booking? 
 * What can Room Key do to increase booking conversion rate?
 
-To begin, I want to do some exploratory data analysis to get a sense for the 
-data.
+To begin, I want to do an exploration of the details of the data set. This 
+information will be the starting point for some exploratory data analysis.
 
 # Data Import
 
