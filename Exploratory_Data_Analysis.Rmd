@@ -482,3 +482,15 @@ booking %>%
 
 Again, there are a few non-standard entries here including a few NA entries. 
 These are likely from a hotel that did not report their rooms.
+
+### total-amount
+
+```{r}
+booking %>% 
+  select(currency, `total-amount`)
+```
+
+The `total-amount` column is simply the total amount of money paid for the 
+booking. Note that there are a few NA entries.
+
+
