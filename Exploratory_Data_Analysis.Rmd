@@ -442,3 +442,43 @@ booking %>%
 Note that not all of the CHC bookings have the non-standard entry for nights or 
 check-ins.
 
+```{r}
+booking %>% 
+  group_by(`rate-partner`) %>% 
+  count() %>% 
+  arrange(desc(n))
+```
+
+The `rate-partner` entries are similar to that in the lead data set. 
+
+### currency
+
+```{r}
+booking %>% 
+  distinct(currency)
+```
+
+The `currency` column contains what type of currency was used to pay for the 
+booking. 
+
+### nights
+
+```{r}
+booking %>% 
+  distinct(nights)
+```
+
+The `nights` column is the number of nights a booking was made for. Note that 
+there are some non-standard entries for the nights as discussed in the 
+
+### rooms 
+
+```{r}
+booking %>% 
+  group_by(rooms) %>% 
+  count() %>% 
+  arrange(desc(n))
+```
+
+Again, there are a few non-standard entries here including a few NA entries. 
+These are likely from a hotel that did not report their rooms.
