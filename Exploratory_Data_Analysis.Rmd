@@ -94,7 +94,10 @@ booking <- room_key_data %>%
 ## Preparation
 
 Here I want to combine some information from the referral data set into the 
-lead data set.
+lead data set. As part of this, I also rename a few columns and convert 
+some of the columns to different data types. Specifically the ts columns are 
+converted to datetime and the check_in and check_out columns are converted 
+to dates.
 
 ```{r}
 referral_info <- referral %>% 
