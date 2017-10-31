@@ -51,20 +51,31 @@ referral <- room_key_data %>%
   .$referral %>% 
   map_df(fromJSON) %>% 
   bind_cols(referral_key) %>% 
-  select(key, everything())
+  select(key, everything()) %>% 
+  rename(visitor_id = `visitor-id`, 
+         event_id_referral = `event-id`, 
+         ts_referral = ts,
+         location_tid = `location-tid`, 
+         partner_code = `partner-code`, 
+         check_in = `check-in`, 
+         check_out = `check-out`)
 ```
 
 ```{r}
 lead_key <- room_key_data %>% 
   filter(lead != "null") %>% 
-  select(key)
+  select(key, booking_event)
 
 lead <- room_key_data %>% 
   filter(lead != "null") %>%
   .$lead %>% 
   map_df(fromJSON) %>% 
   bind_cols(lead_key) %>% 
-  select(key, everything())
+  select(key, everything()) %>% 
+  rename(visitor_id = `visitor-id`, 
+         event_id_lead = `event-id`, 
+         ts_lead = ts, 
+         rate_partner = `rate-partner`)
 ```
 
 ```{r}
@@ -78,6 +89,31 @@ booking <- room_key_data %>%
   map_df(fromJSON) %>% 
   bind_cols(booking_key) %>% 
   select(key, everything())
+```
+
+## Preparation
+
+Here I want to combine some information from the referral data set into the 
+lead data set.
+
+```{r}
+referral_info <- referral %>% 
+  filter(lead_event == TRUE) %>% 
+  select(-event_id_referral, -type, -lead_event, -booking_event)
+
+lead_ref <- lead %>% 
+  select(-event_id_lead, - type) %>% 
+  left_join(referral_info, by = c("key", "visitor_id")) %>% 
+  rename(rate_partner_lead = rate_partner, 
+         partner_code_referral = partner_code) %>% 
+  mutate(ts_lead = lubridate::as_datetime(ts_lead), 
+         ts_referral = lubridate::as_date(ts_referral), 
+         check_in = lubridate::ymd(check_in), 
+         check_out = lubridate::ymd(check_out))
+```
+
+```{r}
+lead_ref
 ```
 
 # Analysis
