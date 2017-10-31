@@ -131,6 +131,27 @@ corresponds with a booking.
 
 ```{r}
 lead_ref %>% 
-  mutate(ts_time_diff = ts_lead - ts_referral)
+  mutate(ts_time_diff = as.numeric(ts_lead - ts_referral)) %>% 
+  # filter(ts_time_diff < 3000) %>%
+  ggplot(aes(x = booking_event, y = ts_time_diff)) + 
+  geom_boxplot()
 ```
+
+```{r}
+lead_ref %>% 
+  mutate(ts_time_diff = as.numeric(ts_lead - ts_referral)) %>% 
+  filter(ts_time_diff < 3000) %>%
+  ggplot(aes(x = booking_event, y = ts_time_diff)) + 
+  geom_boxplot()
+```
+
+```{r}
+lead_ref %>% 
+  mutate(ts_time_diff = as.numeric(ts_lead - ts_referral)) %>% 
+  filter(ts_time_diff < 500) %>%
+  ggplot(aes(x = ts_time_diff, fill = booking_event)) + 
+  geom_histogram(binwidth = 10) + 
+  facet_grid(booking_event ~ ., scales = "free_y")
+```
+
 
