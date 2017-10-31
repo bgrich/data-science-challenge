@@ -66,3 +66,34 @@ booking <- room_key_data %>%
   bind_cols(booking_key) %>% 
   select(key, everything())
 ```
+
+# Analysis
+
+## Time Difference
+
+First, I want to examine how the time difference between the timestamp when the 
+referral event occurred and the check-in date compare with booking events.
+
+```{r}
+referral %>% 
+  mutate(ts = lubridate::as_datetime(ts / 1000), 
+         date = lubridate::as_date(ts), 
+         check_in = lubridate::ymd(`check-in`), 
+         time_diff = as.numeric(check_in - date)) %>% 
+  filter(!is.na(time_diff), 
+         time_diff >= 0, 
+         time_diff < 365) %>% 
+  # filter(booking_event == TRUE) %>% 
+  ggplot(aes(x = time_diff, fill = booking_event)) +
+  geom_histogram(bins = 30) + 
+  facet_grid(booking_event ~ ., scales = "free_y") +
+  report_theme +
+  labs(x = "Check-in Date - Referral Date (days)", 
+         y = "Count", 
+         fill = "Booking Event")
+  
+```
+
+Over the span of 0 days to 365 days after the referral date, there does not 
+appear to be a time that is correlates with a booking event occuring versus 
+not occuring.
