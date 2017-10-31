@@ -24,6 +24,11 @@ the question:
 
 > What factors correlate with users booking?
 
+Particularly, I'm interesting in looking at what factors correlate with the 
+conversion of leads to bookings. As such, I will primarily work with the leads 
+data set with relevant information from the referral data set and a logical 
+column indicating a booking event.
+
 # Data Import and Preparation
 
 First, I need to import and prepare the data for analysis.
