@@ -109,8 +109,8 @@ lead_ref <- lead %>%
   left_join(referral_info, by = c("key", "visitor_id")) %>% 
   rename(rate_partner_lead = rate_partner, 
          partner_code_referral = partner_code) %>% 
-  mutate(ts_lead = lubridate::as_datetime(ts_lead), 
-         ts_referral = lubridate::as_date(ts_referral), 
+  mutate(ts_lead = lubridate::as_datetime(ts_lead / 1000), 
+         ts_referral = lubridate::as_datetime(ts_referral / 1000), 
          check_in = lubridate::ymd(check_in), 
          check_out = lubridate::ymd(check_out))
 ```
@@ -120,3 +120,17 @@ lead_ref
 ```
 
 # Analysis
+
+The following are some initial questions looking at how some of the variables 
+interact. 
+
+## Time Difference 
+
+I want to look at whether or not the time difference between lead and referral 
+corresponds with a booking.
+
+```{r}
+lead_ref %>% 
+  mutate(ts_time_diff = ts_lead - ts_referral)
+```
+
