@@ -259,3 +259,52 @@ lead_ref %>%
   filter(booking_event == TRUE) %>% 
   filter(ts_time_diff < 0)
 ```
+
+## Partner 
+
+### Rate Partner Lead Data
+
+```{r}
+lead_ref %>% 
+  ggplot(aes(x = rate_partner_lead, fill = booking_event)) +
+  geom_bar() +
+  coord_flip() +
+  labs(y = "Count", 
+       x = "Lead Rate Partner", 
+       fill = "Booking Event")
+```
+
+```{r}
+lead_ref %>% 
+  ggplot(aes(x = rate_partner_lead, fill = booking_event)) +
+  geom_bar(position = "fill") +
+  coord_flip() +
+  labs(y = "Proportion", 
+       x = "Lead Rate Partner", 
+       fill = "Booking Event")
+```
+
+### Referral Partner
+
+```{r}
+lead_ref %>% 
+  ggplot(aes(x = partner_code_referral, fill = booking_event)) +
+  geom_bar() +
+  coord_flip() +
+  labs(y = "Count", 
+       x = "Referral Partner", 
+       fill = "Booking Event")
+```
+
+```{r}
+lead_ref %>% 
+  ggplot(aes(x = partner_code_referral, fill = booking_event)) +
+  geom_bar(position = "fill") +
+  coord_flip() +
+  labs(y = "Proportion", 
+       x = "Referral Partner", 
+       fill = "Booking Event")
+```
+
+
+
