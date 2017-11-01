@@ -159,4 +159,26 @@ booking events occur or don't occur. There is possibly a greater concentation
 of booking events at short times (time difference < 100 s), but both display a 
 similar tail at large time differences. 
 
+## Check-in Time Difference
 
+Here I want to look at the time difference between the proposed check-in date 
+and both the referral and lead time stamp date.
+
+First, I want to look at the presence of any NAs in the date differences. 
+
+```{r}
+lead_ref %>% 
+  mutate(ts_time_diff = as.numeric(check_in - lubridate::as_date(ts_referral))) %>%
+  group_by(booking_event) %>% 
+  summarize(check_in_NA = sum(is.na(check_in)), 
+            ts_referral_NA = sum(is.na(ts_referral)), 
+            time_diff_NA = sum(is.na(ts_time_diff)))
+```
+
+Here I can see that there are a number of NA's in the check-in data and a few
+in the timestamp from the referral data. There were no NA's in the timestamp 
+for the lead data. Since the check-in NA number and the time difference NA 
+number are the same, I can assume that the NA's from the referral data overlap 
+with those from the check-in data. 
+
+For this next analysis, I will remove all of the NA's as they cannot contribute.
