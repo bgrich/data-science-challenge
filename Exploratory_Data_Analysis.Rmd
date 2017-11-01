@@ -301,6 +301,11 @@ rate of booking.
 
 ### Referral Partner Data
 
+The referral partner data is given in two bar plots as with the lead data. The 
+first bar plot is acount of the number of TRUE or FALSE booking events for 
+each referral partner. The second bar plot is the propotion of TRUE and FALSE 
+booking events for each referral partner.
+
 ```{r}
 lead_ref %>% 
   ggplot(aes(x = partner_code_referral, fill = booking_event)) +
@@ -320,6 +325,10 @@ lead_ref %>%
        x = "Referral Partner", 
        fill = "Booking Event")
 ```
+
+Here, the proportion data shows that MRT, IHG, and HLTN are the three biggest 
+sources of booking events. However, more of the referral partners have 
+noticeable booking event proportions.
 
 ### Same Partner Data
 
