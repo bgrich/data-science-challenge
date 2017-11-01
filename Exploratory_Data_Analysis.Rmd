@@ -373,7 +373,7 @@ lead_ref %>%
 ```
 
 Interestingly, the vast majority of booking events occurs when the partners are 
-the same from referral to lead. This is true, even though close to 38% of the 
+the same from referral to lead. This is true, even though close to 36% of the 
 leads occur when the partners are not the same. Given that, only 12% of the 
 bookings occur when partners are not the same.
 
@@ -382,6 +382,15 @@ lead_ref %>%
   mutate(same_partner = (partner_code_referral == rate_partner_lead)) %>% 
   filter(!is.na(same_partner)) %>% 
   group_by(booking_event) %>% 
+  summarize(prop_same = mean(same_partner), 
+            prop_diff = 1 - prop_same)
+```
+
+```{r}
+lead_ref %>% 
+  mutate(same_partner = (partner_code_referral == rate_partner_lead)) %>% 
+  filter(!is.na(same_partner)) %>% 
+  # group_by(booking_event) %>% 
   summarize(prop_same = mean(same_partner), 
             prop_diff = 1 - prop_same)
 ```
