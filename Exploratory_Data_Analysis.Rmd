@@ -218,3 +218,29 @@ difference for a TRUE booking event is slightly lower than a FALSE booking
 event. The occurance of a TRUE booking event is also slightly more concentrated 
 compared to a FALSE booking event. 
 
+### Check-in - Lead
+
+```{r}
+lead_ref %>% 
+  filter(!is.na(check_in)) %>% 
+  mutate(ts_time_diff = as.numeric(check_in - lubridate::as_date(ts_lead))) %>%
+  ggplot(aes(x = ts_time_diff, fill = booking_event)) + 
+  geom_histogram(binwidth = 1) + 
+  facet_grid(booking_event ~ ., scales = "free_y") +
+  coord_cartesian(xlim = c(-10, 100)) +
+  labs(x = "Check-in - Lead Date (days)", 
+       y = "Count", 
+       fill = "Booking Event")
+```
+
+```{r}
+lead_ref %>% 
+  filter(!is.na(check_in)) %>% 
+  mutate(ts_time_diff = as.numeric(check_in - lubridate::as_date(ts_lead))) %>%
+  ggplot(aes(x = booking_event, y = ts_time_diff)) + 
+  geom_boxplot() +
+  coord_cartesian(ylim = c(-10, 100)) +
+  labs(y = "Check-in - Lead Date (days)", 
+       x = "Booking Event")
+```
+
