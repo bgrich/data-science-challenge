@@ -405,7 +405,7 @@ lead_ref %>%
             total_false = total - total_true, 
             prop_true = total_true / total, 
             prop_false = total_false / total) %>% 
-  arrange(desc(prop_true))
+  arrange(desc(prop_true), desc(total))
 ```
 
 ```{r}
@@ -417,6 +417,6 @@ lead_ref %>%
             prop_true = total_true / total, 
             prop_false = total_false / total) %>% 
   filter(total_true > 1) %>% 
-  arrange(desc(prop_true))
+  arrange(desc(prop_true), desc(total))
 ```
 
