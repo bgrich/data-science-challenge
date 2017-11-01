@@ -182,3 +182,39 @@ number are the same, I can assume that the NA's from the referral data overlap
 with those from the check-in data. 
 
 For this next analysis, I will remove all of the NA's as they cannot contribute.
+
+### Check-in - Referral 
+
+First, I will look at the difference in time between the check-in date and the 
+referral timestamp.
+
+```{r}
+lead_ref %>% 
+  filter(!is.na(check_in)) %>% 
+  mutate(ts_time_diff = as.numeric(check_in - lubridate::as_date(ts_referral))) %>%
+  ggplot(aes(x = ts_time_diff, fill = booking_event)) + 
+  geom_histogram(binwidth = 1) + 
+  facet_grid(booking_event ~ ., scales = "free_y") +
+  coord_cartesian(xlim = c(-10, 100)) +
+  labs(x = "Check-in - Referral Date (days)", 
+       y = "Count", 
+       fill = "Booking Event")
+```
+
+```{r}
+lead_ref %>% 
+  filter(!is.na(check_in)) %>% 
+  mutate(ts_time_diff = as.numeric(check_in - lubridate::as_date(ts_referral))) %>%
+  ggplot(aes(x = booking_event, y = ts_time_diff)) + 
+  geom_boxplot() +
+  coord_cartesian(ylim = c(-10, 100)) +
+  labs(y = "Check-in - Referral Date (days)", 
+       x = "Booking Event")
+```
+
+Both the histogram and the boxplot show that the majority of the events occur 
+within 7 days of the referral. According to the boxplot, the median time 
+difference for a TRUE booking event is slightly lower than a FALSE booking 
+event. The occurance of a TRUE booking event is also slightly more concentrated 
+compared to a FALSE booking event. 
+
