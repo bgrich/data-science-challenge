@@ -154,4 +154,9 @@ lead_ref %>%
   facet_grid(booking_event ~ ., scales = "free_y")
 ```
 
+There does not appear to be a large difference between the times at which 
+booking events occur or don't occur. There is possibly a greater concentation 
+of booking events at short times (time difference < 100 s), but both display a 
+similar tail at large time differences. 
+
 
