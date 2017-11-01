@@ -244,3 +244,18 @@ lead_ref %>%
        x = "Booking Event")
 ```
 
+The check-in lead time difference shows a similar pattern to the check-in 
+referral time difference. 
+
+Of note, there are a few interesting data points in this set. There are a small
+number of points with check-in times earlier than the time stamp for the 
+referral or lead. When combined with a TRUE booking event, this indicates that 
+these bookings were done after the time. Most likely, these are some typos in 
+the check-in date.
+
+```{r}
+lead_ref %>% 
+  mutate(ts_time_diff = as.numeric(check_in - lubridate::as_date(ts_lead))) %>%
+  filter(booking_event == TRUE) %>% 
+  filter(ts_time_diff < 0)
+```
