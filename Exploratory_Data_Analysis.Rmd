@@ -395,3 +395,28 @@ lead_ref %>%
             prop_diff = 1 - prop_same)
 ```
 
+## Location-tid and udicode
+
+```{r}
+lead_ref %>% 
+  group_by(location_tid) %>% 
+  summarize(total = n(), 
+            total_true = sum(booking_event), 
+            total_false = total - total_true, 
+            prop_true = total_true / total, 
+            prop_false = total_false / total) %>% 
+  arrange(desc(prop_true))
+```
+
+```{r}
+lead_ref %>% 
+  group_by(udicode) %>% 
+  summarize(total = n(), 
+            total_true = sum(booking_event), 
+            total_false = total - total_true, 
+            prop_true = total_true / total, 
+            prop_false = total_false / total) %>% 
+  filter(total_true > 1) %>% 
+  arrange(desc(prop_true))
+```
+
