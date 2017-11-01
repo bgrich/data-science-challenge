@@ -332,11 +332,21 @@ noticeable booking event proportions.
 
 ### Same Partner Data
 
+For the same partner data I am interested in calculating which users followed a 
+lead from the same partner that referred them to Room Key. For this data, I 
+noticed that there are a few referral partners that show up as NA. Since these 
+are only a small number of the total leads and bookings, I will filter these 
+out.
+
 ```{r}
 lead_ref %>% 
   summarize(sum(is.na(partner_code_referral)))
 ```
 
+As with the previous partner sections, I will plot this data in two ways. First 
+a simple count of TRUE or FALSE booking events for partners that are the same 
+from referral to lead and for ones that are different. Second a bar plot of the 
+proportions of booking events.
 
 ```{r}
 lead_ref %>% 
@@ -361,6 +371,11 @@ lead_ref %>%
        x = "Same Partner", 
        fill = "Booking Event")
 ```
+
+Interestingly, the vast majority of booking events occurs when the partners are 
+the same from referral to lead. This is true, even though close to 38% of the 
+leads occur when the partners are not the same. Given that, only 12% of the 
+bookings occur when partners are not the same.
 
 ```{r}
 lead_ref %>% 
