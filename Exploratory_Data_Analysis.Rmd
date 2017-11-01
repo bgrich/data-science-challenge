@@ -343,6 +343,7 @@ lead_ref %>%
   mutate(same_partner = (partner_code_referral == rate_partner_lead)) %>% 
   filter(!is.na(same_partner)) %>% 
   group_by(booking_event) %>% 
-  summarize(prop_same = mean(same_partner), prop_diff = 1 - prop_same)
+  summarize(prop_same = mean(same_partner), 
+            prop_diff = 1 - prop_same)
 ```
 
