@@ -262,7 +262,17 @@ lead_ref %>%
 
 ## Partner 
 
+For this section, I want to look at whether the specific partner corresponds 
+with an increased booking rate. In this section I will look at the rate partner 
+that the lead goes to, the referral partner that the user came from, and whether 
+those partners are the same from referral to lead.
+
 ### Rate Partner Lead Data
+
+The lead rate partners are shown using a bar plot with the existence of a 
+booking event given by the colors. The first bar plot gives a simple count of 
+the number of TRUE and FALSE booking events for each partner. The second plot 
+gives the proportion of booking events for each partner.
 
 ```{r}
 lead_ref %>% 
@@ -283,6 +293,11 @@ lead_ref %>%
        x = "Lead Rate Partner", 
        fill = "Booking Event")
 ```
+
+The proportion bar plot shows that the partners PEGS, MRT, IHG, HLTN, and CHC 
+have the highest proportion of booking events. MRT, IGH< HLTN, and CHC are also 
+the partners with the largest number of leads which  may influence their higher 
+rate of booking.
 
 ### Referral Partner Data
 
