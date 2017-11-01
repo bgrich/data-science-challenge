@@ -306,5 +306,36 @@ lead_ref %>%
        fill = "Booking Event")
 ```
 
+### Lead Partner == Referral Partner
+
+```{r}
+lead_ref %>% 
+  summarize(sum(is.na(partner_code_referral)))
+```
+
+
+```{r}
+lead_ref %>% 
+  mutate(same_partner = (partner_code_referral == rate_partner_lead)) %>% 
+  filter(!is.na(same_partner)) %>% 
+  ggplot(aes(x = same_partner, fill = booking_event)) +
+  geom_bar() +
+  coord_flip() +
+  labs(y = "Count", 
+       x = "Same Partner", 
+       fill = "Booking Event")
+```
+
+```{r}
+lead_ref %>% 
+  mutate(same_partner = (partner_code_referral == rate_partner_lead)) %>% 
+  filter(!is.na(same_partner)) %>% 
+  ggplot(aes(x = same_partner, fill = booking_event)) +
+  geom_bar(position = "fill") +
+  coord_flip() +
+  labs(y = "Proportion", 
+       x = "Same Partner", 
+       fill = "Booking Event")
+```
 
 
