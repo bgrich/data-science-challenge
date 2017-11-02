@@ -397,6 +397,14 @@ lead_ref %>%
 
 ## Location-tid and udicode
 
+To get a sense of how location-tid and udicode may correlate with the booking 
+rate, I start by doing some calculations on these variables. After grouping 
+by the variable, I then calculate the total number of appearences of that 
+variable, the total number of true and false events for that variable, and the 
+proportion of the true and false events to the total occurrences of that 
+variable. I can then see the occurrences of the variable with the most true 
+events and the highest proportion of true events. 
+
 ```{r}
 lead_ref %>% 
   group_by(location_tid) %>% 
@@ -405,8 +413,14 @@ lead_ref %>%
             total_false = total - total_true, 
             prop_true = total_true / total, 
             prop_false = total_false / total) %>% 
-  arrange(desc(prop_true), desc(total))
+  arrange(desc(total_true), desc(total), desc(prop_true)) %>% 
+  select(location_tid, total_true, total, prop_true, everything())
 ```
+
+Note that the location_tid does have a few NA entries (131), but they are 
+relatively small. There are a number of locations with a large number of true 
+booking events that are 5% or more true in proportion to the total number of 
+occurrences of that particular location.
 
 ```{r}
 lead_ref %>% 
@@ -416,7 +430,10 @@ lead_ref %>%
             total_false = total - total_true, 
             prop_true = total_true / total, 
             prop_false = total_false / total) %>% 
-  filter(total_true > 1) %>% 
-  arrange(desc(prop_true), desc(total))
+  arrange(desc(total_true), desc(total), desc(prop_true)) %>% 
+  select(udicode, total_true, total, prop_true, everything())
 ```
 
+The udicode is a little less clear. The largest number of true booking events 
+occurs for when the udicode is NA. This also encompasses a large number 
+(approximately 1/3) of the total observations. 
