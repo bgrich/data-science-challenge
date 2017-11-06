@@ -453,8 +453,67 @@ lead_ref_new_var <- lead_ref %>%
   mutate(referral_check_in_diff = as.numeric(check_in - lubridate::as_date(ts_referral))) %>% 
   mutate(lead_check_in_diff = as.numeric(check_in - lubridate::as_date(ts_lead))) %>% 
   mutate(same_partner = (partner_code_referral == rate_partner_lead)) %>% 
+  mutate(check_in = as.numeric(check_in - lubridate::ymd("2017-10-15"))) %>% 
+  mutate(check_out = as.numeric(check_out - lubridate::ymd("2017-10-15"))) %>% 
   select(-key, -visitor_id) %>% 
   select(booking_event, everything())
 ```
+
+```{r}
+lead_ref_new_var
+```
+
+
+## Times 
+
+### `ts_lead`
+
+```{r}
+cor.test(~ as.numeric(ts_lead) + as.numeric(booking_event), 
+         data = lead_ref_new_var)
+```
+
+### `ts_referral`
+
+```{r}
+cor.test(~ as.numeric(ts_referral) + as.numeric(booking_event), 
+         data = lead_ref_new_var)
+```
+
+### `ts_time_diff`
+
+```{r}
+cor.test(~ ts_time_diff + as.numeric(booking_event), 
+         data = lead_ref_new_var)
+```
+
+### `lead_check_in_diff`
+
+```{r}
+cor.test(~ lead_check_in_diff + as.numeric(booking_event), 
+         data = lead_ref_new_var)
+```
+
+### `referral_check_in_diff`
+
+```{r}
+cor.test(~ referral_check_in_diff + as.numeric(booking_event), 
+         data = lead_ref_new_var)
+```
+
+### `check_in`
+
+```{r}
+cor.test(~ check_in + as.numeric(booking_event), 
+         data = lead_ref_new_var)
+```
+
+### `check_out`
+
+```{r}
+cor.test(~ check_out + as.numeric(booking_event), 
+         data = lead_ref_new_var)
+```
+
 
 
