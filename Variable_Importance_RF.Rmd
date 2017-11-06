@@ -185,7 +185,8 @@ testing <- data_for_model[-train_index, ]
 
 ```{r}
 train_independent <- training %>% 
-  select(-booking_event) 
+  select(-booking_event) %>% 
+  as.data.frame()
 
 train_dependent <- training %>% 
   select(booking_event)
@@ -194,6 +195,8 @@ train_dependent <- training %>%
 ```{r}
 rf_model <- train(x = train_independent, 
                   y = train_dependent$booking_event, 
-      method = "ranger")
+      method = "ranger", 
+      trControl = trainControl(method = "cv", 
+                               number = 5))
 ```
 
