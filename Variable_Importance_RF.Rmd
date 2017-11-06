@@ -156,3 +156,21 @@ a smaller number in the ts_referral, location_tid, and partner_code_referral
 variables. There are a large number of NA's (approximate 10k) in the udicode 
 variable.
 
+## Train/Test Split
+
+Now I will randomly split the data into testing and training subsets using an 
+80/20 training/testing split. For this, I will set the random seed for R so 
+that the results are reproducibile. 
+
+```{r}
+set.seed(85)
+
+train_index <- createDataPartition(data_for_model$booking_event, 
+                            p = 0.8,
+                            list = FALSE, 
+                            times = 1)
+
+training <- data_for_model[train_index, ]
+testing <- data_for_model[-train_index, ]
+```
+
