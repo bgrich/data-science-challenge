@@ -9,6 +9,7 @@ output:
 ```{r setup, message = FALSE}
 library(tidyverse)
 library(jsonlite)
+library(caret)
 
 report_theme <- ggplot2::theme_bw() +
   ggplot2::theme(panel.border = ggplot2::element_rect(color = "black",
@@ -114,8 +115,44 @@ lead_ref <- lead %>%
   rename(rate_partner_lead = rate_partner, 
          partner_code_referral = partner_code) %>% 
   mutate(check_in = lubridate::ymd(check_in), 
-         check_out = lubridate::ymd(check_out))
+         check_out = lubridate::ymd(check_out), 
+         check_in_diff = as.numeric(check_in - lubridate::ymd("2017-10-15")), 
+         check_out_diff = as.numeric(check_out - lubridate::ymd("2017-10-15")))
 ```
 
 # Random Forest
+
+First, I want to set up the data for the random forest model. I want to split 
+the data into testing and training sets for comparison after running the model. 
+I also want to look at the number of NAs present in the data. I plan on 
+running the model with a few different variations. Once with all of the data, 
+again with the NA's removed, and again with certain variables removed. 
+
+```{r}
+data_for_model <- lead_ref %>% 
+  select(booking_event, 
+         ts_lead, 
+         ts_referral, 
+         check_in_diff, 
+         check_out_diff, 
+         partner_code_referral, 
+         rate_partner_lead, 
+         location_tid, 
+         udicode)
+```
+
+## NAs
+
+Here, I calculate the number of NAs in the data set.
+
+```{r}
+lead_ref %>% 
+  select(-key, -visitor_id, -booking_event, -check_out_diff, -check_in_diff) %>% 
+  map_dbl(function(x) sum(is.na(x)))
+```
+
+There are about 4500 NAs in the check-in and check-out information. There are 
+a smaller number in the ts_referral, location_tid, and partner_code_referral 
+variables. There are a large number of NA's (approximate 10k) in the udicode 
+variable.
 
