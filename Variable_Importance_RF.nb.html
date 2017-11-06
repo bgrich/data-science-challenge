@@ -271,8 +271,22 @@ div.tocify {
 
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KGpzb25saXRlKVxuXG5yZXBvcnRfdGhlbWUgPC0gZ2dwbG90Mjo6dGhlbWVfYncoKSArXG4gIGdncGxvdDI6OnRoZW1lKHBhbmVsLmJvcmRlciA9IGdncGxvdDI6OmVsZW1lbnRfcmVjdChjb2xvciA9IFwiYmxhY2tcIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZpbGwgPSBOQSksXG4gICAgICAgICAgICAgICAgIHBhbmVsLmdyaWQubWFqb3IgPSBnZ3Bsb3QyOjplbGVtZW50X2xpbmUoY29sb3IgPSBcImJsYWNrXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGluZXR5cGUgPSBcImRvdHRlZFwiKSxcbiAgICAgICAgICAgICAgICAgcGFuZWwuZ3JpZC5taW5vciA9IGdncGxvdDI6OmVsZW1lbnRfbGluZShjb2xvciA9IFwiYmxhY2tcIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsaW5ldHlwZSA9IFwiZG90dGVkXCIpKVxuYGBgIn0= -->
+<pre class="r"><code>library(tidyverse)
+library(jsonlite)
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlZhcmlhYmxlIEltcG9ydGFuY2UgdmlhIFJhbmRvbSBGb3Jlc3QiDQpvdXRwdXQ6IA0KICBodG1sX25vdGVib29rOg0KICAgIHRvYzogdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KLS0tDQoNCg==</div>
+report_theme &lt;- ggplot2::theme_bw() +
+  ggplot2::theme(panel.border = ggplot2::element_rect(color = &quot;black&quot;,
+                                                      fill = NA),
+                 panel.grid.major = ggplot2::element_line(color = &quot;black&quot;,
+                                                          linetype = &quot;dotted&quot;),
+                 panel.grid.minor = ggplot2::element_line(color = &quot;black&quot;,
+                                                          linetype = &quot;dotted&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlZhcmlhYmxlIEltcG9ydGFuY2UgdmlhIFJhbmRvbSBGb3Jlc3QiDQpvdXRwdXQ6IA0KICBodG1sX25vdGVib29rOg0KICAgIHRvYzogdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KLS0tDQoNCmBgYHtyIHNldHVwLCBtZXNzYWdlID0gRkFMU0V9DQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkoanNvbmxpdGUpDQoNCnJlcG9ydF90aGVtZSA8LSBnZ3Bsb3QyOjp0aGVtZV9idygpICsNCiAgZ2dwbG90Mjo6dGhlbWUocGFuZWwuYm9yZGVyID0gZ2dwbG90Mjo6ZWxlbWVudF9yZWN0KGNvbG9yID0gImJsYWNrIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZpbGwgPSBOQSksDQogICAgICAgICAgICAgICAgIHBhbmVsLmdyaWQubWFqb3IgPSBnZ3Bsb3QyOjplbGVtZW50X2xpbmUoY29sb3IgPSAiYmxhY2siLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxpbmV0eXBlID0gImRvdHRlZCIpLA0KICAgICAgICAgICAgICAgICBwYW5lbC5ncmlkLm1pbm9yID0gZ2dwbG90Mjo6ZWxlbWVudF9saW5lKGNvbG9yID0gImJsYWNrIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsaW5ldHlwZSA9ICJkb3R0ZWQiKSkNCmBgYA0K</div>
 
 
 </div>
