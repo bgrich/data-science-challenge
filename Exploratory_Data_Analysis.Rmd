@@ -578,5 +578,9 @@ lead_ref_new_var %>%
   chisq.test()
 ```
 
+# Next Steps
 
-
+After looking at variable correlations and some figures, it is unclear if any 
+one variable has a large impact on booking events. To try and get more 
+information out of the data I will look at variable importance using a random 
+forest algorithm.
