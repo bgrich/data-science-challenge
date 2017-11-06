@@ -518,5 +518,53 @@ cor.test(~ check_out + as.numeric(booking_event),
          data = lead_ref_new_var)
 ```
 
+## Categorical Variables
+
+### `partner_code_referral`
+
+```{r}
+lead_ref_new_var %>% 
+  # filter(!is.na(partner_code_referral)) %>% 
+  select(booking_event, partner_code_referral) %>% 
+  table() %>%
+  chisq.test()
+```
+
+### `rate_partner_lead`
+
+```{r}
+lead_ref_new_var %>% 
+  select(booking_event, rate_partner_lead) %>% 
+  table() %>%
+  chisq.test()
+```
+
+### `same_partner`
+
+```{r}
+lead_ref_new_var %>% 
+  select(booking_event, same_partner) %>% 
+  table() %>%
+  chisq.test()
+```
+
+### `udicode`
+
+```{r}
+lead_ref_new_var %>% 
+  select(booking_event, udicode) %>% 
+  table() %>%
+  chisq.test()
+```
+
+### `location_tid`
+
+```{r}
+lead_ref_new_var %>% 
+  select(booking_event, location_tid) %>% 
+  table() %>%
+  chisq.test()
+```
+
 
 
