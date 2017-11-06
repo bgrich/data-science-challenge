@@ -19,6 +19,20 @@ report_theme <- ggplot2::theme_bw() +
                                                           linetype = "dotted"))
 ```
 
+In this notebook, I plan to use a random forest algorithm to determine the 
+importance of the variables in the data set. The variables I will be using 
+are: 
+
+* Referral Time (ts_referral) 
+* Lead Time (ts_lead) 
+* Check-in Difference
+* Check-out Difference
+* Lead Rate Partner
+* Referral Rate Partner
+* Same Partner Conditional 
+* location-tid
+* udicode
+
 # Data Import and Preparation
 
 First, I need to import and prepare the data for analysis.
@@ -104,3 +118,4 @@ lead_ref <- lead %>%
 ```
 
 # Random Forest
+
