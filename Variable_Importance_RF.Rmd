@@ -18,3 +18,89 @@ report_theme <- ggplot2::theme_bw() +
                  panel.grid.minor = ggplot2::element_line(color = "black",
                                                           linetype = "dotted"))
 ```
+
+# Data Import and Preparation
+
+First, I need to import and prepare the data for analysis.
+
+```{r, message = FALSE}
+room_key_data <- read_tsv("data.tsv", progress = FALSE) %>% 
+  rownames_to_column() %>% 
+  rename(key = rowname) %>% 
+  mutate(lead_event = !(lead == "null"), 
+         booking_event = !(booking == "null"))
+```
+
+```{r}
+referral_key <- room_key_data %>% 
+  filter(referral != "null") %>% 
+  select(key, lead_event, booking_event)
+
+referral <- room_key_data %>% 
+  filter(referral != "null") %>%
+  .$referral %>% 
+  map_df(fromJSON) %>% 
+  bind_cols(referral_key) %>% 
+  select(key, everything()) %>% 
+  rename(visitor_id = `visitor-id`, 
+         event_id_referral = `event-id`, 
+         ts_referral = ts,
+         location_tid = `location-tid`, 
+         partner_code = `partner-code`, 
+         check_in = `check-in`, 
+         check_out = `check-out`)
+```
+
+```{r}
+lead_key <- room_key_data %>% 
+  filter(lead != "null") %>% 
+  select(key, booking_event)
+
+lead <- room_key_data %>% 
+  filter(lead != "null") %>%
+  .$lead %>% 
+  map_df(fromJSON) %>% 
+  bind_cols(lead_key) %>% 
+  select(key, everything()) %>% 
+  rename(visitor_id = `visitor-id`, 
+         event_id_lead = `event-id`, 
+         ts_lead = ts, 
+         rate_partner = `rate-partner`)
+```
+
+```{r}
+booking_key <- room_key_data %>% 
+  filter(booking != "null") %>% 
+  select(key)
+
+booking <- room_key_data %>% 
+  filter(booking != "null") %>%
+  .$booking %>%  
+  map_df(fromJSON) %>% 
+  bind_cols(booking_key) %>% 
+  select(key, everything())
+```
+
+## Preparation
+
+Here I want to combine some information from the referral data set into the 
+lead data set. As part of this, I also rename a few columns and convert 
+some of the columns to different data types. Specifically, the check_in and 
+check_out columns are converted to dates. Unlike the previous work, the ts 
+(timestamp) columns are left in units of milliseconds. 
+
+```{r}
+referral_info <- referral %>% 
+  filter(lead_event == TRUE) %>% 
+  select(-event_id_referral, -type, -lead_event, -booking_event)
+
+lead_ref <- lead %>% 
+  select(-event_id_lead, - type) %>% 
+  left_join(referral_info, by = c("key", "visitor_id")) %>% 
+  rename(rate_partner_lead = rate_partner, 
+         partner_code_referral = partner_code) %>% 
+  mutate(check_in = lubridate::ymd(check_in), 
+         check_out = lubridate::ymd(check_out))
+```
+
+# Random Forest

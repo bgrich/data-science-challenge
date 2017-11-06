@@ -285,8 +285,108 @@ report_theme &lt;- ggplot2::theme_bw() +
                                                           linetype = &quot;dotted&quot;))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="data-import-and-preparation" class="section level1">
+<h1>Data Import and Preparation</h1>
+<p>First, I need to import and prepare the data for analysis.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm9vbV9rZXlfZGF0YSA8LSByZWFkX3RzdihcImRhdGEudHN2XCIsIHByb2dyZXNzID0gRkFMU0UpICU+JSBcbiAgcm93bmFtZXNfdG9fY29sdW1uKCkgJT4lIFxuICByZW5hbWUoa2V5ID0gcm93bmFtZSkgJT4lIFxuICBtdXRhdGUobGVhZF9ldmVudCA9ICEobGVhZCA9PSBcIm51bGxcIiksIFxuICAgICAgICAgYm9va2luZ19ldmVudCA9ICEoYm9va2luZyA9PSBcIm51bGxcIikpXG5gYGAifQ== -->
+<pre class="r"><code>room_key_data &lt;- read_tsv(&quot;data.tsv&quot;, progress = FALSE) %&gt;% 
+  rownames_to_column() %&gt;% 
+  rename(key = rowname) %&gt;% 
+  mutate(lead_event = !(lead == &quot;null&quot;), 
+         booking_event = !(booking == &quot;null&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVmZXJyYWxfa2V5IDwtIHJvb21fa2V5X2RhdGEgJT4lIFxuICBmaWx0ZXIocmVmZXJyYWwgIT0gXCJudWxsXCIpICU+JSBcbiAgc2VsZWN0KGtleSwgbGVhZF9ldmVudCwgYm9va2luZ19ldmVudClcblxucmVmZXJyYWwgPC0gcm9vbV9rZXlfZGF0YSAlPiUgXG4gIGZpbHRlcihyZWZlcnJhbCAhPSBcIm51bGxcIikgJT4lXG4gIC4kcmVmZXJyYWwgJT4lIFxuICBtYXBfZGYoZnJvbUpTT04pICU+JSBcbiAgYmluZF9jb2xzKHJlZmVycmFsX2tleSkgJT4lIFxuICBzZWxlY3Qoa2V5LCBldmVyeXRoaW5nKCkpICU+JSBcbiAgcmVuYW1lKHZpc2l0b3JfaWQgPSBgdmlzaXRvci1pZGAsIFxuICAgICAgICAgZXZlbnRfaWRfcmVmZXJyYWwgPSBgZXZlbnQtaWRgLCBcbiAgICAgICAgIHRzX3JlZmVycmFsID0gdHMsXG4gICAgICAgICBsb2NhdGlvbl90aWQgPSBgbG9jYXRpb24tdGlkYCwgXG4gICAgICAgICBwYXJ0bmVyX2NvZGUgPSBgcGFydG5lci1jb2RlYCwgXG4gICAgICAgICBjaGVja19pbiA9IGBjaGVjay1pbmAsIFxuICAgICAgICAgY2hlY2tfb3V0ID0gYGNoZWNrLW91dGApXG5gYGAifQ== -->
+<pre class="r"><code>referral_key &lt;- room_key_data %&gt;% 
+  filter(referral != &quot;null&quot;) %&gt;% 
+  select(key, lead_event, booking_event)
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlZhcmlhYmxlIEltcG9ydGFuY2UgdmlhIFJhbmRvbSBGb3Jlc3QiDQpvdXRwdXQ6IA0KICBodG1sX25vdGVib29rOg0KICAgIHRvYzogdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KLS0tDQoNCmBgYHtyIHNldHVwLCBtZXNzYWdlID0gRkFMU0V9DQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkoanNvbmxpdGUpDQoNCnJlcG9ydF90aGVtZSA8LSBnZ3Bsb3QyOjp0aGVtZV9idygpICsNCiAgZ2dwbG90Mjo6dGhlbWUocGFuZWwuYm9yZGVyID0gZ2dwbG90Mjo6ZWxlbWVudF9yZWN0KGNvbG9yID0gImJsYWNrIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZpbGwgPSBOQSksDQogICAgICAgICAgICAgICAgIHBhbmVsLmdyaWQubWFqb3IgPSBnZ3Bsb3QyOjplbGVtZW50X2xpbmUoY29sb3IgPSAiYmxhY2siLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxpbmV0eXBlID0gImRvdHRlZCIpLA0KICAgICAgICAgICAgICAgICBwYW5lbC5ncmlkLm1pbm9yID0gZ2dwbG90Mjo6ZWxlbWVudF9saW5lKGNvbG9yID0gImJsYWNrIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsaW5ldHlwZSA9ICJkb3R0ZWQiKSkNCmBgYA0K</div>
+referral &lt;- room_key_data %&gt;% 
+  filter(referral != &quot;null&quot;) %&gt;%
+  .$referral %&gt;% 
+  map_df(fromJSON) %&gt;% 
+  bind_cols(referral_key) %&gt;% 
+  select(key, everything()) %&gt;% 
+  rename(visitor_id = `visitor-id`, 
+         event_id_referral = `event-id`, 
+         ts_referral = ts,
+         location_tid = `location-tid`, 
+         partner_code = `partner-code`, 
+         check_in = `check-in`, 
+         check_out = `check-out`)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGVhZF9rZXkgPC0gcm9vbV9rZXlfZGF0YSAlPiUgXG4gIGZpbHRlcihsZWFkICE9IFwibnVsbFwiKSAlPiUgXG4gIHNlbGVjdChrZXksIGJvb2tpbmdfZXZlbnQpXG5cbmxlYWQgPC0gcm9vbV9rZXlfZGF0YSAlPiUgXG4gIGZpbHRlcihsZWFkICE9IFwibnVsbFwiKSAlPiVcbiAgLiRsZWFkICU+JSBcbiAgbWFwX2RmKGZyb21KU09OKSAlPiUgXG4gIGJpbmRfY29scyhsZWFkX2tleSkgJT4lIFxuICBzZWxlY3Qoa2V5LCBldmVyeXRoaW5nKCkpICU+JSBcbiAgcmVuYW1lKHZpc2l0b3JfaWQgPSBgdmlzaXRvci1pZGAsIFxuICAgICAgICAgZXZlbnRfaWRfbGVhZCA9IGBldmVudC1pZGAsIFxuICAgICAgICAgdHNfbGVhZCA9IHRzLCBcbiAgICAgICAgIHJhdGVfcGFydG5lciA9IGByYXRlLXBhcnRuZXJgKVxuYGBgIn0= -->
+<pre class="r"><code>lead_key &lt;- room_key_data %&gt;% 
+  filter(lead != &quot;null&quot;) %&gt;% 
+  select(key, booking_event)
+
+lead &lt;- room_key_data %&gt;% 
+  filter(lead != &quot;null&quot;) %&gt;%
+  .$lead %&gt;% 
+  map_df(fromJSON) %&gt;% 
+  bind_cols(lead_key) %&gt;% 
+  select(key, everything()) %&gt;% 
+  rename(visitor_id = `visitor-id`, 
+         event_id_lead = `event-id`, 
+         ts_lead = ts, 
+         rate_partner = `rate-partner`)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYm9va2luZ19rZXkgPC0gcm9vbV9rZXlfZGF0YSAlPiUgXG4gIGZpbHRlcihib29raW5nICE9IFwibnVsbFwiKSAlPiUgXG4gIHNlbGVjdChrZXkpXG5cbmJvb2tpbmcgPC0gcm9vbV9rZXlfZGF0YSAlPiUgXG4gIGZpbHRlcihib29raW5nICE9IFwibnVsbFwiKSAlPiVcbiAgLiRib29raW5nICU+JSAgXG4gIG1hcF9kZihmcm9tSlNPTikgJT4lIFxuICBiaW5kX2NvbHMoYm9va2luZ19rZXkpICU+JSBcbiAgc2VsZWN0KGtleSwgZXZlcnl0aGluZygpKVxuYGBgIn0= -->
+<pre class="r"><code>booking_key &lt;- room_key_data %&gt;% 
+  filter(booking != &quot;null&quot;) %&gt;% 
+  select(key)
+
+booking &lt;- room_key_data %&gt;% 
+  filter(booking != &quot;null&quot;) %&gt;%
+  .$booking %&gt;%  
+  map_df(fromJSON) %&gt;% 
+  bind_cols(booking_key) %&gt;% 
+  select(key, everything())</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="preparation" class="section level2">
+<h2>Preparation</h2>
+<p>Here I want to combine some information from the referral data set into the lead data set. As part of this, I also rename a few columns and convert some of the columns to different data types. Specifically, the check_in and check_out columns are converted to dates. Unlike the previous work, the ts (timestamp) columns are left in units of milliseconds.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVmZXJyYWxfaW5mbyA8LSByZWZlcnJhbCAlPiUgXG4gIGZpbHRlcihsZWFkX2V2ZW50ID09IFRSVUUpICU+JSBcbiAgc2VsZWN0KC1ldmVudF9pZF9yZWZlcnJhbCwgLXR5cGUsIC1sZWFkX2V2ZW50LCAtYm9va2luZ19ldmVudClcblxubGVhZF9yZWYgPC0gbGVhZCAlPiUgXG4gIHNlbGVjdCgtZXZlbnRfaWRfbGVhZCwgLSB0eXBlKSAlPiUgXG4gIGxlZnRfam9pbihyZWZlcnJhbF9pbmZvLCBieSA9IGMoXCJrZXlcIiwgXCJ2aXNpdG9yX2lkXCIpKSAlPiUgXG4gIHJlbmFtZShyYXRlX3BhcnRuZXJfbGVhZCA9IHJhdGVfcGFydG5lciwgXG4gICAgICAgICBwYXJ0bmVyX2NvZGVfcmVmZXJyYWwgPSBwYXJ0bmVyX2NvZGUpICU+JSBcbiAgbXV0YXRlKGNoZWNrX2luID0gbHVicmlkYXRlOjp5bWQoY2hlY2tfaW4pLCBcbiAgICAgICAgIGNoZWNrX291dCA9IGx1YnJpZGF0ZTo6eW1kKGNoZWNrX291dCkpXG5gYGAifQ== -->
+<pre class="r"><code>referral_info &lt;- referral %&gt;% 
+  filter(lead_event == TRUE) %&gt;% 
+  select(-event_id_referral, -type, -lead_event, -booking_event)
+
+lead_ref &lt;- lead %&gt;% 
+  select(-event_id_lead, - type) %&gt;% 
+  left_join(referral_info, by = c(&quot;key&quot;, &quot;visitor_id&quot;)) %&gt;% 
+  rename(rate_partner_lead = rate_partner, 
+         partner_code_referral = partner_code) %&gt;% 
+  mutate(check_in = lubridate::ymd(check_in), 
+         check_out = lubridate::ymd(check_out))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="random-forest" class="section level1">
+<h1>Random Forest</h1>
+<!-- rnb-text-end -->
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlZhcmlhYmxlIEltcG9ydGFuY2UgdmlhIFJhbmRvbSBGb3Jlc3QiDQpvdXRwdXQ6IA0KICBodG1sX25vdGVib29rOg0KICAgIHRvYzogdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KLS0tDQoNCmBgYHtyIHNldHVwLCBtZXNzYWdlID0gRkFMU0V9DQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkoanNvbmxpdGUpDQoNCnJlcG9ydF90aGVtZSA8LSBnZ3Bsb3QyOjp0aGVtZV9idygpICsNCiAgZ2dwbG90Mjo6dGhlbWUocGFuZWwuYm9yZGVyID0gZ2dwbG90Mjo6ZWxlbWVudF9yZWN0KGNvbG9yID0gImJsYWNrIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZpbGwgPSBOQSksDQogICAgICAgICAgICAgICAgIHBhbmVsLmdyaWQubWFqb3IgPSBnZ3Bsb3QyOjplbGVtZW50X2xpbmUoY29sb3IgPSAiYmxhY2siLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxpbmV0eXBlID0gImRvdHRlZCIpLA0KICAgICAgICAgICAgICAgICBwYW5lbC5ncmlkLm1pbm9yID0gZ2dwbG90Mjo6ZWxlbWVudF9saW5lKGNvbG9yID0gImJsYWNrIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsaW5ldHlwZSA9ICJkb3R0ZWQiKSkNCmBgYA0KDQojIERhdGEgSW1wb3J0IGFuZCBQcmVwYXJhdGlvbg0KDQpGaXJzdCwgSSBuZWVkIHRvIGltcG9ydCBhbmQgcHJlcGFyZSB0aGUgZGF0YSBmb3IgYW5hbHlzaXMuDQoNCmBgYHtyLCBtZXNzYWdlID0gRkFMU0V9DQpyb29tX2tleV9kYXRhIDwtIHJlYWRfdHN2KCJkYXRhLnRzdiIsIHByb2dyZXNzID0gRkFMU0UpICU+JSANCiAgcm93bmFtZXNfdG9fY29sdW1uKCkgJT4lIA0KICByZW5hbWUoa2V5ID0gcm93bmFtZSkgJT4lIA0KICBtdXRhdGUobGVhZF9ldmVudCA9ICEobGVhZCA9PSAibnVsbCIpLCANCiAgICAgICAgIGJvb2tpbmdfZXZlbnQgPSAhKGJvb2tpbmcgPT0gIm51bGwiKSkNCmBgYA0KDQpgYGB7cn0NCnJlZmVycmFsX2tleSA8LSByb29tX2tleV9kYXRhICU+JSANCiAgZmlsdGVyKHJlZmVycmFsICE9ICJudWxsIikgJT4lIA0KICBzZWxlY3Qoa2V5LCBsZWFkX2V2ZW50LCBib29raW5nX2V2ZW50KQ0KDQpyZWZlcnJhbCA8LSByb29tX2tleV9kYXRhICU+JSANCiAgZmlsdGVyKHJlZmVycmFsICE9ICJudWxsIikgJT4lDQogIC4kcmVmZXJyYWwgJT4lIA0KICBtYXBfZGYoZnJvbUpTT04pICU+JSANCiAgYmluZF9jb2xzKHJlZmVycmFsX2tleSkgJT4lIA0KICBzZWxlY3Qoa2V5LCBldmVyeXRoaW5nKCkpICU+JSANCiAgcmVuYW1lKHZpc2l0b3JfaWQgPSBgdmlzaXRvci1pZGAsIA0KICAgICAgICAgZXZlbnRfaWRfcmVmZXJyYWwgPSBgZXZlbnQtaWRgLCANCiAgICAgICAgIHRzX3JlZmVycmFsID0gdHMsDQogICAgICAgICBsb2NhdGlvbl90aWQgPSBgbG9jYXRpb24tdGlkYCwgDQogICAgICAgICBwYXJ0bmVyX2NvZGUgPSBgcGFydG5lci1jb2RlYCwgDQogICAgICAgICBjaGVja19pbiA9IGBjaGVjay1pbmAsIA0KICAgICAgICAgY2hlY2tfb3V0ID0gYGNoZWNrLW91dGApDQpgYGANCg0KYGBge3J9DQpsZWFkX2tleSA8LSByb29tX2tleV9kYXRhICU+JSANCiAgZmlsdGVyKGxlYWQgIT0gIm51bGwiKSAlPiUgDQogIHNlbGVjdChrZXksIGJvb2tpbmdfZXZlbnQpDQoNCmxlYWQgPC0gcm9vbV9rZXlfZGF0YSAlPiUgDQogIGZpbHRlcihsZWFkICE9ICJudWxsIikgJT4lDQogIC4kbGVhZCAlPiUgDQogIG1hcF9kZihmcm9tSlNPTikgJT4lIA0KICBiaW5kX2NvbHMobGVhZF9rZXkpICU+JSANCiAgc2VsZWN0KGtleSwgZXZlcnl0aGluZygpKSAlPiUgDQogIHJlbmFtZSh2aXNpdG9yX2lkID0gYHZpc2l0b3ItaWRgLCANCiAgICAgICAgIGV2ZW50X2lkX2xlYWQgPSBgZXZlbnQtaWRgLCANCiAgICAgICAgIHRzX2xlYWQgPSB0cywgDQogICAgICAgICByYXRlX3BhcnRuZXIgPSBgcmF0ZS1wYXJ0bmVyYCkNCmBgYA0KDQpgYGB7cn0NCmJvb2tpbmdfa2V5IDwtIHJvb21fa2V5X2RhdGEgJT4lIA0KICBmaWx0ZXIoYm9va2luZyAhPSAibnVsbCIpICU+JSANCiAgc2VsZWN0KGtleSkNCg0KYm9va2luZyA8LSByb29tX2tleV9kYXRhICU+JSANCiAgZmlsdGVyKGJvb2tpbmcgIT0gIm51bGwiKSAlPiUNCiAgLiRib29raW5nICU+JSAgDQogIG1hcF9kZihmcm9tSlNPTikgJT4lIA0KICBiaW5kX2NvbHMoYm9va2luZ19rZXkpICU+JSANCiAgc2VsZWN0KGtleSwgZXZlcnl0aGluZygpKQ0KYGBgDQoNCiMjIFByZXBhcmF0aW9uDQoNCkhlcmUgSSB3YW50IHRvIGNvbWJpbmUgc29tZSBpbmZvcm1hdGlvbiBmcm9tIHRoZSByZWZlcnJhbCBkYXRhIHNldCBpbnRvIHRoZSANCmxlYWQgZGF0YSBzZXQuIEFzIHBhcnQgb2YgdGhpcywgSSBhbHNvIHJlbmFtZSBhIGZldyBjb2x1bW5zIGFuZCBjb252ZXJ0IA0Kc29tZSBvZiB0aGUgY29sdW1ucyB0byBkaWZmZXJlbnQgZGF0YSB0eXBlcy4gU3BlY2lmaWNhbGx5LCB0aGUgY2hlY2tfaW4gYW5kIA0KY2hlY2tfb3V0IGNvbHVtbnMgYXJlIGNvbnZlcnRlZCB0byBkYXRlcy4gVW5saWtlIHRoZSBwcmV2aW91cyB3b3JrLCB0aGUgdHMgDQoodGltZXN0YW1wKSBjb2x1bW5zIGFyZSBsZWZ0IGluIHVuaXRzIG9mIG1pbGxpc2Vjb25kcy4gDQoNCmBgYHtyfQ0KcmVmZXJyYWxfaW5mbyA8LSByZWZlcnJhbCAlPiUgDQogIGZpbHRlcihsZWFkX2V2ZW50ID09IFRSVUUpICU+JSANCiAgc2VsZWN0KC1ldmVudF9pZF9yZWZlcnJhbCwgLXR5cGUsIC1sZWFkX2V2ZW50LCAtYm9va2luZ19ldmVudCkNCg0KbGVhZF9yZWYgPC0gbGVhZCAlPiUgDQogIHNlbGVjdCgtZXZlbnRfaWRfbGVhZCwgLSB0eXBlKSAlPiUgDQogIGxlZnRfam9pbihyZWZlcnJhbF9pbmZvLCBieSA9IGMoImtleSIsICJ2aXNpdG9yX2lkIikpICU+JSANCiAgcmVuYW1lKHJhdGVfcGFydG5lcl9sZWFkID0gcmF0ZV9wYXJ0bmVyLCANCiAgICAgICAgIHBhcnRuZXJfY29kZV9yZWZlcnJhbCA9IHBhcnRuZXJfY29kZSkgJT4lIA0KICBtdXRhdGUoY2hlY2tfaW4gPSBsdWJyaWRhdGU6OnltZChjaGVja19pbiksIA0KICAgICAgICAgY2hlY2tfb3V0ID0gbHVicmlkYXRlOjp5bWQoY2hlY2tfb3V0KSkNCmBgYA0KDQojIFJhbmRvbSBGb3Jlc3Q=</div>
 
 
 </div>
