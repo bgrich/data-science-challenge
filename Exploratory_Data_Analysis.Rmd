@@ -526,6 +526,12 @@ cor.test(~ check_out + as.numeric(booking_event),
 
 ## Categorical Variables
 
+All of the chi-squared tests for the categorical variables gave p-values of 
+less than 2.2e-12. This indicates that there is a significant level of 
+dependence between booking events and the categorical variables. One note with 
+these is that the low counts for some of the variable permutations throws 
+an error with the chi-squared approximation used.
+
 ### `partner_code_referral`
 
 ```{r}
