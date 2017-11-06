@@ -445,7 +445,10 @@ use a chi-square test for the categorical variables and the Pearson product
 moment correlation coefficient for the numerical variables. 
 
 The following new data frame has been created to include all of the new 
-calculated variables and remove the unwanted variables.
+calculated variables and remove the unwanted variables. These new variables 
+include the differences between the timestamps and check-in dates. The check-in 
+and check-out dates are also converted to a time difference with 0 being set 
+to the beginning of the recording period.
 
 ```{r}
 lead_ref_new_var <- lead_ref %>% 
