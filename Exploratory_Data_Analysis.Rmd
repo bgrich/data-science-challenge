@@ -464,7 +464,7 @@ lead_ref_new_var
 ```
 
 
-## Times 
+## Numeric Variables 
 
 ### `ts_lead`
 
