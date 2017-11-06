@@ -122,6 +122,7 @@ rf_model <- train(x = train_independent,
                   y = train_dependent$booking_event, 
       method = "ranger", 
       trControl = trainControl(method = "cv", 
-                               number = 5))
+                               number = 5), 
+      importance = "permutation")
 ```
 
