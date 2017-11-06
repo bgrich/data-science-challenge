@@ -73,6 +73,7 @@ Here, I calculate the number of NAs in the data set.
 ```{r}
 lead_ref %>% 
   select(-key, -visitor_id, -booking_event, -check_out_diff, -check_in_diff) %>% 
+  filter(!is.na(ts_referral)) %>% 
   map_dbl(function(x) sum(is.na(x)))
 ```
 
@@ -99,9 +100,10 @@ training <- data_for_model[train_index, ] %>%
   filter(!is.na(ts_referral), 
          !is.na(partner_code_referral), 
          !is.na(check_in_diff), 
-         !is.na(check_out_diff)) %>% 
+         !is.na(check_out_diff), 
+         !is.na(location_tid)) %>% 
   mutate(booking_event = factor(booking_event)) %>% 
-  select(-location_tid, -udicode)
+  select(-udicode, -location_tid)
 
 testing <- data_for_model[-train_index, ]
 ```
@@ -123,6 +125,6 @@ rf_model <- train(x = train_independent,
       method = "ranger", 
       trControl = trainControl(method = "cv", 
                                number = 5), 
-      importance = "permutation")
+      importance = "impurity")
 ```
 
