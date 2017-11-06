@@ -469,6 +469,12 @@ lead_ref_new_var
 
 ## Numeric Variables 
 
+In general, all of the numeric varibles show a very small negative correlation 
+with booking events. This seems pretty reasonable as the histograms of the 
+timing showed that the majority of all bookings (and of all events) occur at 
+shorter times with fewer bookings happening at larger times. However, the 
+correlations are incredibly small. The calculations are included below.
+
 ### `ts_lead`
 
 ```{r}
