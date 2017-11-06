@@ -437,3 +437,24 @@ lead_ref %>%
 The udicode is a little less clear. The largest number of true booking events 
 occurs for when the udicode is NA. This also encompasses a large number 
 (approximately 1/3) of the total observations. 
+
+# Variable Correlation 
+
+To determine whether any of the variables correlate with a booking event I will 
+use a chi-square test for the categorical variables and the Pearson product 
+moment correlation coefficient for the numerical variables. 
+
+The following new data frame has been created to include all of the new 
+calculated variables and remove the unwanted variables.
+
+```{r}
+lead_ref_new_var <- lead_ref %>% 
+  mutate(ts_time_diff = as.numeric(ts_lead - ts_referral)) %>% 
+  mutate(referral_check_in_diff = as.numeric(check_in - lubridate::as_date(ts_referral))) %>% 
+  mutate(lead_check_in_diff = as.numeric(check_in - lubridate::as_date(ts_lead))) %>% 
+  mutate(same_partner = (partner_code_referral == rate_partner_lead)) %>% 
+  select(-key, -visitor_id) %>% 
+  select(booking_event, everything())
+```
+
+
