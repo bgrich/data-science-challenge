@@ -106,6 +106,9 @@ testing <- data_for_model[-train_index, ]
 
 ### Random Forest Training
 
+Here I split the training set into the variables and the response for faster 
+modeling.
+
 ```{r}
 train_independent <- training %>% 
   select(-booking_event) %>% 
@@ -114,6 +117,10 @@ train_independent <- training %>%
 train_dependent <- training %>% 
   select(booking_event)
 ```
+
+Here I train the random forest model using the `ranger` package and with 
+a 5-fold cross-validation. I will also use a permutation method to determine 
+the variable importance.
 
 ```{r}
 rf_model <- train(x = train_independent, 
@@ -130,11 +137,19 @@ rf_model
 
 ### Predictions
 
+Here is predict the outcome of the testing data using the random forest model. 
+To summarize the model, I build a confusion matrix along with some summary 
+statistics.
+
 ```{r}
 rf_prediction <- predict(rf_model, testing[, -1])
 
 confusionMatrix(rf_prediction, testing$booking_event)
 ```
+
+According to the confusion matrix, while this model does give a high accuracy, 
+the sensitivity of the model is incredibly low. Thus, it will be difficult to 
+determine what variables are important for booking events.
 
 ### Variable Importance
 
