@@ -47,6 +47,15 @@ lead_ref <- read_csv("lead_ref_data.csv", progress = FALSE)
 
 # Random Forest
 
+For this section, I am going to break it into a few subsections where each one 
+will be a random forest trained on a different subset of the data. For these 
+subsets I am going manipulate the data by filtering out all of the NA terms, 
+removing the `udicode` and `location_tid` variables, adding back in those 
+variables with some modifications, and finally keeping all of the non-numeric 
+NA's.
+
+
+
 First, I want to set up the data for the random forest model. I want to split 
 the data into testing and training sets for comparison after running the model. 
 I also want to look at the number of NAs present in the data. I plan on 
