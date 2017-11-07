@@ -124,12 +124,23 @@ rf_model <- train(x = train_independent,
       importance = "permutation")
 ```
 
+```{r}
+rf_model
+```
+
 ### Predictions
 
 ```{r}
+rf_prediction <- predict(rf_model, testing[, -1])
 
+confusionMatrix(rf_prediction, testing$booking_event)
 ```
 
+### Variable Importance
+
+```{r}
+varImp(rf_model, scale = FALSE)
+```
 
 
 
