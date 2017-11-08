@@ -1333,7 +1333,7 @@ varImp(rf_model, scale = FALSE)
 
 
 
-## Adding `time_diff` and `same_partner`, Under-sampled
+## Adding `time_diff` and `same_partner`, Under-sampled, Accuracy
 
 For this set, I once again have all of the variables except for `udicode` and 
 `location_tid`. I also have two calculated variables, `time_diff` and 
@@ -1582,7 +1582,7 @@ varImp(rf_model, scale = FALSE)
 
 
 
-## Adding `time_diff` and `same_partner`, Under-sampled
+## Adding `time_diff` and `same_partner`, Under-sampled, Kappa
 
 For this set, I once again have all of the variables except for `udicode` and 
 `location_tid`. I also have two calculated variables, `time_diff` and 
