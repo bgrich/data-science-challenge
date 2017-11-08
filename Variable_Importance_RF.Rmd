@@ -634,10 +634,18 @@ varImp(rf_model, scale = FALSE)
 
 # Kappa
 
+I realized that accuracy was not working well as a metric for training the 
+random forest model. It was leading to too many booking events being classified 
+as FALSE while giving a high accuracy. This appears to be due to the unbalanced 
+nature of the data. My first step to correct this is to use Kappa as the 
+metric for the RF model. Here I reproduce some of the same model trainings as 
+previously done, but with the metric switched to Kappa.
+
 ## Add Same Partner and Time Difference
 
-For this section I am removing the `udicode` and `location_tid` variables 
-along with all the remaining NA's.
+For this section I have added two new calculated variables: a conditional 
+variable calculating with the referral partner and lead partner are the same 
+and the difference in time between referral event and lead event.
 
 Here are all of the NA's in the data set.
 
@@ -846,6 +854,9 @@ varImp(rf_model, scale = FALSE)
 
 # Removing highly correlated variables 
 
+For this section, I manually removed variables that were highly correlated with 
+each other. Particularly, I removed the `ts_lead` and `check_in_out` variables. 
+
 ## NA's and Variables Removed
 
 ```{r}
@@ -943,6 +954,10 @@ varImp(rf_model, scale = FALSE)
 ```
 
 ## Reducing Factors for Partners
+
+For this section, I reduced the number of factor levels present in the partner 
+categorical variables. I did this by taking the top 4 levels and re-labeling 
+all other levels as "Other". 
 
 ```{r}
 lead_ref %>% 
@@ -1069,6 +1084,11 @@ varImp(rf_model, scale = FALSE)
 ```
 
 ## Adding in all variables
+
+This data set includes all of the variables (except `udicode` and 
+`location_tid`), along with the calculated variables `time_diff` and 
+`same_partner`. This data set also includes the reduced factor levels for the 
+partner variables.
 
 ```{r}
 lead_ref %>% 
