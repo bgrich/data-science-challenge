@@ -294,6 +294,9 @@ varImp(rf_model, scale = FALSE)
 
 ## Removing all categorical variables
 
+For this data set I am removing all of the categorical variables from the data 
+set.
+
 Here are all of the NA's in the data set.
 
 ```{r}
@@ -393,7 +396,8 @@ varImp(rf_model, scale = FALSE)
 ## Removing all numerical variables
 
 
-For this section I am retaining the `udicode` and `location_tid` variables. To 
+For this section I am retaining the `udicode` and `location_tid` variables. I 
+am also removing all of the numerical variables. To 
 be able to use them in the random forest, I will reduce the number of factors 
 to the largest 30 occuring ones. All others will either be lumped into NA or 
 Other.
@@ -524,8 +528,9 @@ varImp(rf_model, scale = FALSE)
 
 ## Add Same Partner and Time Difference
 
-For this section I am removing the `udicode` and `location_tid` variables 
-along with all the remaining NA's.
+For this section I have added two new calculated variables: a conditional 
+variable calculating with the referral partner and lead partner are the same 
+and the difference in time between referral event and lead event.
 
 Here are all of the NA's in the data set.
 
