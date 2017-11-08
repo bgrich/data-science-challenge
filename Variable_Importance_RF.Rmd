@@ -1193,8 +1193,142 @@ confusionMatrix(rf_prediction, testing$booking_event)
 varImp(rf_model, scale = FALSE)
 ```
 
+# Under-sampling and over-sampling
+
+To resolve the poor modeling happening with the random forest training, I want 
+to use under-sampling and over-sampling to create a more balanced data set for 
+the training.
+
+## Adding in all variables
+
+```{r}
+lead_ref %>% 
+  select(-key, -visitor_id, -booking_event, -check_out_diff, -check_in_diff) %>% 
+  # filter(!is.na(ts_referral)) %>%
+  map_dbl(function(x) sum(is.na(x)))
+```
+
+```{r}
+data_for_model <- lead_ref %>% 
+  select(booking_event, 
+         ts_referral, 
+         ts_lead,
+         check_in_diff, 
+         check_out_diff,
+         partner_code_referral, 
+         rate_partner_lead) %>% 
+  filter(!is.na(ts_referral)) %>% 
+  filter(!is.na(partner_code_referral)) %>% 
+  filter(!is.na(check_in_diff)) %>% 
+  filter(!is.na(check_out_diff)) %>% 
+  mutate(time_diff = ts_lead - ts_referral) %>% 
+  mutate(booking_event = factor(booking_event, levels = c("TRUE", "FALSE")))
+```
+
+### Renaming Partner Codes
+
+```{r}
+rename_referral_partner <- data_for_model %>% 
+  group_by(partner_code_referral) %>%
+  count() %>%
+  arrange(desc(n)) %>% 
+  ungroup() %>% 
+  rownames_to_column() %>% 
+  mutate(rowname = as.numeric(rowname)) %>% 
+  mutate(new_referral_partner = ifelse(rowname < 5, partner_code_referral, "Other")) %>% 
+  select(partner_code_referral, new_referral_partner)
+```
+
+```{r}
+rename_lead_partner <- data_for_model %>% 
+  group_by(rate_partner_lead) %>%
+  count() %>%
+  arrange(desc(n)) %>% 
+  ungroup() %>% 
+  rownames_to_column() %>% 
+  mutate(rowname = as.numeric(rowname)) %>% 
+  mutate(new_lead_partner = ifelse(rowname < 5, rate_partner_lead, "Other")) %>% 
+  select(rate_partner_lead, new_lead_partner)
+```
+
+```{r}
+modified_data_for_model <- data_for_model %>% 
+  left_join(rename_referral_partner, by = "partner_code_referral") %>% 
+  left_join(rename_lead_partner, by = "rate_partner_lead") %>% 
+  select(-partner_code_referral, -rate_partner_lead) %>% 
+  mutate(same_partner = (new_referral_partner == new_lead_partner))
+```
 
 
+### Train/Test Split
+
+Now I will randomly split the data into testing and training subsets using an 
+80/20 training/testing split. For this, I will set the random seed for R so 
+that the results are reproducibile. 
+
+```{r}
+set.seed(85)
+
+train_index <- createDataPartition(modified_data_for_model$booking_event, 
+                            p = 0.8,
+                            list = FALSE, 
+                            times = 1)
+
+training <- modified_data_for_model[train_index, ]
+
+testing <- modified_data_for_model[-train_index, ]
+```
+
+### Random Forest Training
+
+Here I split the training set into the variables and the response for faster 
+modeling.
+
+```{r}
+train_independent <- training %>% 
+  select(-booking_event) %>% 
+  as.data.frame()
+
+train_dependent <- training %>% 
+  select(booking_event)
+```
+
+Here I train the random forest model using the `ranger` package and with 
+a 5-fold cross-validation. I will also use a permutation method to determine 
+the variable importance.
+
+```{r}
+rf_model <- train(x = train_independent, 
+                  y = train_dependent$booking_event, 
+      method = "ranger", 
+      trControl = trainControl(method = "cv", 
+                               number = 5, 
+                               sampling = "down"), 
+      importance = "permutation", 
+      metric = "Kappa")
+```
+
+```{r}
+rf_model
+```
+
+### Predictions
+
+Here is predict the outcome of the testing data using the random forest model. 
+To summarize the model, I build a confusion matrix along with some summary 
+statistics.
+
+```{r}
+rf_prediction <- predict(rf_model, testing[, -1])
+
+confusionMatrix(rf_prediction, testing$booking_event)
+```
+
+### Variable Importance
+
+```{r}
+varImp(rf_model, scale = FALSE)
+```
 
 
 
