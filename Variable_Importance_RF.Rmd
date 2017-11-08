@@ -1218,7 +1218,7 @@ confusionMatrix(rf_prediction, testing$booking_event)
 varImp(rf_model, scale = FALSE)
 ```
 
-# Under-sampling and over-sampling
+# Under-sampling
 
 To resolve the poor modeling happening with the random forest training, I want 
 to use under-sampling and over-sampling to create a more balanced data set for 
