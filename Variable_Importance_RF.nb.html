@@ -2555,15 +2555,16 @@ train_dependent &lt;- training %&gt;%
 <p>Here I train the random forest model using the <code>ranger</code> package and with a 5-fold cross-validation. I will also use a permutation method to determine the variable importance.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmZfbW9kZWwgPC0gdHJhaW4oeCA9IHRyYWluX2luZGVwZW5kZW50LCBcbiAgICAgICAgICAgICAgICAgIHkgPSB0cmFpbl9kZXBlbmRlbnQkYm9va2luZ19ldmVudCwgXG4gICAgICBtZXRob2QgPSBcInJhbmdlclwiLCBcbiAgICAgIHRyQ29udHJvbCA9IHRyYWluQ29udHJvbChtZXRob2QgPSBcImN2XCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG51bWJlciA9IDUsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNhbXBsaW5nID0gXCJkb3duXCIpLCBcbiAgICAgIGltcG9ydGFuY2UgPSBcInBlcm11dGF0aW9uXCIsIFxuICAgICAgbWV0cmljID0gXCJLYXBwYVwiKVxuYGBgIn0= -->
-<pre class="r"><code>rf_model &lt;- train(x = train_independent, 
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoODUpIFxucmZfbW9kZWwgPC0gdHJhaW4oeCA9IHRyYWluX2luZGVwZW5kZW50LCBcbiAgICAgICAgICAgICAgICAgIHkgPSB0cmFpbl9kZXBlbmRlbnQkYm9va2luZ19ldmVudCwgXG4gICAgICBtZXRob2QgPSBcInJhbmdlclwiLCBcbiAgICAgIHRyQ29udHJvbCA9IHRyYWluQ29udHJvbChtZXRob2QgPSBcInJlcGVhdGVkY3ZcIiwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbnVtYmVyID0gMTAsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVwZWF0cyA9IDEwLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNhbXBsaW5nID0gXCJkb3duXCIpLCBcbiAgICAgIGltcG9ydGFuY2UgPSBcInBlcm11dGF0aW9uXCIpXG5gYGAifQ== -->
+<pre class="r"><code>set.seed(85) 
+rf_model &lt;- train(x = train_independent, 
                   y = train_dependent$booking_event, 
       method = &quot;ranger&quot;, 
-      trControl = trainControl(method = &quot;cv&quot;, 
-                               number = 5, 
+      trControl = trainControl(method = &quot;repeatedcv&quot;, 
+                               number = 10,
+                               repeats = 10,
                                sampling = &quot;down&quot;), 
-      importance = &quot;permutation&quot;, 
-      metric = &quot;Kappa&quot;)</code></pre>
+      importance = &quot;permutation&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -2572,7 +2573,7 @@ train_dependent &lt;- training %&gt;%
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmZfbW9kZWxcbmBgYCJ9 -->
 <pre class="r"><code>rf_model</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmFuZG9tIEZvcmVzdCBcblxuMTk4NjUgc2FtcGxlc1xuICAgIDggcHJlZGljdG9yXG4gICAgMiBjbGFzc2VzOiAnVFJVRScsICdGQUxTRScgXG5cbk5vIHByZS1wcm9jZXNzaW5nXG5SZXNhbXBsaW5nOiBDcm9zcy1WYWxpZGF0ZWQgKDUgZm9sZCkgXG5TdW1tYXJ5IG9mIHNhbXBsZSBzaXplczogMTU4OTIsIDE1ODkzLCAxNTg5MiwgMTU4OTIsIDE1ODkxIFxuQWRkdGlvbmFsIHNhbXBsaW5nIHVzaW5nIGRvd24tc2FtcGxpbmdcblxuUmVzYW1wbGluZyByZXN1bHRzIGFjcm9zcyB0dW5pbmcgcGFyYW1ldGVyczpcblxuICBtdHJ5ICBzcGxpdHJ1bGUgICBBY2N1cmFjeSAgIEthcHBhICAgICBcbiAgMiAgICAgZ2luaSAgICAgICAgMC41OTQ0NjIwICAwLjExMDUyNDk2XG4gIDIgICAgIGV4dHJhdHJlZXMgIDAuNTMxNDg3NCAgMC4xMDA2MTI2OFxuICA1ICAgICBnaW5pICAgICAgICAwLjYxMDExODIgIDAuMTA2MDQ0NzdcbiAgNSAgICAgZXh0cmF0cmVlcyAgMC42MDgxMDM3ICAwLjA5NTk5ODQ3XG4gIDggICAgIGdpbmkgICAgICAgIDAuNjA2MjQzMSAgMC4xMDI2NjkwOFxuICA4ICAgICBleHRyYXRyZWVzICAwLjU5NjY3NjkgIDAuMDkxMzI3MDhcblxuS2FwcGEgd2FzIHVzZWQgdG8gc2VsZWN0IHRoZSBvcHRpbWFsIG1vZGVsIHVzaW5nICB0aGUgbGFyZ2VzdCB2YWx1ZS5cblRoZSBmaW5hbCB2YWx1ZXMgdXNlZCBmb3IgdGhlIG1vZGVsIHdlcmUgbXRyeSA9IDIgYW5kIHNwbGl0cnVsZSA9IGdpbmkuXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmFuZG9tIEZvcmVzdCBcblxuMTk4NjUgc2FtcGxlc1xuICAgIDggcHJlZGljdG9yXG4gICAgMiBjbGFzc2VzOiAnVFJVRScsICdGQUxTRScgXG5cbk5vIHByZS1wcm9jZXNzaW5nXG5SZXNhbXBsaW5nOiBDcm9zcy1WYWxpZGF0ZWQgKDEwIGZvbGQsIHJlcGVhdGVkIDEwIHRpbWVzKSBcblN1bW1hcnkgb2Ygc2FtcGxlIHNpemVzOiAxNzg3OSwgMTc4NzgsIDE3ODc5LCAxNzg3OCwgMTc4NzksIDE3ODc4LCAuLi4gXG5BZGR0aW9uYWwgc2FtcGxpbmcgdXNpbmcgZG93bi1zYW1wbGluZ1xuXG5SZXNhbXBsaW5nIHJlc3VsdHMgYWNyb3NzIHR1bmluZyBwYXJhbWV0ZXJzOlxuXG4gIG10cnkgIHNwbGl0cnVsZSAgIEFjY3VyYWN5ICAgS2FwcGEgICAgIFxuICAyICAgICBnaW5pICAgICAgICAwLjU4NTgxOTAgIDAuMTA3NzM5NjNcbiAgMiAgICAgZXh0cmF0cmVlcyAgMC41MzI5MzcxICAwLjEwMTcxNTE2XG4gIDUgICAgIGdpbmkgICAgICAgIDAuNjA1NjgyNCAgMC4xMDE4Mzc1OFxuICA1ICAgICBleHRyYXRyZWVzICAwLjYwNDY1MTAgIDAuMDk3Mzk4NzFcbiAgOCAgICAgZ2luaSAgICAgICAgMC42MDQ3ODc2ICAwLjEwMTI3MDE5XG4gIDggICAgIGV4dHJhdHJlZXMgIDAuNjA0OTc4MyAgMC4wOTc3NjQyM1xuXG5BY2N1cmFjeSB3YXMgdXNlZCB0byBzZWxlY3QgdGhlIG9wdGltYWwgbW9kZWwgdXNpbmcgIHRoZSBsYXJnZXN0IHZhbHVlLlxuVGhlIGZpbmFsIHZhbHVlcyB1c2VkIGZvciB0aGUgbW9kZWwgd2VyZSBtdHJ5ID0gNSBhbmQgc3BsaXRydWxlID0gZ2luaS5cbiJ9 -->
 <pre><code>Random Forest 
 
 19865 samples
@@ -2580,22 +2581,22 @@ train_dependent &lt;- training %&gt;%
     2 classes: 'TRUE', 'FALSE' 
 
 No pre-processing
-Resampling: Cross-Validated (5 fold) 
-Summary of sample sizes: 15892, 15893, 15892, 15892, 15891 
+Resampling: Cross-Validated (10 fold, repeated 10 times) 
+Summary of sample sizes: 17879, 17878, 17879, 17878, 17879, 17878, ... 
 Addtional sampling using down-sampling
 
 Resampling results across tuning parameters:
 
   mtry  splitrule   Accuracy   Kappa     
-  2     gini        0.5944620  0.11052496
-  2     extratrees  0.5314874  0.10061268
-  5     gini        0.6101182  0.10604477
-  5     extratrees  0.6081037  0.09599847
-  8     gini        0.6062431  0.10266908
-  8     extratrees  0.5966769  0.09132708
+  2     gini        0.5858190  0.10773963
+  2     extratrees  0.5329371  0.10171516
+  5     gini        0.6056824  0.10183758
+  5     extratrees  0.6046510  0.09739871
+  8     gini        0.6047876  0.10127019
+  8     extratrees  0.6049783  0.09776423
 
-Kappa was used to select the optimal model using  the largest value.
-The final values used for the model were mtry = 2 and splitrule = gini.</code></pre>
+Accuracy was used to select the optimal model using  the largest value.
+The final values used for the model were mtry = 5 and splitrule = gini.</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -2609,30 +2610,30 @@ The final values used for the model were mtry = 2 and splitrule = gini.</code></
 <pre class="r"><code>rf_prediction &lt;- predict(rf_model, testing[, -1])
 confusionMatrix(rf_prediction, testing$booking_event)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiQ29uZnVzaW9uIE1hdHJpeCBhbmQgU3RhdGlzdGljc1xuXG4gICAgICAgICAgUmVmZXJlbmNlXG5QcmVkaWN0aW9uIFRSVUUgRkFMU0VcbiAgICAgVFJVRSAgIDMwOSAgMTg2MVxuICAgICBGQUxTRSAgMTEyICAyNjg0XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgIEFjY3VyYWN5IDogMC42MDI3ICAgICAgICAgIFxuICAgICAgICAgICAgICAgICA5NSUgQ0kgOiAoMC41ODg5LCAwLjYxNjMpXG4gICAgTm8gSW5mb3JtYXRpb24gUmF0ZSA6IDAuOTE1MiAgICAgICAgICBcbiAgICBQLVZhbHVlIFtBY2MgPiBOSVJdIDogMSAgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgICAgICBLYXBwYSA6IDAuMTEyNSAgICAgICAgICBcbiBNY25lbWFyJ3MgVGVzdCBQLVZhbHVlIDogPDJlLTE2ICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICBTZW5zaXRpdml0eSA6IDAuNzMzOTcgICAgICAgICBcbiAgICAgICAgICAgIFNwZWNpZmljaXR5IDogMC41OTA1NCAgICAgICAgIFxuICAgICAgICAgUG9zIFByZWQgVmFsdWUgOiAwLjE0MjQwICAgICAgICAgXG4gICAgICAgICBOZWcgUHJlZCBWYWx1ZSA6IDAuOTU5OTQgICAgICAgICBcbiAgICAgICAgICAgICBQcmV2YWxlbmNlIDogMC4wODQ3OCAgICAgICAgIFxuICAgICAgICAgRGV0ZWN0aW9uIFJhdGUgOiAwLjA2MjIyICAgICAgICAgXG4gICBEZXRlY3Rpb24gUHJldmFsZW5jZSA6IDAuNDM2OTcgICAgICAgICBcbiAgICAgIEJhbGFuY2VkIEFjY3VyYWN5IDogMC42NjIyNSAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgJ1Bvc2l0aXZlJyBDbGFzcyA6IFRSVUUgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiQ29uZnVzaW9uIE1hdHJpeCBhbmQgU3RhdGlzdGljc1xuXG4gICAgICAgICAgUmVmZXJlbmNlXG5QcmVkaWN0aW9uIFRSVUUgRkFMU0VcbiAgICAgVFJVRSAgIDI5NyAgMTgzMlxuICAgICBGQUxTRSAgMTI0ICAyNzEzXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgIEFjY3VyYWN5IDogMC42MDYxICAgICAgICAgIFxuICAgICAgICAgICAgICAgICA5NSUgQ0kgOiAoMC41OTI0LCAwLjYxOTcpXG4gICAgTm8gSW5mb3JtYXRpb24gUmF0ZSA6IDAuOTE1MiAgICAgICAgICBcbiAgICBQLVZhbHVlIFtBY2MgPiBOSVJdIDogMSAgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgICAgICBLYXBwYSA6IDAuMTA2NSAgICAgICAgICBcbiBNY25lbWFyJ3MgVGVzdCBQLVZhbHVlIDogPDJlLTE2ICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICBTZW5zaXRpdml0eSA6IDAuNzA1NDYgICAgICAgICBcbiAgICAgICAgICAgIFNwZWNpZmljaXR5IDogMC41OTY5MiAgICAgICAgIFxuICAgICAgICAgUG9zIFByZWQgVmFsdWUgOiAwLjEzOTUwICAgICAgICAgXG4gICAgICAgICBOZWcgUHJlZCBWYWx1ZSA6IDAuOTU2MjkgICAgICAgICBcbiAgICAgICAgICAgICBQcmV2YWxlbmNlIDogMC4wODQ3OCAgICAgICAgIFxuICAgICAgICAgRGV0ZWN0aW9uIFJhdGUgOiAwLjA1OTgxICAgICAgICAgXG4gICBEZXRlY3Rpb24gUHJldmFsZW5jZSA6IDAuNDI4NzIgICAgICAgICBcbiAgICAgIEJhbGFuY2VkIEFjY3VyYWN5IDogMC42NTExOSAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgJ1Bvc2l0aXZlJyBDbGFzcyA6IFRSVUUgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIn0= -->
 <pre><code>Confusion Matrix and Statistics
 
           Reference
 Prediction TRUE FALSE
-     TRUE   309  1861
-     FALSE  112  2684
+     TRUE   297  1832
+     FALSE  124  2713
                                           
-               Accuracy : 0.6027          
-                 95% CI : (0.5889, 0.6163)
+               Accuracy : 0.6061          
+                 95% CI : (0.5924, 0.6197)
     No Information Rate : 0.9152          
     P-Value [Acc &gt; NIR] : 1               
                                           
-                  Kappa : 0.1125          
+                  Kappa : 0.1065          
  Mcnemar's Test P-Value : &lt;2e-16          
                                           
-            Sensitivity : 0.73397         
-            Specificity : 0.59054         
-         Pos Pred Value : 0.14240         
-         Neg Pred Value : 0.95994         
+            Sensitivity : 0.70546         
+            Specificity : 0.59692         
+         Pos Pred Value : 0.13950         
+         Neg Pred Value : 0.95629         
              Prevalence : 0.08478         
-         Detection Rate : 0.06222         
-   Detection Prevalence : 0.43697         
-      Balanced Accuracy : 0.66225         
+         Detection Rate : 0.05981         
+   Detection Prevalence : 0.42872         
+      Balanced Accuracy : 0.65119         
                                           
        'Positive' Class : TRUE            
                                           </code></pre>
@@ -2647,18 +2648,18 @@ Prediction TRUE FALSE
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudmFySW1wKHJmX21vZGVsLCBzY2FsZSA9IEZBTFNFKVxuYGBgIn0= -->
 <pre class="r"><code>varImp(rf_model, scale = FALSE)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoicmFuZ2VyIHZhcmlhYmxlIGltcG9ydGFuY2VcblxuICAgICAgICAgICAgICAgICAgICAgIE92ZXJhbGxcbm5ld19sZWFkX3BhcnRuZXIgICAgIDAuMDMyODE0XG5zYW1lX3BhcnRuZXIgICAgICAgICAwLjAzMTA1M1xuY2hlY2tfb3V0X2RpZmYgICAgICAgMC4wMjEyNDlcbnRzX3JlZmVycmFsICAgICAgICAgIDAuMDE5NTAwXG50c19sZWFkICAgICAgICAgICAgICAwLjAxNzE3NFxubmV3X3JlZmVycmFsX3BhcnRuZXIgMC4wMTU0NzhcbmNoZWNrX2luX2RpZmYgICAgICAgIDAuMDE0MDIxXG50aW1lX2RpZmYgICAgICAgICAgICAwLjAwNDc1OVxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoicmFuZ2VyIHZhcmlhYmxlIGltcG9ydGFuY2VcblxuICAgICAgICAgICAgICAgICAgICAgIE92ZXJhbGxcbnNhbWVfcGFydG5lciAgICAgICAgIDAuMDQxNTM0XG5uZXdfbGVhZF9wYXJ0bmVyICAgICAwLjAzNjc1MVxuY2hlY2tfb3V0X2RpZmYgICAgICAgMC4wMjI4NjBcbnRzX3JlZmVycmFsICAgICAgICAgIDAuMDIyODMzXG50c19sZWFkICAgICAgICAgICAgICAwLjAyMTU0N1xuY2hlY2tfaW5fZGlmZiAgICAgICAgMC4wMjAzODRcbm5ld19yZWZlcnJhbF9wYXJ0bmVyIDAuMDE3MDQ4XG50aW1lX2RpZmYgICAgICAgICAgICAwLjAwMjk0NFxuIn0= -->
 <pre><code>ranger variable importance
 
                       Overall
-new_lead_partner     0.032814
-same_partner         0.031053
-check_out_diff       0.021249
-ts_referral          0.019500
-ts_lead              0.017174
-new_referral_partner 0.015478
-check_in_diff        0.014021
-time_diff            0.004759</code></pre>
+same_partner         0.041534
+new_lead_partner     0.036751
+check_out_diff       0.022860
+ts_referral          0.022833
+ts_lead              0.021547
+check_in_diff        0.020384
+new_referral_partner 0.017048
+time_diff            0.002944</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -2676,6 +2677,14 @@ time_diff            0.004759</code></pre>
   # filter(!is.na(ts_referral)) %&gt;%
   map_dbl(function(x) sum(is.na(x)))</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgICB0c19sZWFkICAgICByYXRlX3BhcnRuZXJfbGVhZCAgICAgICAgICAgdHNfcmVmZXJyYWwgXG4gICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAgICAgIDEwMiBcbiAgICAgICAgIGxvY2F0aW9uX3RpZCBwYXJ0bmVyX2NvZGVfcmVmZXJyYWwgICAgICAgICAgICAgIGNoZWNrX2luIFxuICAgICAgICAgICAgICAgICAgMTMxICAgICAgICAgICAgICAgICAgIDEwMiAgICAgICAgICAgICAgICAgIDQ0NDcgXG4gICAgICAgICAgICBjaGVja19vdXQgICAgICAgICAgICAgICB1ZGljb2RlIFxuICAgICAgICAgICAgICAgICA0NDQ3ICAgICAgICAgICAgICAgICAxMDUzMSBcbiJ9 -->
+<pre><code>              ts_lead     rate_partner_lead           ts_referral 
+                    0                     0                   102 
+         location_tid partner_code_referral              check_in 
+                  131                   102                  4447 
+            check_out               udicode 
+                 4447                 10531 </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -2702,16 +2711,13 @@ time_diff            0.004759</code></pre>
 <p>Now I will randomly split the data into testing and training subsets using an 80/20 training/testing split. For this, I will set the random seed for R so that the results are reproducibile.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoODUpXG5cbnRyYWluX2luZGV4IDwtIGNyZWF0ZURhdGFQYXJ0aXRpb24oZGF0YV9mb3JfbW9kZWwkYm9va2luZ19ldmVudCwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgcCA9IDAuOCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBsaXN0ID0gRkFMU0UsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRpbWVzID0gMSlcblxudHJhaW5pbmcgPC0gZGF0YV9mb3JfbW9kZWxbdHJhaW5faW5kZXgsIF1cblxudGVzdGluZyA8LSBkYXRhX2Zvcl9tb2RlbFstdHJhaW5faW5kZXgsIF1cbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoODUpXG50cmFpbl9pbmRleCA8LSBjcmVhdGVEYXRhUGFydGl0aW9uKGRhdGFfZm9yX21vZGVsJGJvb2tpbmdfZXZlbnQsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIHAgPSAwLjgsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgbGlzdCA9IEZBTFNFLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICB0aW1lcyA9IDEpXG50cmFpbmluZyA8LSBkYXRhX2Zvcl9tb2RlbFt0cmFpbl9pbmRleCwgXVxudGVzdGluZyA8LSBkYXRhX2Zvcl9tb2RlbFstdHJhaW5faW5kZXgsIF1cbmBgYCJ9 -->
 <pre class="r"><code>set.seed(85)
-
 train_index &lt;- createDataPartition(data_for_model$booking_event, 
                             p = 0.8,
                             list = FALSE, 
                             times = 1)
-
 training &lt;- data_for_model[train_index, ]
-
 testing &lt;- data_for_model[-train_index, ]</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -2722,11 +2728,10 @@ testing &lt;- data_for_model[-train_index, ]</code></pre>
 <p>Here I split the training set into the variables and the response for faster modeling.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHJhaW5faW5kZXBlbmRlbnQgPC0gdHJhaW5pbmcgJT4lIFxuICBzZWxlY3QoLWJvb2tpbmdfZXZlbnQpICU+JSBcbiAgYXMuZGF0YS5mcmFtZSgpXG5cbnRyYWluX2RlcGVuZGVudCA8LSB0cmFpbmluZyAlPiUgXG4gIHNlbGVjdChib29raW5nX2V2ZW50KVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHJhaW5faW5kZXBlbmRlbnQgPC0gdHJhaW5pbmcgJT4lIFxuICBzZWxlY3QoLWJvb2tpbmdfZXZlbnQpICU+JSBcbiAgYXMuZGF0YS5mcmFtZSgpXG50cmFpbl9kZXBlbmRlbnQgPC0gdHJhaW5pbmcgJT4lIFxuICBzZWxlY3QoYm9va2luZ19ldmVudClcbmBgYCJ9 -->
 <pre class="r"><code>train_independent &lt;- training %&gt;% 
   select(-booking_event) %&gt;% 
   as.data.frame()
-
 train_dependent &lt;- training %&gt;% 
   select(booking_event)</code></pre>
 <!-- rnb-source-end -->
@@ -2735,9 +2740,8 @@ train_dependent &lt;- training %&gt;%
 <p>Here I train the random forest model using the <code>ranger</code> package and with a 5-fold cross-validation. I will also use a permutation method to determine the variable importance.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoODUpXG5cbnJmX21vZGVsIDwtIHRyYWluKHggPSB0cmFpbl9pbmRlcGVuZGVudCwgXG4gICAgICAgICAgICAgICAgICB5ID0gdHJhaW5fZGVwZW5kZW50JGJvb2tpbmdfZXZlbnQsIFxuICAgICAgbWV0aG9kID0gXCJyYW5nZXJcIiwgXG4gICAgICB0ckNvbnRyb2wgPSB0cmFpbkNvbnRyb2wobWV0aG9kID0gXCJyZXBlYXRlZGN2XCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG51bWJlciA9IDEwLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZXBlYXRzID0gMTAsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNhbXBsaW5nID0gXCJkb3duXCIpLCBcbiAgICAgIGltcG9ydGFuY2UgPSBcInBlcm11dGF0aW9uXCIsIFxuICAgICAgbWV0cmljID0gXCJLYXBwYVwiKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoODUpXG5yZl9tb2RlbCA8LSB0cmFpbih4ID0gdHJhaW5faW5kZXBlbmRlbnQsIFxuICAgICAgICAgICAgICAgICAgeSA9IHRyYWluX2RlcGVuZGVudCRib29raW5nX2V2ZW50LCBcbiAgICAgIG1ldGhvZCA9IFwicmFuZ2VyXCIsIFxuICAgICAgdHJDb250cm9sID0gdHJhaW5Db250cm9sKG1ldGhvZCA9IFwicmVwZWF0ZWRjdlwiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBudW1iZXIgPSAxMCwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVwZWF0cyA9IDEwLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzYW1wbGluZyA9IFwiZG93blwiKSwgXG4gICAgICBpbXBvcnRhbmNlID0gXCJwZXJtdXRhdGlvblwiLCBcbiAgICAgIG1ldHJpYyA9IFwiS2FwcGFcIilcbmBgYCJ9 -->
 <pre class="r"><code>set.seed(85)
-
 rf_model &lt;- train(x = train_independent, 
                   y = train_dependent$booking_event, 
       method = &quot;ranger&quot;, 
@@ -2755,6 +2759,31 @@ rf_model &lt;- train(x = train_independent,
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmZfbW9kZWxcbmBgYCJ9 -->
 <pre class="r"><code>rf_model</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmFuZG9tIEZvcmVzdCBcblxuMTk4NjUgc2FtcGxlc1xuICAgIDYgcHJlZGljdG9yXG4gICAgMiBjbGFzc2VzOiAnVFJVRScsICdGQUxTRScgXG5cbk5vIHByZS1wcm9jZXNzaW5nXG5SZXNhbXBsaW5nOiBDcm9zcy1WYWxpZGF0ZWQgKDEwIGZvbGQsIHJlcGVhdGVkIDEwIHRpbWVzKSBcblN1bW1hcnkgb2Ygc2FtcGxlIHNpemVzOiAxNzg3OSwgMTc4NzgsIDE3ODc5LCAxNzg3OCwgMTc4NzksIDE3ODc4LCAuLi4gXG5BZGR0aW9uYWwgc2FtcGxpbmcgdXNpbmcgZG93bi1zYW1wbGluZ1xuXG5SZXNhbXBsaW5nIHJlc3VsdHMgYWNyb3NzIHR1bmluZyBwYXJhbWV0ZXJzOlxuXG4gIG10cnkgIHNwbGl0cnVsZSAgIEFjY3VyYWN5ICAgS2FwcGEgICAgIFxuICAyICAgICBnaW5pICAgICAgICAwLjY2MzEzMTQgIDAuMDczNzc3MzBcbiAgMiAgICAgZXh0cmF0cmVlcyAgMC43MDk1OTI5ICAwLjA2MzMxNjYyXG4gIDQgICAgIGdpbmkgICAgICAgIDAuNjYwODY2MCAgMC4wNjIxODY2NFxuICA0ICAgICBleHRyYXRyZWVzICAwLjcxMzM1NTMgIDAuMDU2NTk2MzRcbiAgNiAgICAgZ2luaSAgICAgICAgMC42NTEyMjM4ICAwLjA2MjQ2ODY4XG4gIDYgICAgIGV4dHJhdHJlZXMgIDAuNzE4NzE1NyAgMC4wNTA3NjYyNVxuXG5LYXBwYSB3YXMgdXNlZCB0byBzZWxlY3QgdGhlIG9wdGltYWwgbW9kZWwgdXNpbmcgIHRoZSBsYXJnZXN0IHZhbHVlLlxuVGhlIGZpbmFsIHZhbHVlcyB1c2VkIGZvciB0aGUgbW9kZWwgd2VyZSBtdHJ5ID0gMiBhbmQgc3BsaXRydWxlID0gZ2luaS5cbiJ9 -->
+<pre><code>Random Forest 
+
+19865 samples
+    6 predictor
+    2 classes: 'TRUE', 'FALSE' 
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 10 times) 
+Summary of sample sizes: 17879, 17878, 17879, 17878, 17879, 17878, ... 
+Addtional sampling using down-sampling
+
+Resampling results across tuning parameters:
+
+  mtry  splitrule   Accuracy   Kappa     
+  2     gini        0.6631314  0.07377730
+  2     extratrees  0.7095929  0.06331662
+  4     gini        0.6608660  0.06218664
+  4     extratrees  0.7133553  0.05659634
+  6     gini        0.6512238  0.06246868
+  6     extratrees  0.7187157  0.05076625
+
+Kappa was used to select the optimal model using  the largest value.
+The final values used for the model were mtry = 2 and splitrule = gini.</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -2763,11 +2792,38 @@ rf_model &lt;- train(x = train_independent,
 <p>Here is predict the outcome of the testing data using the random forest model. To summarize the model, I build a confusion matrix along with some summary statistics.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmZfcHJlZGljdGlvbiA8LSBwcmVkaWN0KHJmX21vZGVsLCB0ZXN0aW5nWywgLTFdKVxuXG5jb25mdXNpb25NYXRyaXgocmZfcHJlZGljdGlvbiwgdGVzdGluZyRib29raW5nX2V2ZW50KVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmZfcHJlZGljdGlvbiA8LSBwcmVkaWN0KHJmX21vZGVsLCB0ZXN0aW5nWywgLTFdKVxuY29uZnVzaW9uTWF0cml4KHJmX3ByZWRpY3Rpb24sIHRlc3RpbmckYm9va2luZ19ldmVudClcbmBgYCJ9 -->
 <pre class="r"><code>rf_prediction &lt;- predict(rf_model, testing[, -1])
-
 confusionMatrix(rf_prediction, testing$booking_event)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiQ29uZnVzaW9uIE1hdHJpeCBhbmQgU3RhdGlzdGljc1xuXG4gICAgICAgICAgUmVmZXJlbmNlXG5QcmVkaWN0aW9uIFRSVUUgRkFMU0VcbiAgICAgVFJVRSAgIDI5NiAgMTk4OVxuICAgICBGQUxTRSAgMTI1ICAyNTU2XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgIEFjY3VyYWN5IDogMC41NzQzICAgICAgICAgIFxuICAgICAgICAgICAgICAgICA5NSUgQ0kgOiAoMC41NjA0LCAwLjU4ODEpXG4gICAgTm8gSW5mb3JtYXRpb24gUmF0ZSA6IDAuOTE1MiAgICAgICAgICBcbiAgICBQLVZhbHVlIFtBY2MgPiBOSVJdIDogMSAgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgICAgICBLYXBwYSA6IDAuMDg4MiAgICAgICAgICBcbiBNY25lbWFyJ3MgVGVzdCBQLVZhbHVlIDogPDJlLTE2ICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICBTZW5zaXRpdml0eSA6IDAuNzAzMDkgICAgICAgICBcbiAgICAgICAgICAgIFNwZWNpZmljaXR5IDogMC41NjIzOCAgICAgICAgIFxuICAgICAgICAgUG9zIFByZWQgVmFsdWUgOiAwLjEyOTU0ICAgICAgICAgXG4gICAgICAgICBOZWcgUHJlZCBWYWx1ZSA6IDAuOTUzMzggICAgICAgICBcbiAgICAgICAgICAgICBQcmV2YWxlbmNlIDogMC4wODQ3OCAgICAgICAgIFxuICAgICAgICAgRGV0ZWN0aW9uIFJhdGUgOiAwLjA1OTYxICAgICAgICAgXG4gICBEZXRlY3Rpb24gUHJldmFsZW5jZSA6IDAuNDYwMTMgICAgICAgICBcbiAgICAgIEJhbGFuY2VkIEFjY3VyYWN5IDogMC42MzI3MyAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgJ1Bvc2l0aXZlJyBDbGFzcyA6IFRSVUUgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIn0= -->
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction TRUE FALSE
+     TRUE   296  1989
+     FALSE  125  2556
+                                          
+               Accuracy : 0.5743          
+                 95% CI : (0.5604, 0.5881)
+    No Information Rate : 0.9152          
+    P-Value [Acc &gt; NIR] : 1               
+                                          
+                  Kappa : 0.0882          
+ Mcnemar's Test P-Value : &lt;2e-16          
+                                          
+            Sensitivity : 0.70309         
+            Specificity : 0.56238         
+         Pos Pred Value : 0.12954         
+         Neg Pred Value : 0.95338         
+             Prevalence : 0.08478         
+         Detection Rate : 0.05961         
+   Detection Prevalence : 0.46013         
+      Balanced Accuracy : 0.63273         
+                                          
+       'Positive' Class : TRUE            
+                                          </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -2778,6 +2834,17 @@ confusionMatrix(rf_prediction, testing$booking_event)</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudmFySW1wKHJmX21vZGVsLCBzY2FsZSA9IEZBTFNFKVxuYGBgIn0= -->
 <pre class="r"><code>varImp(rf_model, scale = FALSE)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoicmFuZ2VyIHZhcmlhYmxlIGltcG9ydGFuY2VcblxuICAgICAgICAgICAgICAgICAgICAgIE92ZXJhbGxcbnJhdGVfcGFydG5lcl9sZWFkICAgICAwLjA2MDA1XG5wYXJ0bmVyX2NvZGVfcmVmZXJyYWwgMC4wMzk3OFxuY2hlY2tfb3V0X2RpZmYgICAgICAgIDAuMDI3MTZcbnRzX3JlZmVycmFsICAgICAgICAgICAwLjAyMjYxXG50c19sZWFkICAgICAgICAgICAgICAgMC4wMjIxNlxuY2hlY2tfaW5fZGlmZiAgICAgICAgIDAuMDIxMzFcbiJ9 -->
+<pre><code>ranger variable importance
+
+                      Overall
+rate_partner_lead     0.06005
+partner_code_referral 0.03978
+check_out_diff        0.02716
+ts_referral           0.02261
+ts_lead               0.02216
+check_in_diff         0.02131</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -2793,6 +2860,14 @@ confusionMatrix(rf_prediction, testing$booking_event)</code></pre>
   # filter(!is.na(ts_referral)) %&gt;%
   map_dbl(function(x) sum(is.na(x)))</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgICB0c19sZWFkICAgICByYXRlX3BhcnRuZXJfbGVhZCAgICAgICAgICAgdHNfcmVmZXJyYWwgXG4gICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgICAgICAgIDEwMiBcbiAgICAgICAgIGxvY2F0aW9uX3RpZCBwYXJ0bmVyX2NvZGVfcmVmZXJyYWwgICAgICAgICAgICAgIGNoZWNrX2luIFxuICAgICAgICAgICAgICAgICAgMTMxICAgICAgICAgICAgICAgICAgIDEwMiAgICAgICAgICAgICAgICAgIDQ0NDcgXG4gICAgICAgICAgICBjaGVja19vdXQgICAgICAgICAgICAgICB1ZGljb2RlIFxuICAgICAgICAgICAgICAgICA0NDQ3ICAgICAgICAgICAgICAgICAxMDUzMSBcbiJ9 -->
+<pre><code>              ts_lead     rate_partner_lead           ts_referral 
+                    0                     0                   102 
+         location_tid partner_code_referral              check_in 
+                  131                   102                  4447 
+            check_out               udicode 
+                 4447                 10531 </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -2864,16 +2939,13 @@ confusionMatrix(rf_prediction, testing$booking_event)</code></pre>
 <p>Now I will randomly split the data into testing and training subsets using an 80/20 training/testing split. For this, I will set the random seed for R so that the results are reproducibile.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoODUpXG5cbnRyYWluX2luZGV4IDwtIGNyZWF0ZURhdGFQYXJ0aXRpb24obW9kaWZpZWRfZGF0YV9mb3JfbW9kZWwkYm9va2luZ19ldmVudCwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgcCA9IDAuOCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBsaXN0ID0gRkFMU0UsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRpbWVzID0gMSlcblxudHJhaW5pbmcgPC0gbW9kaWZpZWRfZGF0YV9mb3JfbW9kZWxbdHJhaW5faW5kZXgsIF1cblxudGVzdGluZyA8LSBtb2RpZmllZF9kYXRhX2Zvcl9tb2RlbFstdHJhaW5faW5kZXgsIF1cbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoODUpXG50cmFpbl9pbmRleCA8LSBjcmVhdGVEYXRhUGFydGl0aW9uKG1vZGlmaWVkX2RhdGFfZm9yX21vZGVsJGJvb2tpbmdfZXZlbnQsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIHAgPSAwLjgsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgbGlzdCA9IEZBTFNFLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICB0aW1lcyA9IDEpXG50cmFpbmluZyA8LSBtb2RpZmllZF9kYXRhX2Zvcl9tb2RlbFt0cmFpbl9pbmRleCwgXVxudGVzdGluZyA8LSBtb2RpZmllZF9kYXRhX2Zvcl9tb2RlbFstdHJhaW5faW5kZXgsIF1cbmBgYCJ9 -->
 <pre class="r"><code>set.seed(85)
-
 train_index &lt;- createDataPartition(modified_data_for_model$booking_event, 
                             p = 0.8,
                             list = FALSE, 
                             times = 1)
-
 training &lt;- modified_data_for_model[train_index, ]
-
 testing &lt;- modified_data_for_model[-train_index, ]</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -2884,11 +2956,10 @@ testing &lt;- modified_data_for_model[-train_index, ]</code></pre>
 <p>Here I split the training set into the variables and the response for faster modeling.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHJhaW5faW5kZXBlbmRlbnQgPC0gdHJhaW5pbmcgJT4lIFxuICBzZWxlY3QoLWJvb2tpbmdfZXZlbnQpICU+JSBcbiAgYXMuZGF0YS5mcmFtZSgpXG5cbnRyYWluX2RlcGVuZGVudCA8LSB0cmFpbmluZyAlPiUgXG4gIHNlbGVjdChib29raW5nX2V2ZW50KVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHJhaW5faW5kZXBlbmRlbnQgPC0gdHJhaW5pbmcgJT4lIFxuICBzZWxlY3QoLWJvb2tpbmdfZXZlbnQpICU+JSBcbiAgYXMuZGF0YS5mcmFtZSgpXG50cmFpbl9kZXBlbmRlbnQgPC0gdHJhaW5pbmcgJT4lIFxuICBzZWxlY3QoYm9va2luZ19ldmVudClcbmBgYCJ9 -->
 <pre class="r"><code>train_independent &lt;- training %&gt;% 
   select(-booking_event) %&gt;% 
   as.data.frame()
-
 train_dependent &lt;- training %&gt;% 
   select(booking_event)</code></pre>
 <!-- rnb-source-end -->
@@ -2897,9 +2968,8 @@ train_dependent &lt;- training %&gt;%
 <p>Here I train the random forest model using the <code>ranger</code> package and with a 5-fold cross-validation. I will also use a permutation method to determine the variable importance.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoODUpIFxuXG5yZl9tb2RlbCA8LSB0cmFpbih4ID0gdHJhaW5faW5kZXBlbmRlbnQsIFxuICAgICAgICAgICAgICAgICAgeSA9IHRyYWluX2RlcGVuZGVudCRib29raW5nX2V2ZW50LCBcbiAgICAgIG1ldGhvZCA9IFwicmFuZ2VyXCIsIFxuICAgICAgdHJDb250cm9sID0gdHJhaW5Db250cm9sKG1ldGhvZCA9IFwicmVwZWF0ZWRjdlwiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBudW1iZXIgPSAxMCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZXBlYXRzID0gMTAsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2FtcGxpbmcgPSBcImRvd25cIiksIFxuICAgICAgaW1wb3J0YW5jZSA9IFwicGVybXV0YXRpb25cIiwgXG4gICAgICBtZXRyaWMgPSBcIkthcHBhXCIpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoODUpIFxucmZfbW9kZWwgPC0gdHJhaW4oeCA9IHRyYWluX2luZGVwZW5kZW50LCBcbiAgICAgICAgICAgICAgICAgIHkgPSB0cmFpbl9kZXBlbmRlbnQkYm9va2luZ19ldmVudCwgXG4gICAgICBtZXRob2QgPSBcInJhbmdlclwiLCBcbiAgICAgIHRyQ29udHJvbCA9IHRyYWluQ29udHJvbChtZXRob2QgPSBcInJlcGVhdGVkY3ZcIiwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbnVtYmVyID0gMTAsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVwZWF0cyA9IDEwLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNhbXBsaW5nID0gXCJkb3duXCIpLCBcbiAgICAgIGltcG9ydGFuY2UgPSBcInBlcm11dGF0aW9uXCIsIFxuICAgICAgbWV0cmljID0gXCJLYXBwYVwiKVxuYGBgIn0= -->
 <pre class="r"><code>set.seed(85) 
-
 rf_model &lt;- train(x = train_independent, 
                   y = train_dependent$booking_event, 
       method = &quot;ranger&quot;, 
@@ -2917,6 +2987,31 @@ rf_model &lt;- train(x = train_independent,
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmZfbW9kZWxcbmBgYCJ9 -->
 <pre class="r"><code>rf_model</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmFuZG9tIEZvcmVzdCBcblxuMTk4NjUgc2FtcGxlc1xuICAgIDggcHJlZGljdG9yXG4gICAgMiBjbGFzc2VzOiAnVFJVRScsICdGQUxTRScgXG5cbk5vIHByZS1wcm9jZXNzaW5nXG5SZXNhbXBsaW5nOiBDcm9zcy1WYWxpZGF0ZWQgKDEwIGZvbGQsIHJlcGVhdGVkIDEwIHRpbWVzKSBcblN1bW1hcnkgb2Ygc2FtcGxlIHNpemVzOiAxNzg3OSwgMTc4NzgsIDE3ODc5LCAxNzg3OCwgMTc4NzksIDE3ODc4LCAuLi4gXG5BZGR0aW9uYWwgc2FtcGxpbmcgdXNpbmcgZG93bi1zYW1wbGluZ1xuXG5SZXNhbXBsaW5nIHJlc3VsdHMgYWNyb3NzIHR1bmluZyBwYXJhbWV0ZXJzOlxuXG4gIG10cnkgIHNwbGl0cnVsZSAgIEFjY3VyYWN5ICAgS2FwcGEgICAgIFxuICAyICAgICBnaW5pICAgICAgICAwLjU4NTgxOTAgIDAuMTA3NzM5NjNcbiAgMiAgICAgZXh0cmF0cmVlcyAgMC41MzI5MzcxICAwLjEwMTcxNTE2XG4gIDUgICAgIGdpbmkgICAgICAgIDAuNjA1NjgyNCAgMC4xMDE4Mzc1OFxuICA1ICAgICBleHRyYXRyZWVzICAwLjYwNDY1MTAgIDAuMDk3Mzk4NzFcbiAgOCAgICAgZ2luaSAgICAgICAgMC42MDQ3ODc2ICAwLjEwMTI3MDE5XG4gIDggICAgIGV4dHJhdHJlZXMgIDAuNjA0OTc4MyAgMC4wOTc3NjQyM1xuXG5LYXBwYSB3YXMgdXNlZCB0byBzZWxlY3QgdGhlIG9wdGltYWwgbW9kZWwgdXNpbmcgIHRoZSBsYXJnZXN0IHZhbHVlLlxuVGhlIGZpbmFsIHZhbHVlcyB1c2VkIGZvciB0aGUgbW9kZWwgd2VyZSBtdHJ5ID0gMiBhbmQgc3BsaXRydWxlID0gZ2luaS5cbiJ9 -->
+<pre><code>Random Forest 
+
+19865 samples
+    8 predictor
+    2 classes: 'TRUE', 'FALSE' 
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 10 times) 
+Summary of sample sizes: 17879, 17878, 17879, 17878, 17879, 17878, ... 
+Addtional sampling using down-sampling
+
+Resampling results across tuning parameters:
+
+  mtry  splitrule   Accuracy   Kappa     
+  2     gini        0.5858190  0.10773963
+  2     extratrees  0.5329371  0.10171516
+  5     gini        0.6056824  0.10183758
+  5     extratrees  0.6046510  0.09739871
+  8     gini        0.6047876  0.10127019
+  8     extratrees  0.6049783  0.09776423
+
+Kappa was used to select the optimal model using  the largest value.
+The final values used for the model were mtry = 2 and splitrule = gini.</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -2925,11 +3020,38 @@ rf_model &lt;- train(x = train_independent,
 <p>Here is predict the outcome of the testing data using the random forest model. To summarize the model, I build a confusion matrix along with some summary statistics.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmZfcHJlZGljdGlvbiA8LSBwcmVkaWN0KHJmX21vZGVsLCB0ZXN0aW5nWywgLTFdKVxuXG5jb25mdXNpb25NYXRyaXgocmZfcHJlZGljdGlvbiwgdGVzdGluZyRib29raW5nX2V2ZW50KVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmZfcHJlZGljdGlvbiA8LSBwcmVkaWN0KHJmX21vZGVsLCB0ZXN0aW5nWywgLTFdKVxuY29uZnVzaW9uTWF0cml4KHJmX3ByZWRpY3Rpb24sIHRlc3RpbmckYm9va2luZ19ldmVudClcbmBgYCJ9 -->
 <pre class="r"><code>rf_prediction &lt;- predict(rf_model, testing[, -1])
-
 confusionMatrix(rf_prediction, testing$booking_event)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiQ29uZnVzaW9uIE1hdHJpeCBhbmQgU3RhdGlzdGljc1xuXG4gICAgICAgICAgUmVmZXJlbmNlXG5QcmVkaWN0aW9uIFRSVUUgRkFMU0VcbiAgICAgVFJVRSAgIDMyNSAgMTk4OVxuICAgICBGQUxTRSAgIDk2ICAyNTU2XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgIEFjY3VyYWN5IDogMC41ODAxICAgICAgICAgIFxuICAgICAgICAgICAgICAgICA5NSUgQ0kgOiAoMC41NjYzLCAwLjU5MzkpXG4gICAgTm8gSW5mb3JtYXRpb24gUmF0ZSA6IDAuOTE1MiAgICAgICAgICBcbiAgICBQLVZhbHVlIFtBY2MgPiBOSVJdIDogMSAgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgICAgICBLYXBwYSA6IDAuMTEgICAgICAgICAgICBcbiBNY25lbWFyJ3MgVGVzdCBQLVZhbHVlIDogPDJlLTE2ICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICBTZW5zaXRpdml0eSA6IDAuNzcxOTcgICAgICAgICBcbiAgICAgICAgICAgIFNwZWNpZmljaXR5IDogMC41NjIzOCAgICAgICAgIFxuICAgICAgICAgUG9zIFByZWQgVmFsdWUgOiAwLjE0MDQ1ICAgICAgICAgXG4gICAgICAgICBOZWcgUHJlZCBWYWx1ZSA6IDAuOTYzODAgICAgICAgICBcbiAgICAgICAgICAgICBQcmV2YWxlbmNlIDogMC4wODQ3OCAgICAgICAgIFxuICAgICAgICAgRGV0ZWN0aW9uIFJhdGUgOiAwLjA2NTQ1ICAgICAgICAgXG4gICBEZXRlY3Rpb24gUHJldmFsZW5jZSA6IDAuNDY1OTcgICAgICAgICBcbiAgICAgIEJhbGFuY2VkIEFjY3VyYWN5IDogMC42NjcxNyAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgJ1Bvc2l0aXZlJyBDbGFzcyA6IFRSVUUgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIn0= -->
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction TRUE FALSE
+     TRUE   325  1989
+     FALSE   96  2556
+                                          
+               Accuracy : 0.5801          
+                 95% CI : (0.5663, 0.5939)
+    No Information Rate : 0.9152          
+    P-Value [Acc &gt; NIR] : 1               
+                                          
+                  Kappa : 0.11            
+ Mcnemar's Test P-Value : &lt;2e-16          
+                                          
+            Sensitivity : 0.77197         
+            Specificity : 0.56238         
+         Pos Pred Value : 0.14045         
+         Neg Pred Value : 0.96380         
+             Prevalence : 0.08478         
+         Detection Rate : 0.06545         
+   Detection Prevalence : 0.46597         
+      Balanced Accuracy : 0.66717         
+                                          
+       'Positive' Class : TRUE            
+                                          </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -2940,6 +3062,19 @@ confusionMatrix(rf_prediction, testing$booking_event)</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudmFySW1wKHJmX21vZGVsLCBzY2FsZSA9IEZBTFNFKVxuYGBgIn0= -->
 <pre class="r"><code>varImp(rf_model, scale = FALSE)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoicmFuZ2VyIHZhcmlhYmxlIGltcG9ydGFuY2VcblxuICAgICAgICAgICAgICAgICAgICAgIE92ZXJhbGxcbnNhbWVfcGFydG5lciAgICAgICAgIDAuMDQxNTQ4XG5uZXdfbGVhZF9wYXJ0bmVyICAgICAwLjAzNjk5MFxudHNfbGVhZCAgICAgICAgICAgICAgMC4wMjE0MjRcbnRzX3JlZmVycmFsICAgICAgICAgIDAuMDIwNzI1XG5jaGVja19vdXRfZGlmZiAgICAgICAwLjAyMDIwOVxubmV3X3JlZmVycmFsX3BhcnRuZXIgMC4wMjAwNzlcbmNoZWNrX2luX2RpZmYgICAgICAgIDAuMDE1ODI0XG50aW1lX2RpZmYgICAgICAgICAgICAwLjAwMTUzOVxuIn0= -->
+<pre><code>ranger variable importance
+
+                      Overall
+same_partner         0.041548
+new_lead_partner     0.036990
+ts_lead              0.021424
+ts_referral          0.020725
+check_out_diff       0.020209
+new_referral_partner 0.020079
+check_in_diff        0.015824
+time_diff            0.001539</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
