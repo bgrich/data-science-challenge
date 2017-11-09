@@ -1792,7 +1792,10 @@ modified_data_for_model <- data_for_model %>%
   left_join(rename_referral_partner, by = "partner_code_referral") %>% 
   left_join(rename_lead_partner, by = "rate_partner_lead") %>% 
   select(-partner_code_referral, -rate_partner_lead) %>% 
-  mutate(same_partner = (new_referral_partner == new_lead_partner))
+  mutate(same_partner = (new_referral_partner == new_lead_partner)) %>% 
+  mutate(new_referral_partner = factor(new_referral_partner)) %>% 
+  mutate(new_lead_partner = factor(new_lead_partner)) %>% 
+  mutate(same_partner = factor(same_partner, levels = c("TRUE", "FALSE")))
 ```
 
 
@@ -1913,7 +1916,7 @@ varImp(rf_model_under, scale = FALSE)
 ```{r}
 set.seed(85) 
 
-rf_model_normal <- train(x = train_independent, 
+rf_model_over <- train(x = train_independent, 
                   y = train_dependent$booking_event, 
       method = "ranger", 
       trControl = trainControl(method = "repeatedcv", 
