@@ -1902,7 +1902,7 @@ statistics.
 ```{r}
 rf_prediction_under <- predict(rf_model_under, testing[, -1])
 
-cm_under <- confusionMatrix(rf_prediction_normal, testing$booking_event)
+cm_under <- confusionMatrix(rf_prediction_under, testing$booking_event)
 ```
 
 #### Variable Importance
@@ -2039,6 +2039,7 @@ comparison <- bind_rows(cm_normal$byClass[column_names],
                              "Under", 
                              "Over", 
                              "ROSE", 
-                             "SMOTE")))
+                             "SMOTE"))) %>% 
+  select(model, everything())
 ```
 
