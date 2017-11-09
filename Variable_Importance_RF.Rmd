@@ -2458,4 +2458,10 @@ Based on the many different models run, the under-sampled random forest
 provided the highest sensitivity and accuracy in identifying booking events. 
 From the trained model, I can extract the importance of the different variables 
 involved. The two variables that appear to have the largest effect on the 
-models are the 
+models are the `same_partner` and `new_lead_partner` variables. By removing both 
+of those variables from the model, the sensitivity dropped from 75% to 60% 
+while keeping the same level of specificity. Looking at the comparison of the 
+different models, it looks like overall removing the `new_lead_partner` variable 
+had the single largest effect on the sensitivity. These variables are likely 
+highly correlated which is why the big drop does not occur until both are 
+removed from the model.
