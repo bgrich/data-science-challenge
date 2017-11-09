@@ -2251,6 +2251,55 @@ rf_prediction_var_remove_3 <- predict(var_remove_model_3, testing[, -1])
 cm_var_remove_3 <- confusionMatrix(rf_prediction_var_remove_3, testing$booking_event)
 ```
 
+### Removing `same_partner`, `new_lead_partner`
+
+```{r}
+var_remove <- modified_data_for_model %>% 
+  select(-same_partner, -new_lead_partner)
+
+set.seed(85)
+
+train_index <- createDataPartition(var_remove$booking_event, 
+                            p = 0.8,
+                            list = FALSE, 
+                            times = 1)
+
+training <- var_remove[train_index, ]
+
+testing <- var_remove[-train_index, ]
+
+train_independent <- training %>% 
+  select(-booking_event) %>% 
+  as.data.frame()
+
+train_dependent <- training %>% 
+  select(booking_event)
+```
+
+```{r}
+set.seed(85) 
+
+var_remove_model_4 <- train(x = train_independent, 
+                  y = train_dependent$booking_event, 
+      method = "ranger", 
+      trControl = trainControl(method = "repeatedcv", 
+                               number = 10,
+                               repeats = 10,
+                               sampling = "down"), 
+      importance = "permutation", 
+      metric = "Kappa")
+```
+
+```{r}
+var_remove_model_4
+```
+
+```{r}
+rf_prediction_var_remove_4 <- predict(var_remove_model_4, testing[, -1])
+
+cm_var_remove_4 <- confusionMatrix(rf_prediction_var_remove_4, testing$booking_event)
+```
+
 ## Comparing Confusion Matricies
 
 ```{r}
@@ -2259,11 +2308,13 @@ column_names <- c("Sensitivity", "Specificity", "Precision", "Balanced Accuracy"
 comparison_var_remove <- bind_rows(cm_under$byClass[column_names], 
                         cm_var_remove_1$byClass[column_names],
                         cm_var_remove_2$byClass[column_names], 
-                        cm_var_remove_3$byClass[column_names]) %>% 
+                        cm_var_remove_3$byClass[column_names], 
+                        cm_var_remove_4$byClass[column_names]) %>% 
   bind_cols(tibble(model = c("Under", 
                              "Var Remove 1", 
                              "Var Remove 2", 
-                             "Var Remove 3"))) %>% 
+                             "Var Remove 3", 
+                             "Var Remove 4"))) %>% 
   select(model, everything())
 ```
 
@@ -2287,3 +2338,14 @@ cm_var_remove_2
 cm_var_remove_3
 ```
 
+```{r}
+cm_var_remove_4
+```
+
+# Conclusion
+
+Based on the many different models run, the under-sampled random forest 
+provided the highest sensitivity and accuracy in identifying booking events. 
+From the trained model, I can extract the importance of the different variables 
+involved. The two variables that appear to have the largest effect on the 
+models are the 
