@@ -2271,6 +2271,19 @@ comparison_var_remove <- bind_rows(cm_under$byClass[column_names],
 comparison_var_remove
 ```
 
+```{r}
+cm_under
+```
 
+```{r}
+cm_var_remove_1
+```
 
+```{r}
+cm_var_remove_2
+```
+
+```{r}
+cm_var_remove_3
+```
 
