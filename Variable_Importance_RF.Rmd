@@ -2051,6 +2051,12 @@ comparison <- bind_rows(cm_normal$byClass[column_names],
 comparison
 ```
 
+The under-sampled model gives the best sensitivity, though it does have a 
+large number of false positives. The model using ROSE for sampling gives a 
+similar sensitivity with a slightly btter specificity. However, due to the 
+long run time with the ROSE random forest model, I will stick with the slightly 
+poorer under-sampled model.
+
 ```{r}
 cm_normal
 ```
