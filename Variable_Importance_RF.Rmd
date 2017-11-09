@@ -2077,3 +2077,200 @@ cm_rose
 cm_smote
 ```
 
+# Variable Importance with Under-Sampled RF Model
+
+Now I want to look at a few different measure of variable importance to finally 
+answer the question of which factor correlates the most the booking events.
+
+```{r}
+varImp(rf_model_under, scale = FALSE)
+```
+
+This first measure compares the accuracy of the original model with the 
+accuracy of the model when the variables are permuted. It appears that the 
+`same_partner` and `new_lead_partner` variables are the most important with 
+the `time_diff` variable being the least important.
+
+```{r}
+varImp(rf_model_under, useModel = FALSE, scale = FALSE)
+```
+
+The second measure examines the area under the ROC curve. Here we again have 
+the `same_partner` and `new_lead_partner` variables as the most important with 
+the `time_diff` variable now near the top.
+
+## Removing Low Importance Variables
+
+I'm now going to remove some of the low importance variables and see if we can 
+get a better trained model.
+
+### Keeping `same_partner`, `new_lead_partner` only
+
+```{r}
+var_remove <- modified_data_for_model %>% 
+  select(booking_event, same_partner, new_lead_partner)
+
+set.seed(85)
+
+train_index <- createDataPartition(var_remove$booking_event, 
+                            p = 0.8,
+                            list = FALSE, 
+                            times = 1)
+
+training <- var_remove[train_index, ]
+
+testing <- var_remove[-train_index, ]
+
+train_independent <- training %>% 
+  select(-booking_event) %>% 
+  as.data.frame()
+
+train_dependent <- training %>% 
+  select(booking_event)
+```
+
+```{r}
+set.seed(85) 
+
+var_remove_model_1 <- train(x = train_independent, 
+                  y = train_dependent$booking_event, 
+      method = "ranger", 
+      trControl = trainControl(method = "repeatedcv", 
+                               number = 10,
+                               repeats = 10,
+                               sampling = "down"), 
+      importance = "permutation", 
+      metric = "Kappa")
+```
+
+```{r}
+var_remove_model_1
+```
+
+```{r}
+rf_prediction_var_remove_1 <- predict(var_remove_model_1, testing[, -1])
+
+cm_var_remove_1 <- confusionMatrix(rf_prediction_var_remove_1, testing$booking_event)
+```
+
+### Keeping `same_partner`, `new_lead_partner`, `new_referral_partner`, `check_out_diff`
+
+```{r}
+var_remove <- modified_data_for_model %>% 
+  select(booking_event, same_partner, new_lead_partner, new_referral_partner, check_out_diff)
+
+set.seed(85)
+
+train_index <- createDataPartition(var_remove$booking_event, 
+                            p = 0.8,
+                            list = FALSE, 
+                            times = 1)
+
+training <- var_remove[train_index, ]
+
+testing <- var_remove[-train_index, ]
+
+train_independent <- training %>% 
+  select(-booking_event) %>% 
+  as.data.frame()
+
+train_dependent <- training %>% 
+  select(booking_event)
+```
+
+```{r}
+set.seed(85) 
+
+var_remove_model_2 <- train(x = train_independent, 
+                  y = train_dependent$booking_event, 
+      method = "ranger", 
+      trControl = trainControl(method = "repeatedcv", 
+                               number = 10,
+                               repeats = 10,
+                               sampling = "down"), 
+      importance = "permutation", 
+      metric = "Kappa")
+```
+
+```{r}
+var_remove_model_2
+```
+
+```{r}
+rf_prediction_var_remove_2 <- predict(var_remove_model_2, testing[, -1])
+
+cm_var_remove_2 <- confusionMatrix(rf_prediction_var_remove_2, testing$booking_event)
+```
+
+### Keeping `same_partner`, `new_lead_partner`, and `time_diff`
+
+```{r}
+var_remove <- modified_data_for_model %>% 
+  select(booking_event, same_partner, new_lead_partner, time_diff)
+
+set.seed(85)
+
+train_index <- createDataPartition(var_remove$booking_event, 
+                            p = 0.8,
+                            list = FALSE, 
+                            times = 1)
+
+training <- var_remove[train_index, ]
+
+testing <- var_remove[-train_index, ]
+
+train_independent <- training %>% 
+  select(-booking_event) %>% 
+  as.data.frame()
+
+train_dependent <- training %>% 
+  select(booking_event)
+```
+
+```{r}
+set.seed(85) 
+
+var_remove_model_3 <- train(x = train_independent, 
+                  y = train_dependent$booking_event, 
+      method = "ranger", 
+      trControl = trainControl(method = "repeatedcv", 
+                               number = 10,
+                               repeats = 10,
+                               sampling = "down"), 
+      importance = "permutation", 
+      metric = "Kappa")
+```
+
+```{r}
+var_remove_model_3
+```
+
+```{r}
+rf_prediction_var_remove_3 <- predict(var_remove_model_3, testing[, -1])
+
+cm_var_remove_3 <- confusionMatrix(rf_prediction_var_remove_3, testing$booking_event)
+```
+
+## Comparing Confusion Matricies
+
+```{r}
+column_names <- c("Sensitivity", "Specificity", "Precision", "Balanced Accuracy")
+
+comparison_var_remove <- bind_rows(cm_under$byClass[column_names], 
+                        cm_var_remove_1$byClass[column_names],
+                        cm_var_remove_2$byClass[column_names], 
+                        cm_var_remove_3$byClass[column_names]) %>% 
+  bind_cols(tibble(model = c("Under", 
+                             "Var Remove 1", 
+                             "Var Remove 2", 
+                             "Var Remove 3"))) %>% 
+  select(model, everything())
+```
+
+```{r}
+comparison_var_remove
+```
+
+
+
+
