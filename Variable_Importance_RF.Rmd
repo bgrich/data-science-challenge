@@ -2027,6 +2027,10 @@ varImp(rf_model_smote, scale = FALSE)
 
 ### Comparison of Results
 
+Here, I take all of the confusion matrix information and put it into a single 
+data frame for easy comparison. The confusion matricies with summary statistics 
+will be reproduced below.
+
 ```{r}
 column_names <- c("Sensitivity", "Specificity", "Precision", "Balanced Accuracy")
 
@@ -2041,5 +2045,29 @@ comparison <- bind_rows(cm_normal$byClass[column_names],
                              "ROSE", 
                              "SMOTE"))) %>% 
   select(model, everything())
+```
+
+```{r}
+comparison
+```
+
+```{r}
+cm_normal
+```
+
+```{r}
+cm_under
+```
+
+```{r}
+cm_over
+```
+
+```{r}
+cm_rose
+```
+
+```{r}
+cm_smote
 ```
 
