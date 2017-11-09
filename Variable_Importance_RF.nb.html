@@ -4217,25 +4217,19 @@ cm_var_remove_4 &lt;- confusionMatrix(rf_prediction_var_remove_4, testing$bookin
 <h3>Removing <code>same_partner</code></h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudmFyX3JlbW92ZSA8LSBtb2RpZmllZF9kYXRhX2Zvcl9tb2RlbCAlPiUgXG4gIHNlbGVjdCgtc2FtZV9wYXJ0bmVyKVxuXG5zZXQuc2VlZCg4NSlcblxudHJhaW5faW5kZXggPC0gY3JlYXRlRGF0YVBhcnRpdGlvbih2YXJfcmVtb3ZlJGJvb2tpbmdfZXZlbnQsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIHAgPSAwLjgsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgbGlzdCA9IEZBTFNFLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICB0aW1lcyA9IDEpXG5cbnRyYWluaW5nIDwtIHZhcl9yZW1vdmVbdHJhaW5faW5kZXgsIF1cblxudGVzdGluZyA8LSB2YXJfcmVtb3ZlWy10cmFpbl9pbmRleCwgXVxuXG50cmFpbl9pbmRlcGVuZGVudCA8LSB0cmFpbmluZyAlPiUgXG4gIHNlbGVjdCgtYm9va2luZ19ldmVudCkgJT4lIFxuICBhcy5kYXRhLmZyYW1lKClcblxudHJhaW5fZGVwZW5kZW50IDwtIHRyYWluaW5nICU+JSBcbiAgc2VsZWN0KGJvb2tpbmdfZXZlbnQpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudmFyX3JlbW92ZSA8LSBtb2RpZmllZF9kYXRhX2Zvcl9tb2RlbCAlPiUgXG4gIHNlbGVjdCgtc2FtZV9wYXJ0bmVyKVxuc2V0LnNlZWQoODUpXG50cmFpbl9pbmRleCA8LSBjcmVhdGVEYXRhUGFydGl0aW9uKHZhcl9yZW1vdmUkYm9va2luZ19ldmVudCwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgcCA9IDAuOCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBsaXN0ID0gRkFMU0UsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRpbWVzID0gMSlcbnRyYWluaW5nIDwtIHZhcl9yZW1vdmVbdHJhaW5faW5kZXgsIF1cbnRlc3RpbmcgPC0gdmFyX3JlbW92ZVstdHJhaW5faW5kZXgsIF1cbnRyYWluX2luZGVwZW5kZW50IDwtIHRyYWluaW5nICU+JSBcbiAgc2VsZWN0KC1ib29raW5nX2V2ZW50KSAlPiUgXG4gIGFzLmRhdGEuZnJhbWUoKVxudHJhaW5fZGVwZW5kZW50IDwtIHRyYWluaW5nICU+JSBcbiAgc2VsZWN0KGJvb2tpbmdfZXZlbnQpXG5gYGAifQ== -->
 <pre class="r"><code>var_remove &lt;- modified_data_for_model %&gt;% 
   select(-same_partner)
-
 set.seed(85)
-
 train_index &lt;- createDataPartition(var_remove$booking_event, 
                             p = 0.8,
                             list = FALSE, 
                             times = 1)
-
 training &lt;- var_remove[train_index, ]
-
 testing &lt;- var_remove[-train_index, ]
-
 train_independent &lt;- training %&gt;% 
   select(-booking_event) %&gt;% 
   as.data.frame()
-
 train_dependent &lt;- training %&gt;% 
   select(booking_event)</code></pre>
 <!-- rnb-source-end -->
@@ -4243,9 +4237,8 @@ train_dependent &lt;- training %&gt;%
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoODUpIFxuXG52YXJfcmVtb3ZlX21vZGVsXzUgPC0gdHJhaW4oeCA9IHRyYWluX2luZGVwZW5kZW50LCBcbiAgICAgICAgICAgICAgICAgIHkgPSB0cmFpbl9kZXBlbmRlbnQkYm9va2luZ19ldmVudCwgXG4gICAgICBtZXRob2QgPSBcInJhbmdlclwiLCBcbiAgICAgIHRyQ29udHJvbCA9IHRyYWluQ29udHJvbChtZXRob2QgPSBcInJlcGVhdGVkY3ZcIiwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbnVtYmVyID0gMTAsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVwZWF0cyA9IDEwLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNhbXBsaW5nID0gXCJkb3duXCIpLCBcbiAgICAgIGltcG9ydGFuY2UgPSBcInBlcm11dGF0aW9uXCIsIFxuICAgICAgbWV0cmljID0gXCJLYXBwYVwiKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoODUpIFxudmFyX3JlbW92ZV9tb2RlbF81IDwtIHRyYWluKHggPSB0cmFpbl9pbmRlcGVuZGVudCwgXG4gICAgICAgICAgICAgICAgICB5ID0gdHJhaW5fZGVwZW5kZW50JGJvb2tpbmdfZXZlbnQsIFxuICAgICAgbWV0aG9kID0gXCJyYW5nZXJcIiwgXG4gICAgICB0ckNvbnRyb2wgPSB0cmFpbkNvbnRyb2wobWV0aG9kID0gXCJyZXBlYXRlZGN2XCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG51bWJlciA9IDEwLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlcGVhdHMgPSAxMCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzYW1wbGluZyA9IFwiZG93blwiKSwgXG4gICAgICBpbXBvcnRhbmNlID0gXCJwZXJtdXRhdGlvblwiLCBcbiAgICAgIG1ldHJpYyA9IFwiS2FwcGFcIilcbmBgYCJ9 -->
 <pre class="r"><code>set.seed(85) 
-
 var_remove_model_5 &lt;- train(x = train_independent, 
                   y = train_dependent$booking_event, 
       method = &quot;ranger&quot;, 
@@ -4263,13 +4256,37 @@ var_remove_model_5 &lt;- train(x = train_independent,
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudmFyX3JlbW92ZV9tb2RlbF81XG5gYGAifQ== -->
 <pre class="r"><code>var_remove_model_5</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmFuZG9tIEZvcmVzdCBcblxuMTk4NjUgc2FtcGxlc1xuICAgIDcgcHJlZGljdG9yXG4gICAgMiBjbGFzc2VzOiAnVFJVRScsICdGQUxTRScgXG5cbk5vIHByZS1wcm9jZXNzaW5nXG5SZXNhbXBsaW5nOiBDcm9zcy1WYWxpZGF0ZWQgKDEwIGZvbGQsIHJlcGVhdGVkIDEwIHRpbWVzKSBcblN1bW1hcnkgb2Ygc2FtcGxlIHNpemVzOiAxNzg3OSwgMTc4NzgsIDE3ODc5LCAxNzg3OCwgMTc4NzksIDE3ODc4LCAuLi4gXG5BZGR0aW9uYWwgc2FtcGxpbmcgdXNpbmcgZG93bi1zYW1wbGluZ1xuXG5SZXNhbXBsaW5nIHJlc3VsdHMgYWNyb3NzIHR1bmluZyBwYXJhbWV0ZXJzOlxuXG4gIG10cnkgIHNwbGl0cnVsZSAgIEFjY3VyYWN5ICAgS2FwcGEgICAgIFxuICAyICAgICBnaW5pICAgICAgICAwLjU5MDY4NjcgIDAuMDkxMjg2NzhcbiAgMiAgICAgZXh0cmF0cmVlcyAgMC41Nzk2MTY4ICAwLjEwMTkyMTY5XG4gIDQgICAgIGdpbmkgICAgICAgIDAuNTg5NzIwNSAgMC4wODY4NjM1OVxuICA0ICAgICBleHRyYXRyZWVzICAwLjYwNjMzNzYgIDAuMDk3MjkzMDNcbiAgNyAgICAgZ2luaSAgICAgICAgMC41ODk4MjE2ICAwLjA4NzM3MTgwXG4gIDcgICAgIGV4dHJhdHJlZXMgIDAuNjA0ODA3MiAgMC4wOTY3MTIzN1xuXG5LYXBwYSB3YXMgdXNlZCB0byBzZWxlY3QgdGhlIG9wdGltYWwgbW9kZWwgdXNpbmcgIHRoZSBsYXJnZXN0IHZhbHVlLlxuVGhlIGZpbmFsIHZhbHVlcyB1c2VkIGZvciB0aGUgbW9kZWwgd2VyZSBtdHJ5ID0gMiBhbmQgc3BsaXRydWxlID0gZXh0cmF0cmVlcy5cbiJ9 -->
+<pre><code>Random Forest 
+
+19865 samples
+    7 predictor
+    2 classes: 'TRUE', 'FALSE' 
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 10 times) 
+Summary of sample sizes: 17879, 17878, 17879, 17878, 17879, 17878, ... 
+Addtional sampling using down-sampling
+
+Resampling results across tuning parameters:
+
+  mtry  splitrule   Accuracy   Kappa     
+  2     gini        0.5906867  0.09128678
+  2     extratrees  0.5796168  0.10192169
+  4     gini        0.5897205  0.08686359
+  4     extratrees  0.6063376  0.09729303
+  7     gini        0.5898216  0.08737180
+  7     extratrees  0.6048072  0.09671237
+
+Kappa was used to select the optimal model using  the largest value.
+The final values used for the model were mtry = 2 and splitrule = extratrees.</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmZfcHJlZGljdGlvbl92YXJfcmVtb3ZlXzUgPC0gcHJlZGljdCh2YXJfcmVtb3ZlX21vZGVsXzUsIHRlc3RpbmdbLCAtMV0pXG5cbmNtX3Zhcl9yZW1vdmVfNSA8LSBjb25mdXNpb25NYXRyaXgocmZfcHJlZGljdGlvbl92YXJfcmVtb3ZlXzUsIHRlc3RpbmckYm9va2luZ19ldmVudClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmZfcHJlZGljdGlvbl92YXJfcmVtb3ZlXzUgPC0gcHJlZGljdCh2YXJfcmVtb3ZlX21vZGVsXzUsIHRlc3RpbmdbLCAtMV0pXG5jbV92YXJfcmVtb3ZlXzUgPC0gY29uZnVzaW9uTWF0cml4KHJmX3ByZWRpY3Rpb25fdmFyX3JlbW92ZV81LCB0ZXN0aW5nJGJvb2tpbmdfZXZlbnQpXG5gYGAifQ== -->
 <pre class="r"><code>rf_prediction_var_remove_5 &lt;- predict(var_remove_model_5, testing[, -1])
-
 cm_var_remove_5 &lt;- confusionMatrix(rf_prediction_var_remove_5, testing$booking_event)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -4279,25 +4296,19 @@ cm_var_remove_5 &lt;- confusionMatrix(rf_prediction_var_remove_5, testing$bookin
 <h3>Removing <code>new_lead_partner</code></h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudmFyX3JlbW92ZSA8LSBtb2RpZmllZF9kYXRhX2Zvcl9tb2RlbCAlPiUgXG4gIHNlbGVjdCgtbmV3X2xlYWRfcGFydG5lcilcblxuc2V0LnNlZWQoODUpXG5cbnRyYWluX2luZGV4IDwtIGNyZWF0ZURhdGFQYXJ0aXRpb24odmFyX3JlbW92ZSRib29raW5nX2V2ZW50LCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBwID0gMC44LFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxpc3QgPSBGQUxTRSwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgdGltZXMgPSAxKVxuXG50cmFpbmluZyA8LSB2YXJfcmVtb3ZlW3RyYWluX2luZGV4LCBdXG5cbnRlc3RpbmcgPC0gdmFyX3JlbW92ZVstdHJhaW5faW5kZXgsIF1cblxudHJhaW5faW5kZXBlbmRlbnQgPC0gdHJhaW5pbmcgJT4lIFxuICBzZWxlY3QoLWJvb2tpbmdfZXZlbnQpICU+JSBcbiAgYXMuZGF0YS5mcmFtZSgpXG5cbnRyYWluX2RlcGVuZGVudCA8LSB0cmFpbmluZyAlPiUgXG4gIHNlbGVjdChib29raW5nX2V2ZW50KVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudmFyX3JlbW92ZSA8LSBtb2RpZmllZF9kYXRhX2Zvcl9tb2RlbCAlPiUgXG4gIHNlbGVjdCgtbmV3X2xlYWRfcGFydG5lcilcbnNldC5zZWVkKDg1KVxudHJhaW5faW5kZXggPC0gY3JlYXRlRGF0YVBhcnRpdGlvbih2YXJfcmVtb3ZlJGJvb2tpbmdfZXZlbnQsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIHAgPSAwLjgsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgbGlzdCA9IEZBTFNFLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICB0aW1lcyA9IDEpXG50cmFpbmluZyA8LSB2YXJfcmVtb3ZlW3RyYWluX2luZGV4LCBdXG50ZXN0aW5nIDwtIHZhcl9yZW1vdmVbLXRyYWluX2luZGV4LCBdXG50cmFpbl9pbmRlcGVuZGVudCA8LSB0cmFpbmluZyAlPiUgXG4gIHNlbGVjdCgtYm9va2luZ19ldmVudCkgJT4lIFxuICBhcy5kYXRhLmZyYW1lKClcbnRyYWluX2RlcGVuZGVudCA8LSB0cmFpbmluZyAlPiUgXG4gIHNlbGVjdChib29raW5nX2V2ZW50KVxuYGBgIn0= -->
 <pre class="r"><code>var_remove &lt;- modified_data_for_model %&gt;% 
   select(-new_lead_partner)
-
 set.seed(85)
-
 train_index &lt;- createDataPartition(var_remove$booking_event, 
                             p = 0.8,
                             list = FALSE, 
                             times = 1)
-
 training &lt;- var_remove[train_index, ]
-
 testing &lt;- var_remove[-train_index, ]
-
 train_independent &lt;- training %&gt;% 
   select(-booking_event) %&gt;% 
   as.data.frame()
-
 train_dependent &lt;- training %&gt;% 
   select(booking_event)</code></pre>
 <!-- rnb-source-end -->
@@ -4305,9 +4316,8 @@ train_dependent &lt;- training %&gt;%
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoODUpIFxuXG52YXJfcmVtb3ZlX21vZGVsXzYgPC0gdHJhaW4oeCA9IHRyYWluX2luZGVwZW5kZW50LCBcbiAgICAgICAgICAgICAgICAgIHkgPSB0cmFpbl9kZXBlbmRlbnQkYm9va2luZ19ldmVudCwgXG4gICAgICBtZXRob2QgPSBcInJhbmdlclwiLCBcbiAgICAgIHRyQ29udHJvbCA9IHRyYWluQ29udHJvbChtZXRob2QgPSBcInJlcGVhdGVkY3ZcIiwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbnVtYmVyID0gMTAsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVwZWF0cyA9IDEwLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNhbXBsaW5nID0gXCJkb3duXCIpLCBcbiAgICAgIGltcG9ydGFuY2UgPSBcInBlcm11dGF0aW9uXCIsIFxuICAgICAgbWV0cmljID0gXCJLYXBwYVwiKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoODUpIFxudmFyX3JlbW92ZV9tb2RlbF82IDwtIHRyYWluKHggPSB0cmFpbl9pbmRlcGVuZGVudCwgXG4gICAgICAgICAgICAgICAgICB5ID0gdHJhaW5fZGVwZW5kZW50JGJvb2tpbmdfZXZlbnQsIFxuICAgICAgbWV0aG9kID0gXCJyYW5nZXJcIiwgXG4gICAgICB0ckNvbnRyb2wgPSB0cmFpbkNvbnRyb2wobWV0aG9kID0gXCJyZXBlYXRlZGN2XCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG51bWJlciA9IDEwLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlcGVhdHMgPSAxMCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzYW1wbGluZyA9IFwiZG93blwiKSwgXG4gICAgICBpbXBvcnRhbmNlID0gXCJwZXJtdXRhdGlvblwiLCBcbiAgICAgIG1ldHJpYyA9IFwiS2FwcGFcIilcbmBgYCJ9 -->
 <pre class="r"><code>set.seed(85) 
-
 var_remove_model_6 &lt;- train(x = train_independent, 
                   y = train_dependent$booking_event, 
       method = &quot;ranger&quot;, 
@@ -4325,13 +4335,37 @@ var_remove_model_6 &lt;- train(x = train_independent,
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudmFyX3JlbW92ZV9tb2RlbF82XG5gYGAifQ== -->
 <pre class="r"><code>var_remove_model_6</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmFuZG9tIEZvcmVzdCBcblxuMTk4NjUgc2FtcGxlc1xuICAgIDcgcHJlZGljdG9yXG4gICAgMiBjbGFzc2VzOiAnVFJVRScsICdGQUxTRScgXG5cbk5vIHByZS1wcm9jZXNzaW5nXG5SZXNhbXBsaW5nOiBDcm9zcy1WYWxpZGF0ZWQgKDEwIGZvbGQsIHJlcGVhdGVkIDEwIHRpbWVzKSBcblN1bW1hcnkgb2Ygc2FtcGxlIHNpemVzOiAxNzg3OSwgMTc4NzgsIDE3ODc5LCAxNzg3OCwgMTc4NzksIDE3ODc4LCAuLi4gXG5BZGR0aW9uYWwgc2FtcGxpbmcgdXNpbmcgZG93bi1zYW1wbGluZ1xuXG5SZXNhbXBsaW5nIHJlc3VsdHMgYWNyb3NzIHR1bmluZyBwYXJhbWV0ZXJzOlxuXG4gIG10cnkgIHNwbGl0cnVsZSAgIEFjY3VyYWN5ICAgS2FwcGEgICAgIFxuICAyICAgICBnaW5pICAgICAgICAwLjYxMDYwMTQgIDAuMTA3NjQ1ODJcbiAgMiAgICAgZXh0cmF0cmVlcyAgMC41Nzk0ODA4ICAwLjEwNTAxNDQ4XG4gIDQgICAgIGdpbmkgICAgICAgIDAuNjExODY5MyAgMC4xMDI1ODgyM1xuICA0ICAgICBleHRyYXRyZWVzICAwLjYxMDE0NzkgIDAuMDk4Mjg3OTdcbiAgNyAgICAgZ2luaSAgICAgICAgMC42MDkxODcyICAwLjEwMTAwODY0XG4gIDcgICAgIGV4dHJhdHJlZXMgIDAuNjEwNDUwNSAgMC4wOTc1MjY5MVxuXG5LYXBwYSB3YXMgdXNlZCB0byBzZWxlY3QgdGhlIG9wdGltYWwgbW9kZWwgdXNpbmcgIHRoZSBsYXJnZXN0IHZhbHVlLlxuVGhlIGZpbmFsIHZhbHVlcyB1c2VkIGZvciB0aGUgbW9kZWwgd2VyZSBtdHJ5ID0gMiBhbmQgc3BsaXRydWxlID0gZ2luaS5cbiJ9 -->
+<pre><code>Random Forest 
+
+19865 samples
+    7 predictor
+    2 classes: 'TRUE', 'FALSE' 
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 10 times) 
+Summary of sample sizes: 17879, 17878, 17879, 17878, 17879, 17878, ... 
+Addtional sampling using down-sampling
+
+Resampling results across tuning parameters:
+
+  mtry  splitrule   Accuracy   Kappa     
+  2     gini        0.6106014  0.10764582
+  2     extratrees  0.5794808  0.10501448
+  4     gini        0.6118693  0.10258823
+  4     extratrees  0.6101479  0.09828797
+  7     gini        0.6091872  0.10100864
+  7     extratrees  0.6104505  0.09752691
+
+Kappa was used to select the optimal model using  the largest value.
+The final values used for the model were mtry = 2 and splitrule = gini.</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmZfcHJlZGljdGlvbl92YXJfcmVtb3ZlXzYgPC0gcHJlZGljdCh2YXJfcmVtb3ZlX21vZGVsXzYsIHRlc3RpbmdbLCAtMV0pXG5cbmNtX3Zhcl9yZW1vdmVfNiA8LSBjb25mdXNpb25NYXRyaXgocmZfcHJlZGljdGlvbl92YXJfcmVtb3ZlXzYsIHRlc3RpbmckYm9va2luZ19ldmVudClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmZfcHJlZGljdGlvbl92YXJfcmVtb3ZlXzYgPC0gcHJlZGljdCh2YXJfcmVtb3ZlX21vZGVsXzYsIHRlc3RpbmdbLCAtMV0pXG5jbV92YXJfcmVtb3ZlXzYgPC0gY29uZnVzaW9uTWF0cml4KHJmX3ByZWRpY3Rpb25fdmFyX3JlbW92ZV82LCB0ZXN0aW5nJGJvb2tpbmdfZXZlbnQpXG5gYGAifQ== -->
 <pre class="r"><code>rf_prediction_var_remove_6 &lt;- predict(var_remove_model_6, testing[, -1])
-
 cm_var_remove_6 &lt;- confusionMatrix(rf_prediction_var_remove_6, testing$booking_event)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -4342,18 +4376,22 @@ cm_var_remove_6 &lt;- confusionMatrix(rf_prediction_var_remove_6, testing$bookin
 <h2>Comparing Confusion Matricies</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sdW1uX25hbWVzIDwtIGMoXCJTZW5zaXRpdml0eVwiLCBcIlNwZWNpZmljaXR5XCIsIFwiUHJlY2lzaW9uXCIsIFwiQmFsYW5jZWQgQWNjdXJhY3lcIilcbmNvbXBhcmlzb25fdmFyX3JlbW92ZSA8LSBiaW5kX3Jvd3MoY21fdW5kZXIkYnlDbGFzc1tjb2x1bW5fbmFtZXNdLCBcbiAgICAgICAgICAgICAgICAgICAgICAgIGNtX3Zhcl9yZW1vdmVfMSRieUNsYXNzW2NvbHVtbl9uYW1lc10sXG4gICAgICAgICAgICAgICAgICAgICAgICBjbV92YXJfcmVtb3ZlXzIkYnlDbGFzc1tjb2x1bW5fbmFtZXNdLCBcbiAgICAgICAgICAgICAgICAgICAgICAgIGNtX3Zhcl9yZW1vdmVfMyRieUNsYXNzW2NvbHVtbl9uYW1lc10sIFxuICAgICAgICAgICAgICAgICAgICAgICAgY21fdmFyX3JlbW92ZV80JGJ5Q2xhc3NbY29sdW1uX25hbWVzXSkgJT4lIFxuICBiaW5kX2NvbHModGliYmxlKG1vZGVsID0gYyhcIlVuZGVyXCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcIlZhciBSZW1vdmUgMVwiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJWYXIgUmVtb3ZlIDJcIiwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiVmFyIFJlbW92ZSAzXCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcIlZhciBSZW1vdmUgNFwiKSkpICU+JSBcbiAgc2VsZWN0KG1vZGVsLCBldmVyeXRoaW5nKCkpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sdW1uX25hbWVzIDwtIGMoXCJTZW5zaXRpdml0eVwiLCBcIlNwZWNpZmljaXR5XCIsIFwiUHJlY2lzaW9uXCIsIFwiQmFsYW5jZWQgQWNjdXJhY3lcIilcbmNvbXBhcmlzb25fdmFyX3JlbW92ZSA8LSBiaW5kX3Jvd3MoY21fdW5kZXIkYnlDbGFzc1tjb2x1bW5fbmFtZXNdLCBcbiAgICAgICAgICAgICAgICAgICAgICAgIGNtX3Zhcl9yZW1vdmVfMSRieUNsYXNzW2NvbHVtbl9uYW1lc10sXG4gICAgICAgICAgICAgICAgICAgICAgICBjbV92YXJfcmVtb3ZlXzIkYnlDbGFzc1tjb2x1bW5fbmFtZXNdLCBcbiAgICAgICAgICAgICAgICAgICAgICAgIGNtX3Zhcl9yZW1vdmVfMyRieUNsYXNzW2NvbHVtbl9uYW1lc10sIFxuICAgICAgICAgICAgICAgICAgICAgICAgY21fdmFyX3JlbW92ZV80JGJ5Q2xhc3NbY29sdW1uX25hbWVzXSxcbiAgICAgICAgICAgICAgICAgICAgICAgIGNtX3Zhcl9yZW1vdmVfNSRieUNsYXNzW2NvbHVtbl9uYW1lc10sIFxuICAgICAgICAgICAgICAgICAgICAgICAgY21fdmFyX3JlbW92ZV82JGJ5Q2xhc3NbY29sdW1uX25hbWVzXSkgJT4lIFxuICBiaW5kX2NvbHModGliYmxlKG1vZGVsID0gYyhcIlVuZGVyXCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcIlZhciBSZW1vdmUgMVwiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJWYXIgUmVtb3ZlIDJcIiwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiVmFyIFJlbW92ZSAzXCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcIlZhciBSZW1vdmUgNFwiLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcIlZhciBSZW1vdmUgNVwiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXCJWYXIgUmVtb3ZlIDZcIikpKSAlPiUgXG4gIHNlbGVjdChtb2RlbCwgZXZlcnl0aGluZygpKVxuYGBgIn0= -->
 <pre class="r"><code>column_names &lt;- c(&quot;Sensitivity&quot;, &quot;Specificity&quot;, &quot;Precision&quot;, &quot;Balanced Accuracy&quot;)
 comparison_var_remove &lt;- bind_rows(cm_under$byClass[column_names], 
                         cm_var_remove_1$byClass[column_names],
                         cm_var_remove_2$byClass[column_names], 
                         cm_var_remove_3$byClass[column_names], 
-                        cm_var_remove_4$byClass[column_names]) %&gt;% 
+                        cm_var_remove_4$byClass[column_names],
+                        cm_var_remove_5$byClass[column_names], 
+                        cm_var_remove_6$byClass[column_names]) %&gt;% 
   bind_cols(tibble(model = c(&quot;Under&quot;, 
                              &quot;Var Remove 1&quot;, 
                              &quot;Var Remove 2&quot;, 
                              &quot;Var Remove 3&quot;, 
-                             &quot;Var Remove 4&quot;))) %&gt;% 
+                             &quot;Var Remove 4&quot;,
+                             &quot;Var Remove 5&quot;, 
+                             &quot;Var Remove 6&quot;))) %&gt;% 
   select(model, everything())</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -4363,10 +4401,10 @@ comparison_var_remove &lt;- bind_rows(cm_under$byClass[column_names],
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29tcGFyaXNvbl92YXJfcmVtb3ZlXG5gYGAifQ== -->
 <pre class="r"><code>comparison_var_remove</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6NSwibnJvdyI6NX0sInJkZiI6Ikg0c0lBQUFBQUFBQUJndHlpVERpaXVCaVlHQmdZbUJtWVdKZ1lnWXlnVFFEQXlNREN3TW5pSzVnWUdBV0JqSllnVmdBVEVNa1dFUHpVbEtMb0J5ZXNNUWloYURVM1B5eVZBVkRMR0pHV01TTXNZaVpBUGw4SU1QdFgwZ0ViVHBtUGQzK3RlZmt3NGFPQXZhdmZ1OExmaVg5RTg1L3ZINzNVN3VGQitEcUgzNkthOTVRZnNmK1hoNS8zdk9kamdpNlFYUWh4NWQxOW84RW1aWnVQZXdCVjMrdzY5a0RHOU5KOWdjT0xIUnRuMjFxZjJBNkY0UCtyYm4yQjA2VTZlMi9JMm0vZDBHODlpYnpXTGo2cDZ3UnM2MGpkOWsvZGZEZEc5UjN3LzZwWkRMcnVqKys5azlkem52ZXVydkYvdEdEZU5jcW94YTAwR05Oemtrc0xvYUdIRXlRS3lXeEpGRXZyU2d4TnhWZGVSNVFyQmc5b0hQelUxSnpvQnp1NE5TODRzeVN6TExNa2txNFVFRnFjbVphWmpKQ2lET2dDQ2hVbkptZkJ4VVFkRXJNU2N4TFRrMVJjRXhPTGkxS1RLNUVzNW16S0w5Y0QyWTdMeWc5TkFDSi8vLy8vd1pTLzlBVXMrY1hsQUROQmlwbEFxVU1OalQvTVJhQlBBa1dnQUJrU2Y3U1BKQTFLYnJKR2FWNTJicm1hRXA1b1d4V1ZEYklldWIvVUtQWW9FYXhwZWFsWithbHdvSXB0YWdvSDVZZVdYTVNrK0JoeGdmMEc5aHJlZ1ZGbVhrbHNGZ0FpaGJybGVTWEpNTFVjU1huNThCRXdKNW0rQWNBUnJoSDZpQURBQUE9In0= -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6NSwibnJvdyI6N30sInJkZiI6Ikg0c0lBQUFBQUFBQUJndHlpVERpaXVCaVlHQmdZbUJtWVdKZ1lnWXlnVFFEQXlNREN3TW5pSzVnWUdBV0JqSllnVmdBaU5taEVxeWhlU21wUlZBT1QxaGlrVUpRYW01K1dhcUNJUll4SXl4aXhsakVUTENJbVdJUk13UHkrVUNPc1g4aEViVHBtUFYwKzllZWt3OGJPZ3JZdi9xOUwvaVY5RTg0Ly9INjNVL3RGaDZ3ZjM2cTFybGVyTUgrbWVHZDNVQXB1UDZIbitLYU41VGZzYitYeDUvM2ZLY2pnbTRRWGNqeFpaMzlJMEdtcFZzUGU5Zy9uTHY4dEh1Vmp2MWpMUU1wcGFtMWNQMEh1NTQ5c0RHZFpIL2d3RUxYOXRtbTlnZW1jekhvMzVwcmYrQkVtZDcrTzVMMmV4ZkVhMjh5ajdVL3lPaDdabHYzRi91RHEvKzM4SEZsd3ZVL1pZMlliUjI1eS82cGcrL2VvTDRiOWs4bGsxblgvZkcxZitweTN2UFczUzMyang3RXUxWVp0ZGcvMlNMVW51d1JadjlrSFZ2V05wRUZhTEhFbXB5VFdGd01qU0dZSUZkS1lrbWlYbHBSWW00cXV2SThvQmhNT1N0TU1EYy9KVFVIeXVFT1RzMHJ6aXpKTE1zc3FZUUxGYVFtWjZabEppT0VPQU9LZ0VMRm1mbDVVQUZCcDhTY3hMemsxQlFGeCtUazBxTEU1RW8wbXptTDhzdjFZTGJ6Z3RKZEE1RDQvLy8vVHlEMUQwMHhlMzVCQ2RCc29GSW1VQXBrUS9NZll4SElrMkFCQ0VDV0ZDak5BMW1Ub3B1Y1VacVhyV3RvaUthV0Y4cG1SMkt6UXV4bi9nODFpdzFxRmx0cVhucG1YaW9zbkZLTGl2SmhDWjgxSnpFSkhtaDhRTStCL2FaWFVKU1pWd0tMQnFCb3NWNUpma2tpVEIxWGNuNE9UQVRzYTRaL0FDQ3lBYWlKQXdBQSJ9 -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["model"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Sensitivity"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Specificity"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Precision"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Balanced Accuracy"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"Under","2":"0.7529691","3":"0.5608361","4":"0.1370514","5":"0.6569026"},{"1":"Var Remove 1","2":"0.8527316","3":"0.4754675","4":"0.1308786","5":"0.6640996"},{"1":"Var Remove 2","2":"0.8432304","3":"0.4754675","4":"0.1296093","5":"0.6593490"},{"1":"Var Remove 3","2":"0.8527316","3":"0.4765677","4":"0.1311176","5":"0.6646496"},{"1":"Var Remove 4","2":"0.6152019","3":"0.5645765","4":"0.1157283","5":"0.5898892"}],"options":{"columns":{"min":{},"max":[10],"total":[5]},"rows":{"min":[10],"max":[10],"total":[5]},"pages":{}}}
+{"columns":[{"label":["model"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Sensitivity"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Specificity"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Precision"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Balanced Accuracy"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"Under","2":"0.7529691","3":"0.5608361","4":"0.1370514","5":"0.6569026"},{"1":"Var Remove 1","2":"0.8527316","3":"0.4754675","4":"0.1308786","5":"0.6640996"},{"1":"Var Remove 2","2":"0.8432304","3":"0.4754675","4":"0.1296093","5":"0.6593490"},{"1":"Var Remove 3","2":"0.8527316","3":"0.4765677","4":"0.1311176","5":"0.6646496"},{"1":"Var Remove 4","2":"0.6152019","3":"0.5645765","4":"0.1157283","5":"0.5898892"},{"1":"Var Remove 5","2":"0.7434679","3":"0.5504950","4":"0.1328523","5":"0.6469815"},{"1":"Var Remove 6","2":"0.6935867","3":"0.5988999","4":"0.1380615","5":"0.6462433"}],"options":{"columns":{"min":{},"max":[10],"total":[5]},"rows":{"min":[10],"max":[10],"total":[7]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-frame-end -->
@@ -4552,6 +4590,34 @@ Prediction TRUE FALSE
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY21fdmFyX3JlbW92ZV81XG5gYGAifQ== -->
 <pre class="r"><code>cm_var_remove_5</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiQ29uZnVzaW9uIE1hdHJpeCBhbmQgU3RhdGlzdGljc1xuXG4gICAgICAgICAgUmVmZXJlbmNlXG5QcmVkaWN0aW9uIFRSVUUgRkFMU0VcbiAgICAgVFJVRSAgIDMxMyAgMjA0M1xuICAgICBGQUxTRSAgMTA4ICAyNTAyXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgIEFjY3VyYWN5IDogMC41NjY5ICAgICAgICAgIFxuICAgICAgICAgICAgICAgICA5NSUgQ0kgOiAoMC41NTI5LCAwLjU4MDcpXG4gICAgTm8gSW5mb3JtYXRpb24gUmF0ZSA6IDAuOTE1MiAgICAgICAgICBcbiAgICBQLVZhbHVlIFtBY2MgPiBOSVJdIDogMSAgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgICAgICBLYXBwYSA6IDAuMDk1MyAgICAgICAgICBcbiBNY25lbWFyJ3MgVGVzdCBQLVZhbHVlIDogPDJlLTE2ICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICBTZW5zaXRpdml0eSA6IDAuNzQzNDcgICAgICAgICBcbiAgICAgICAgICAgIFNwZWNpZmljaXR5IDogMC41NTA1MCAgICAgICAgIFxuICAgICAgICAgUG9zIFByZWQgVmFsdWUgOiAwLjEzMjg1ICAgICAgICAgXG4gICAgICAgICBOZWcgUHJlZCBWYWx1ZSA6IDAuOTU4NjIgICAgICAgICBcbiAgICAgICAgICAgICBQcmV2YWxlbmNlIDogMC4wODQ3OCAgICAgICAgIFxuICAgICAgICAgRGV0ZWN0aW9uIFJhdGUgOiAwLjA2MzAzICAgICAgICAgXG4gICBEZXRlY3Rpb24gUHJldmFsZW5jZSA6IDAuNDc0NDMgICAgICAgICBcbiAgICAgIEJhbGFuY2VkIEFjY3VyYWN5IDogMC42NDY5OCAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgJ1Bvc2l0aXZlJyBDbGFzcyA6IFRSVUUgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIn0= -->
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction TRUE FALSE
+     TRUE   313  2043
+     FALSE  108  2502
+                                          
+               Accuracy : 0.5669          
+                 95% CI : (0.5529, 0.5807)
+    No Information Rate : 0.9152          
+    P-Value [Acc &gt; NIR] : 1               
+                                          
+                  Kappa : 0.0953          
+ Mcnemar's Test P-Value : &lt;2e-16          
+                                          
+            Sensitivity : 0.74347         
+            Specificity : 0.55050         
+         Pos Pred Value : 0.13285         
+         Neg Pred Value : 0.95862         
+             Prevalence : 0.08478         
+         Detection Rate : 0.06303         
+   Detection Prevalence : 0.47443         
+      Balanced Accuracy : 0.64698         
+                                          
+       'Positive' Class : TRUE            
+                                          </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -4559,6 +4625,34 @@ Prediction TRUE FALSE
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY21fdmFyX3JlbW92ZV82XG5gYGAifQ== -->
 <pre class="r"><code>cm_var_remove_6</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiQ29uZnVzaW9uIE1hdHJpeCBhbmQgU3RhdGlzdGljc1xuXG4gICAgICAgICAgUmVmZXJlbmNlXG5QcmVkaWN0aW9uIFRSVUUgRkFMU0VcbiAgICAgVFJVRSAgIDI5MiAgMTgyM1xuICAgICBGQUxTRSAgMTI5ICAyNzIyXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgIEFjY3VyYWN5IDogMC42MDY5ICAgICAgICAgIFxuICAgICAgICAgICAgICAgICA5NSUgQ0kgOiAoMC41OTMyLCAwLjYyMDUpXG4gICAgTm8gSW5mb3JtYXRpb24gUmF0ZSA6IDAuOTE1MiAgICAgICAgICBcbiAgICBQLVZhbHVlIFtBY2MgPiBOSVJdIDogMSAgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgICAgICBLYXBwYSA6IDAuMTAzNSAgICAgICAgICBcbiBNY25lbWFyJ3MgVGVzdCBQLVZhbHVlIDogPDJlLTE2ICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICBTZW5zaXRpdml0eSA6IDAuNjkzNTkgICAgICAgICBcbiAgICAgICAgICAgIFNwZWNpZmljaXR5IDogMC41OTg5MCAgICAgICAgIFxuICAgICAgICAgUG9zIFByZWQgVmFsdWUgOiAwLjEzODA2ICAgICAgICAgXG4gICAgICAgICBOZWcgUHJlZCBWYWx1ZSA6IDAuOTU0NzUgICAgICAgICBcbiAgICAgICAgICAgICBQcmV2YWxlbmNlIDogMC4wODQ3OCAgICAgICAgIFxuICAgICAgICAgRGV0ZWN0aW9uIFJhdGUgOiAwLjA1ODgwICAgICAgICAgXG4gICBEZXRlY3Rpb24gUHJldmFsZW5jZSA6IDAuNDI1OTAgICAgICAgICBcbiAgICAgIEJhbGFuY2VkIEFjY3VyYWN5IDogMC42NDYyNCAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgJ1Bvc2l0aXZlJyBDbGFzcyA6IFRSVUUgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIn0= -->
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction TRUE FALSE
+     TRUE   292  1823
+     FALSE  129  2722
+                                          
+               Accuracy : 0.6069          
+                 95% CI : (0.5932, 0.6205)
+    No Information Rate : 0.9152          
+    P-Value [Acc &gt; NIR] : 1               
+                                          
+                  Kappa : 0.1035          
+ Mcnemar's Test P-Value : &lt;2e-16          
+                                          
+            Sensitivity : 0.69359         
+            Specificity : 0.59890         
+         Pos Pred Value : 0.13806         
+         Neg Pred Value : 0.95475         
+             Prevalence : 0.08478         
+         Detection Rate : 0.05880         
+   Detection Prevalence : 0.42590         
+      Balanced Accuracy : 0.64624         
+                                          
+       'Positive' Class : TRUE            
+                                          </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
