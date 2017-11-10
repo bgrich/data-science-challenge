@@ -264,9 +264,20 @@ make the models better.
 Of course, this is all dependent on the capabilities of the website and could 
 be further refined with discussions with the engineers. 
 
+# Further Work 
 
+In addition to the recommendations, there are few things that I think could 
+be a way forward from the data science side.
 
+First, there may be a better algorithm than the random forest model at 
+handling the unbalanced classification problem that this data set presents. 
+I would recommend trying a number of different models and comparing them to 
+the performance of the random forest to see if better accuracy and sensitivity 
+is possible with this data. 
 
-
-
-
+Another piece of further work would be finding a way to catgeorize the 
+`location_tid` and `udicode` variables for use within the model. In the 
+random forest models that I presented above, those two variables were excluded 
+due to the large number of categories present within the variables. Finding a 
+way to include them within the model could help to increase the sensitivity 
+of the model. 
