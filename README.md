@@ -1,7 +1,7 @@
 This repository contains Brian Richards' response to the Room Key Data Science 
 Challenge. The work contained in this repository is summarized in the 
 `Summary.nb.html` file. This file contains a description and links to the 
-other relevant files. 
+other relevant files along with highlights of the work and results. 
 
 All of the .nb.html files can be opened as a standard .html file in any web 
 browser. To see the original source code for those files, see the .Rmd files 
