@@ -82,5 +82,17 @@ lead_ref %>%
        fill = "Booking Event")
 ```
 
+My next step was to try calculating the correlation between the variables and 
+the booking events. I found that for all of the numerical variables, the 
+correlation was either incredibly small or non-existant. For the categorical 
+variables I used a chi-square test that showed a high significance of 
+variability, but gave little information on how those variables influenced 
+the booking events.
+
+To determine which variables had the greatest impact on booking, I decided to 
+train a random forest model with the data and calculate the importance of the 
+different variables to the model.
+
+# Random Forest
 
 
