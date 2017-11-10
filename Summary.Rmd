@@ -186,15 +186,15 @@ train_dependent <- training %>%
 
 set.seed(85) 
 
-rf_model_under <- train(x = train_independent, 
-                  y = train_dependent$booking_event, 
-      method = "ranger", 
-      trControl = trainControl(method = "repeatedcv", 
-                               number = 10,
-                               repeats = 10,
-                               sampling = "down"), 
-      importance = "permutation", 
-      metric = "Kappa")
+# rf_model_under <- train(x = train_independent, 
+#                   y = train_dependent$booking_event, 
+#       method = "ranger", 
+#       trControl = trainControl(method = "repeatedcv", 
+#                                number = 10,
+#                                repeats = 10,
+#                                sampling = "down"), 
+#       importance = "permutation", 
+#       metric = "Kappa")
 ```
 
 From that random forest model, we can make some predictions using a testing set 
