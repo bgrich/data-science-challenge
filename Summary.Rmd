@@ -213,4 +213,31 @@ it does pick out some of the important information from the data set.
 
 # Variable Importance
 
+Now that I have trained a random forest model on the data set, I can extract 
+which of the variables were the most important. I tried this using two 
+different methods. One is the built in method for the random forest 
+implementation in R where the difference in accuracies for the random forest 
+model and the model under a permutation of the variables is used. The other 
+method I used is the default of the `caret` package where the area under the 
+ROC curve is used.
+
+```{r}
 varImp(rf_model_under, scale = FALSE)
+```
+
+```{r}
+varImp(rf_model_under, useModel = FALSE, scale = FALSE)
+```
+
+Both of these methods give the `same_partner` and `new_lead_partner` variables 
+as the most important. I tested this by training the random forest model again, 
+but removing one or both of the variables and comparing the sensitivity and 
+accuracy. Removing those variable led to a drop in the sensitivity to 
+approximately 62%. I also tested models that were trained with the less 
+important variables removed. Those models returned a sensitivity in the 80% 
+range, but also led to a decrease in specificity (an increase in the false 
+positive rate). 
+
+The results from these models indicate that the `new_lead_partner` variable 
+and the `same_partner` variable are the two most important factors in the 
+model.
