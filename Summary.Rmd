@@ -5,3 +5,31 @@ output:
     toc: true
     toc_float: true
 ---
+
+The primary question of the Room Key Data Challenge was:
+
+> What factors correlate with users booking and in turn, what can Room Key do 
+> to increase booking conversion rate?
+
+The work that I did is contained in the following notebooks: 
+
+* [Data Details](Data_Details.nb.html) 
+* [Exploratory Data Analysis](Exploratory_Data_Analysis.nb.html) 
+* [Variable Importance via Random Forest](Variable_Importance_RF.nb.html)
+
+In the Data Details notebook, I worked through importing and cleaning the data 
+and I did some initial exploration of the data to get a sense of what each 
+variable contained. The Exploratory Data Analysis notebook digs deeper into 
+each variable in the data set and attempts to either visualize or calculate 
+trends in the data. The notebook on Variable Importance via Random Forest 
+details an exploration of different ways to train a random forest model to 
+determine what variables correlate with users booking. 
+
+The bulk of the work was done in the Exploratory Data Analysis and Variable 
+Importance via Random Forest notebooks. This notebook will contain a summary 
+of my work, highlighting the key results. For my information on my process and 
+all of the steps taken to reach these results, please see the individual 
+notebooks.
+
+# What variables correlate with booking?
+

@@ -270,9 +270,24 @@ div.tocify {
 
 
 <!-- rnb-text-begin -->
+<p>The primary question of the Room Key Data Challenge was:</p>
+<blockquote>
+<p>What factors correlate with users booking and in turn, what can Room Key do to increase booking conversion rate?</p>
+</blockquote>
+<p>The work that I did is contained in the following notebooks:</p>
+<ul>
+<li><a href="Data_Details.nb.html">Data Details</a></li>
+<li><a href="Exploratory_Data_Analysis.nb.html">Exploratory Data Analysis</a></li>
+<li><a href="Variable_Importance_RF.nb.html">Variable Importance via Random Forest</a></li>
+</ul>
+<p>In the Data Details notebook, I worked through importing and cleaning the data and I did some initial exploration of the data to get a sense of what each variable contained. The Exploratory Data Analysis notebook digs deeper into each variable in the data set and attempts to either visualize or calculate trends in the data. The notebook on Variable Importance via Random Forest details an exploration of different ways to train a random forest model to determine what variables correlate with users booking.</p>
+<p>The bulk of the work was done in the Exploratory Data Analysis and Variable Importance via Random Forest notebooks. This notebook will contain a summary of my work, highlighting the key results. For my information on my process and all of the steps taken to reach these results, please see the individual notebooks.</p>
+<div id="what-variables-correlate-with-booking" class="section level1">
+<h1>What variables correlate with booking?</h1>
 <!-- rnb-text-end -->
+</div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlN1bW1hcnkiDQpvdXRwdXQ6IA0KICBodG1sX25vdGVib29rOg0KICAgIHRvYzogdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KLS0tDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlN1bW1hcnkiDQpvdXRwdXQ6IA0KICBodG1sX25vdGVib29rOg0KICAgIHRvYzogdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KLS0tDQoNClRoZSBwcmltYXJ5IHF1ZXN0aW9uIG9mIHRoZSBSb29tIEtleSBEYXRhIENoYWxsZW5nZSB3YXM6DQoNCj4gV2hhdCBmYWN0b3JzIGNvcnJlbGF0ZSB3aXRoIHVzZXJzIGJvb2tpbmcgYW5kIGluIHR1cm4sIHdoYXQgY2FuIFJvb20gS2V5IGRvIA0KPiB0byBpbmNyZWFzZSBib29raW5nIGNvbnZlcnNpb24gcmF0ZT8NCg0KVGhlIHdvcmsgdGhhdCBJIGRpZCBpcyBjb250YWluZWQgaW4gdGhlIGZvbGxvd2luZyBub3RlYm9va3M6IA0KDQoqIFtEYXRhIERldGFpbHNdKERhdGFfRGV0YWlscy5uYi5odG1sKSANCiogW0V4cGxvcmF0b3J5IERhdGEgQW5hbHlzaXNdKEV4cGxvcmF0b3J5X0RhdGFfQW5hbHlzaXMubmIuaHRtbCkgDQoqIFtWYXJpYWJsZSBJbXBvcnRhbmNlIHZpYSBSYW5kb20gRm9yZXN0XShWYXJpYWJsZV9JbXBvcnRhbmNlX1JGLm5iLmh0bWwpDQoNCkluIHRoZSBEYXRhIERldGFpbHMgbm90ZWJvb2ssIEkgd29ya2VkIHRocm91Z2ggaW1wb3J0aW5nIGFuZCBjbGVhbmluZyB0aGUgZGF0YSANCmFuZCBJIGRpZCBzb21lIGluaXRpYWwgZXhwbG9yYXRpb24gb2YgdGhlIGRhdGEgdG8gZ2V0IGEgc2Vuc2Ugb2Ygd2hhdCBlYWNoIA0KdmFyaWFibGUgY29udGFpbmVkLiBUaGUgRXhwbG9yYXRvcnkgRGF0YSBBbmFseXNpcyBub3RlYm9vayBkaWdzIGRlZXBlciBpbnRvIA0KZWFjaCB2YXJpYWJsZSBpbiB0aGUgZGF0YSBzZXQgYW5kIGF0dGVtcHRzIHRvIGVpdGhlciB2aXN1YWxpemUgb3IgY2FsY3VsYXRlIA0KdHJlbmRzIGluIHRoZSBkYXRhLiBUaGUgbm90ZWJvb2sgb24gVmFyaWFibGUgSW1wb3J0YW5jZSB2aWEgUmFuZG9tIEZvcmVzdCANCmRldGFpbHMgYW4gZXhwbG9yYXRpb24gb2YgZGlmZmVyZW50IHdheXMgdG8gdHJhaW4gYSByYW5kb20gZm9yZXN0IG1vZGVsIHRvIA0KZGV0ZXJtaW5lIHdoYXQgdmFyaWFibGVzIGNvcnJlbGF0ZSB3aXRoIHVzZXJzIGJvb2tpbmcuIA0KDQpUaGUgYnVsayBvZiB0aGUgd29yayB3YXMgZG9uZSBpbiB0aGUgRXhwbG9yYXRvcnkgRGF0YSBBbmFseXNpcyBhbmQgVmFyaWFibGUgDQpJbXBvcnRhbmNlIHZpYSBSYW5kb20gRm9yZXN0IG5vdGVib29rcy4gVGhpcyBub3RlYm9vayB3aWxsIGNvbnRhaW4gYSBzdW1tYXJ5IA0Kb2YgbXkgd29yaywgaGlnaGxpZ2h0aW5nIHRoZSBrZXkgcmVzdWx0cy4gRm9yIG15IGluZm9ybWF0aW9uIG9uIG15IHByb2Nlc3MgYW5kIA0KYWxsIG9mIHRoZSBzdGVwcyB0YWtlbiB0byByZWFjaCB0aGVzZSByZXN1bHRzLCBwbGVhc2Ugc2VlIHRoZSBpbmRpdmlkdWFsIA0Kbm90ZWJvb2tzLg0KDQojIFdoYXQgdmFyaWFibGVzIGNvcnJlbGF0ZSB3aXRoIGJvb2tpbmc/DQoNCg==</div>
 
 
 </div>
