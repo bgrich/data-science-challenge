@@ -241,3 +241,32 @@ positive rate).
 The results from these models indicate that the `new_lead_partner` variable 
 and the `same_partner` variable are the two most important factors in the 
 model.
+
+# Recommendations
+
+Given the results of the random forest model training, there are several 
+suggestions that I can make. Most of the recommendations are for further 
+testing to determine how the `same_partner` and `new_lead_partner` variables 
+can be manipulated to produce a higher booking rate. 
+
+First, I would suggest running a test on the `same_partner` variable. This 
+test could examine the response of users that only receive hotel suggestions 
+that are the same as the referring partner compared to those that receive the 
+normal suggestions produced by the website. A similar test could be done 
+looking at users that only receive hotel suggestions that are not from the 
+referring partner. 
+
+My other recommendation would be to have a discussion with the engineers on 
+what type of data can be additionally collected. These models are still 
+fairly low on accuracy and additional information on the users could help 
+make the models better. 
+
+Of course, this is all dependent on the capabilities of the website and could 
+be further refined with discussions with the engineers. 
+
+
+
+
+
+
+
