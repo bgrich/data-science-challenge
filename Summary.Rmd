@@ -27,7 +27,7 @@ determine what variables correlate with users booking.
 
 The bulk of the work was done in the Exploratory Data Analysis and Variable 
 Importance via Random Forest notebooks. This notebook will contain a summary 
-of my work, highlighting the key results. For my information on my process and 
+of my work, highlighting the key results. For information on my process and 
 all of the steps taken to reach these results, please see the individual 
 notebooks.
 
@@ -84,7 +84,7 @@ lead_ref %>%
 
 My next step was to try calculating the correlation between the variables and 
 the booking events. I found that for all of the numerical variables, the 
-correlation was either incredibly small or non-existant. For the categorical 
+correlation was either incredibly small or non-existent. For the categorical 
 variables I used a chi-square test that showed a high significance of 
 variability, but gave little information on how those variables influenced 
 the booking events.
@@ -275,7 +275,7 @@ I would recommend trying a number of different models and comparing them to
 the performance of the random forest to see if better accuracy and sensitivity 
 is possible with this data. 
 
-Another piece of further work would be finding a way to catgeorize the 
+Another piece of further work would be finding a way to categorize the 
 `location_tid` and `udicode` variables for use within the model. In the 
 random forest models that I presented above, those two variables were excluded 
 due to the large number of categories present within the variables. Finding a 
