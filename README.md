@@ -7,6 +7,9 @@ All of the .nb.html files can be opened as a standard .html file in any web
 browser. To see the original source code for those files, see the .Rmd files 
 of the same name. 
 
+The original prompt for the Room Key Data Science Challenge is reproduced 
+below for convenience.
+
 # Data Science Challenge
 
 Hello!
