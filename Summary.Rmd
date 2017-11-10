@@ -4,6 +4,7 @@ output:
   html_notebook:
     toc: true
     toc_float: true
+    code_folding: "hide"
 ---
 
 The primary question of the Room Key Data Challenge was:
