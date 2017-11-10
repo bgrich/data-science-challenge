@@ -31,5 +31,23 @@ of my work, highlighting the key results. For my information on my process and
 all of the steps taken to reach these results, please see the individual 
 notebooks.
 
+```{r setup, message = FALSE}
+library(tidyverse)
+library(jsonlite)
+library(caret)
+
+report_theme <- ggplot2::theme_bw() +
+  ggplot2::theme(panel.border = ggplot2::element_rect(color = "black",
+                                                      fill = NA),
+                 panel.grid.major = ggplot2::element_line(color = "black",
+                                                          linetype = "dotted"),
+                 panel.grid.minor = ggplot2::element_line(color = "black",
+                                                          linetype = "dotted"))
+```
+
 # What variables correlate with booking?
+
+
+
+
 
