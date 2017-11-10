@@ -43,11 +43,44 @@ report_theme <- ggplot2::theme_bw() +
                                                           linetype = "dotted"),
                  panel.grid.minor = ggplot2::element_line(color = "black",
                                                           linetype = "dotted"))
+
+lead_ref <- read_csv("lead_ref_data.csv", progress = FALSE)
 ```
 
 # What variables correlate with booking?
 
+My first step was to examine the data for obvious trends. Though no major 
+trends popped out, one fairly useful trend appeared. I created an additional 
+variable that gave whether a user left the website to a hotel partner that was 
+the same as the referring hotel partner. This appeared to show that a much 
+larger proportion of users booked a hotel when they left the site to a hotel 
+of that same partner, as opposed to a different partner. 
 
+```{r}
+lead_ref %>% 
+  mutate(same_partner = (partner_code_referral == rate_partner_lead)) %>% 
+  filter(!is.na(same_partner)) %>% 
+  ggplot(aes(x = same_partner, fill = booking_event)) +
+  geom_bar() +
+  coord_flip() +
+  ggtitle("Count of Same Partner Events") +
+  labs(y = "Count", 
+       x = "Same Partner", 
+       fill = "Booking Event")
+```
+
+```{r}
+lead_ref %>% 
+  mutate(same_partner = (partner_code_referral == rate_partner_lead)) %>% 
+  filter(!is.na(same_partner)) %>% 
+  ggplot(aes(x = same_partner, fill = booking_event)) +
+  geom_bar(position = "fill") +
+  coord_flip() +
+  ggtitle("Proportion of Same Partner Events") +
+  labs(y = "Proportion", 
+       x = "Same Partner", 
+       fill = "Booking Event")
+```
 
 
 
