@@ -95,4 +95,122 @@ different variables to the model.
 
 # Random Forest
 
+I went through many different iterations of the random forest algorithm, trying 
+different sets of variables, different metrics for optimizing the 
+hyperparameters, and different types of sampling. Many of the initial attempts 
+at training a random forest model produced a high accuracy (approximately 
+90%), but a close to 0% sensitivity (true positive rate).
 
+Since the quantity 
+that we are interested in is the true positive rate (rate of leads converted to 
+bookings), I wanted to make some changes. The first major change I made was 
+switching the metric for training the hyperparameters from Accuracy (the sum 
+of true positives and true negatives divided by the total number of 
+observations) to Kappa, which is slightly more robust for an unbalanced 
+data set.
+
+When this did not produce a reasonable model, I turned to sampling to solve the 
+problem of an unbalanced data set. I tested several different sampling methods 
+for the random forest training including over-sampling and under-sampling. I 
+also made use of the ROSE and SMOTE methods available from the `caret` package. 
+Of these four methods, under-sampling returned the highest sensitivity and 
+accuracy for a relatively short computation time. Minimized below is a sample 
+of the code used to train the random forest model. In the code shown below are 
+also some data modification steps where some of the variables are transformed. 
+One of the major transformations done was reducing the number of categories 
+for the rate partner variables. I kept the 4 partners with the highest number 
+of events and put the other partners into a single group titled "Other". 
+
+```{r}
+data_for_model <- lead_ref %>% 
+  select(booking_event, 
+         ts_referral, 
+         ts_lead,
+         check_in_diff, 
+         check_out_diff,
+         partner_code_referral, 
+         rate_partner_lead) %>% 
+  filter(!is.na(ts_referral)) %>% 
+  filter(!is.na(partner_code_referral)) %>% 
+  filter(!is.na(check_in_diff)) %>% 
+  filter(!is.na(check_out_diff)) %>% 
+  mutate(time_diff = ts_lead - ts_referral) %>% 
+  mutate(booking_event = factor(booking_event, levels = c("TRUE", "FALSE")))
+
+rename_referral_partner <- data_for_model %>% 
+  group_by(partner_code_referral) %>%
+  count() %>%
+  arrange(desc(n)) %>% 
+  ungroup() %>% 
+  rownames_to_column() %>% 
+  mutate(rowname = as.numeric(rowname)) %>% 
+  mutate(new_referral_partner = ifelse(rowname < 5, partner_code_referral, "Other")) %>% 
+  select(partner_code_referral, new_referral_partner)
+
+rename_lead_partner <- data_for_model %>% 
+  group_by(rate_partner_lead) %>%
+  count() %>%
+  arrange(desc(n)) %>% 
+  ungroup() %>% 
+  rownames_to_column() %>% 
+  mutate(rowname = as.numeric(rowname)) %>% 
+  mutate(new_lead_partner = ifelse(rowname < 5, rate_partner_lead, "Other")) %>% 
+  select(rate_partner_lead, new_lead_partner)
+
+modified_data_for_model <- data_for_model %>% 
+  left_join(rename_referral_partner, by = "partner_code_referral") %>% 
+  left_join(rename_lead_partner, by = "rate_partner_lead") %>% 
+  select(-partner_code_referral, -rate_partner_lead) %>% 
+  mutate(same_partner = (new_referral_partner == new_lead_partner)) %>% 
+  mutate(new_referral_partner = factor(new_referral_partner)) %>% 
+  mutate(new_lead_partner = factor(new_lead_partner)) %>% 
+  mutate(same_partner = factor(same_partner, levels = c("TRUE", "FALSE")))
+
+set.seed(85)
+
+train_index <- createDataPartition(modified_data_for_model$booking_event, 
+                            p = 0.8,
+                            list = FALSE, 
+                            times = 1)
+
+training <- modified_data_for_model[train_index, ]
+
+testing <- modified_data_for_model[-train_index, ]
+
+train_independent <- training %>% 
+  select(-booking_event) %>% 
+  as.data.frame()
+
+train_dependent <- training %>% 
+  select(booking_event)
+
+set.seed(85) 
+
+rf_model_under <- train(x = train_independent, 
+                  y = train_dependent$booking_event, 
+      method = "ranger", 
+      trControl = trainControl(method = "repeatedcv", 
+                               number = 10,
+                               repeats = 10,
+                               sampling = "down"), 
+      importance = "permutation", 
+      metric = "Kappa")
+```
+
+From that random forest model, we can make some predictions using a testing set 
+that was separated from the training data set. The results of the predictions 
+can be shown as a confusion matrix with some additional summary statistics.
+
+```{r}
+rf_prediction_under <- predict(rf_model_under, testing[, -1])
+
+(cm_under <- confusionMatrix(rf_prediction_under, testing$booking_event))
+```
+
+This confusion matrix shows the approximately 76% sensitivity with an accuracy 
+of about 58%. While this model has a fairly large number of false positives, 
+it does pick out some of the important information from the data set. 
+
+# Variable Importance
+
+varImp(rf_model_under, scale = FALSE)
